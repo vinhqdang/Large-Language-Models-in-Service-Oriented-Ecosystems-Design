@@ -465,6 +465,31 @@ def test_run_fetch_calls_download_extract_inventory_in_order(tmp_path, monkeypat
 
     assert [c[0] for c in calls] == ["download", "extract", "inventory"]
     assert (tmp_path / "corpus_inventory.json").exists()
+
+
+def test_run_fetch_deletes_raw_zip_after_successful_extraction(tmp_path, monkeypatch):
+    def fake_download(url, dest_path, expected_md5=None):
+        dest_path.parent.mkdir(parents=True, exist_ok=True)
+        dest_path.write_bytes(b"fake zip bytes")
+        return dest_path
+
+    def fake_extract(zip_path, dest_dir):
+        dest_dir.mkdir(parents=True, exist_ok=True)
+        return dest_dir
+
+    def fake_inventory(root_dir):
+        from src.data.inventory import InventoryReport
+
+        return InventoryReport(total_files=0, extension_counts={}, top_level_entries=[])
+
+    monkeypatch.setattr("scripts.fetch_adr_corpus.download_file", fake_download)
+    monkeypatch.setattr("scripts.fetch_adr_corpus.extract_archive", fake_extract)
+    monkeypatch.setattr("scripts.fetch_adr_corpus.build_inventory", fake_inventory)
+
+    run_fetch(data_dir=tmp_path)
+
+    assert not (tmp_path / "raw" / "context_matters.zip").exists()
+    assert not (tmp_path / "raw").exists()
 ```
 
 - [ ] **Step 2: Run test to verify it fails**
@@ -499,6 +524,16 @@ def report_to_json(report: InventoryReport, out_path: Path) -> None:
 
 
 def run_fetch(data_dir: Path) -> InventoryReport:
+    """Download, extract, and inventory the corpus.
+
+    The raw zip is deleted immediately after successful extraction: its MD5
+    was already verified during download, so keeping both the zip and its
+    extracted contents on disk is pure redundancy (~460 MB saved). The much
+    larger extracted/ directory (~11 GB) is intentionally kept — later plans
+    (retrieval indexing) still need to read from it — and should be deleted
+    manually once that follow-on plan has produced its compact processed
+    dataset from it.
+    """
     raw_dir = data_dir / "raw"
     extracted_dir = data_dir / "extracted"
     zip_path = raw_dir / "context_matters.zip"
@@ -508,6 +543,11 @@ def run_fetch(data_dir: Path) -> InventoryReport:
     report = build_inventory(extracted_dir)
 
     report_to_json(report, data_dir / "corpus_inventory.json")
+
+    zip_path.unlink()
+    if not any(raw_dir.iterdir()):
+        raw_dir.rmdir()
+
     return report
 
 
@@ -526,14 +566,14 @@ if __name__ == "__main__":
 - [ ] **Step 4: Run test to verify it passes**
 
 Run: `conda run -n py313 pytest tests/data/test_fetch_script.py -v`
-Expected: PASS (2 passed).
+Expected: PASS (3 passed).
 
 - [ ] **Step 5: Run the script for real**
 
-This step performs the actual ~460 MB download (11 GB after extraction) — confirm available disk space (~12 GB free) and a stable connection before running.
+This step performs the actual ~460 MB download, which expands to ~11 GB during extraction. The raw zip is deleted automatically right after extraction succeeds (its MD5 is already verified, so keeping it too is redundant), leaving ~11 GB on disk in `data/extracted/`. Confirm ~12 GB free before running.
 
 Run: `conda run -n py313 python scripts/fetch_adr_corpus.py`
-Expected: progress bar completes, MD5 verifies, and the script prints total file count, extension counts, and top-level entries. `data/corpus_inventory.json` now exists.
+Expected: progress bar completes, MD5 verifies, extraction completes, the raw zip is deleted, and the script prints total file count, extension counts, and top-level entries. `data/corpus_inventory.json` now exists; `data/raw/` no longer does.
 
 - [ ] **Step 6: Write data/README.md documenting provenance**
 
@@ -548,10 +588,18 @@ vol. 11, pp. 63725-63740, 2023, DOI
 [10.1109/ACCESS.2023.3287654](https://doi.org/10.1109/ACCESS.2023.3287654).
 License: CC-BY-4.0.
 
-`raw/` and `extracted/` are gitignored (11 GB) — regenerate with
+`raw/` and `extracted/` are gitignored — regenerate with
 `python scripts/fetch_adr_corpus.py`. `corpus_inventory.json` is committed and
 summarizes the extracted structure (file counts by extension, top-level entries)
 for downstream planning.
+
+**Cleanup status:** `raw/` (the zip) is deleted automatically once extraction
+succeeds. `extracted/` (~11 GB) is intentionally still on disk — the next
+plan (retrieval indexing) reads from it to build `data/processed/` (a compact
+parsed dataset). **Once that plan has run and `data/processed/` exists,
+delete `data/extracted/` manually** (`rm -rf data/extracted`) — it is fully
+regenerable from the Zenodo source above and should not be left on disk
+long-term.
 ```
 
 - [ ] **Step 7: Commit**
@@ -569,3 +617,4 @@ git push
 - **Spec coverage:** This plan implements only the corpus-acquisition prerequisite of spec §4. It deliberately does **not** implement ADR parsing into the `ADRRecord` schema, embeddings, or the retrieval index (spec §3 Stage 1) — those require knowing the corpus's actual internal structure, which Task 4 discovers. That follow-on work belongs in a separate plan (`retrieval-indexing`) written after this one completes and `data/corpus_inventory.json` / manual inspection of `data/extracted/` are available.
 - **Placeholder scan:** no TBD/TODO; all code blocks are complete and runnable.
 - **Type consistency:** `InventoryReport` fields (`total_files`, `extension_counts`, `top_level_entries`) are used identically across Task 3 and Task 4; `download_file` / `extract_archive` / `build_inventory` signatures match between definition (Tasks 2–3) and use (Task 4).
+- **Disk hygiene (per user request):** the raw zip (~460 MB) is deleted automatically in `run_fetch` right after extraction succeeds. The extracted corpus (~11 GB) is kept because the next plan needs to read it, but `data/README.md` records an explicit commitment to delete `data/extracted/` once that next plan has produced its compact `data/processed/` output — this must not be forgotten.
