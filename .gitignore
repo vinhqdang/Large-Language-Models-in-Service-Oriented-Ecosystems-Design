@@ -216,3 +216,7 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# ADR corpus (large, downloaded — never commit)
+data/raw/
+data/extracted/

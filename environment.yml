@@ -1,0 +1,10 @@
+name: py313
+channels:
+  - conda-forge
+dependencies:
+  - python=3.13
+  - pip
+  - pip:
+      - requests>=2.32
+      - tqdm>=4.66
+      - pytest>=8.3
