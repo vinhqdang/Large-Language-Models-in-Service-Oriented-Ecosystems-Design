@@ -1,0 +1,19 @@
+{
+  "total_files": 48008,
+  "extension_counts": {
+    "<no-ext>": 4,
+    ".md": 6258,
+    ".txt": 1,
+    ".py": 32,
+    ".png": 32,
+    ".csv": 6,
+    ".json": 41654,
+    ".pyc": 5,
+    ".erb": 8,
+    ".rst": 7,
+    ".org": 1
+  },
+  "top_level_entries": [
+    "Context Matters"
+  ]
+}

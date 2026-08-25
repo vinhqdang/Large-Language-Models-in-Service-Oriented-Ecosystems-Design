@@ -37,3 +37,22 @@ def test_build_inventory_counts_files_and_extensions(tmp_path):
     assert report.extension_counts[".json"] == 1
     assert report.extension_counts[".txt"] == 1
     assert set(report.top_level_entries) == {"repoA", "repoB", "README.txt"}
+
+
+def test_extract_archive_handles_paths_over_260_chars_on_windows(tmp_path):
+    from src.data.inventory import _long_path
+
+    zip_path = tmp_path / "long.zip"
+    deep_name = "a" * 50
+    long_relative_path = "/".join([deep_name] * 6) + "/file.txt"
+    with zipfile.ZipFile(zip_path, "w") as zf:
+        zf.writestr(long_relative_path, "content")
+    dest_dir = tmp_path / "extracted"
+
+    result = extract_archive(zip_path, dest_dir)
+
+    expected_file = dest_dir
+    for part in long_relative_path.split("/"):
+        expected_file = expected_file / part
+    assert result == dest_dir
+    assert _long_path(expected_file).exists()
