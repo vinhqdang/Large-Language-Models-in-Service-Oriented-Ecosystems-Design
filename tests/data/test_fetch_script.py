@@ -1,5 +1,4 @@
 import json
-from pathlib import Path
 
 from scripts.fetch_adr_corpus import report_to_json, run_fetch
 

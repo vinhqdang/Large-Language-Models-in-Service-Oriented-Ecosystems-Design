@@ -6,7 +6,18 @@ study (IEEE Access, DOI 10.1109/ACCESS.2023.3287654). CC-BY-4.0.
 """
 import dataclasses
 import json
+import sys
 from pathlib import Path
+
+# Running this file directly (`python scripts/fetch_adr_corpus.py`) puts
+# scripts/ on sys.path, not the repo root, so the `src.data` imports below
+# would otherwise fail with ModuleNotFoundError. Bootstrap the repo root
+# onto sys.path before those imports execute. (A `pyproject.toml` with
+# `pythonpath = ["."]` handles this for pytest; this handles direct
+# execution.)
+_PROJECT_ROOT = Path(__file__).resolve().parent.parent
+if str(_PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(_PROJECT_ROOT))
 
 from src.data.download import download_file
 from src.data.inventory import InventoryReport, build_inventory, extract_archive
@@ -17,7 +28,9 @@ EXPECTED_MD5 = "1106da3185ac5ddba0fdfc2f0ace9301"
 
 def report_to_json(report: InventoryReport, out_path: Path) -> None:
     out_path.parent.mkdir(parents=True, exist_ok=True)
-    out_path.write_text(json.dumps(dataclasses.asdict(report), indent=2))
+    out_path.write_text(
+        json.dumps(dataclasses.asdict(report), indent=2) + "\n", encoding="utf-8"
+    )
 
 
 def run_fetch(data_dir: Path) -> InventoryReport:
@@ -49,8 +62,7 @@ def run_fetch(data_dir: Path) -> InventoryReport:
 
 
 if __name__ == "__main__":
-    project_root = Path(__file__).resolve().parent.parent
-    result = run_fetch(data_dir=project_root / "data")
+    result = run_fetch(data_dir=_PROJECT_ROOT / "data")
     print(f"Total files: {result.total_files}")
     print(f"Extension counts: {result.extension_counts}")
     print(f"Top-level entries: {result.top_level_entries}")

@@ -17,6 +17,6 @@ for downstream planning.
 succeeds. `extracted/` (~11 GB) is intentionally still on disk — the next
 plan (retrieval indexing) reads from it to build `data/processed/` (a compact
 parsed dataset). **Once that plan has run and `data/processed/` exists,
-delete `data/extracted/` manually** (`rm -rf data/extracted`) — it is fully
+delete `data/extracted/` manually** (`Remove-Item -Recurse -Force data\extracted`) — it is fully
 regenerable from the Zenodo source above and should not be left on disk
 long-term.

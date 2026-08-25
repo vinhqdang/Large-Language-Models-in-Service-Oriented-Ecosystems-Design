@@ -1,5 +1,8 @@
+import os
 import zipfile
 from pathlib import Path
+
+import pytest
 
 from src.data.inventory import build_inventory, extract_archive
 
@@ -39,8 +42,9 @@ def test_build_inventory_counts_files_and_extensions(tmp_path):
     assert set(report.top_level_entries) == {"repoA", "repoB", "README.txt"}
 
 
+@pytest.mark.skipif(os.name != "nt", reason="Windows-only path behavior")
 def test_extract_archive_handles_paths_over_260_chars_on_windows(tmp_path):
-    from src.data.inventory import _long_path
+    from src.data.paths import long_path
 
     zip_path = tmp_path / "long.zip"
     deep_name = "a" * 50
@@ -55,4 +59,4 @@ def test_extract_archive_handles_paths_over_260_chars_on_windows(tmp_path):
     for part in long_relative_path.split("/"):
         expected_file = expected_file / part
     assert result == dest_dir
-    assert _long_path(expected_file).exists()
+    assert long_path(expected_file).exists()
