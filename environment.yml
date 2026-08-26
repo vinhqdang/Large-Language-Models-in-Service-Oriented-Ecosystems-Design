@@ -8,3 +8,14 @@ dependencies:
       - requests>=2.32
       - tqdm>=4.66
       - pytest>=8.3
+      - numpy>=2.2
+      - scikit-learn>=1.8
+      # torch: install with CUDA support for your platform first if you want
+      # GPU acceleration, e.g. `pip install torch --index-url https://download.pytorch.org/whl/cu124` —
+      # this generic pin alone gets you a working (CPU-only, if no matching
+      # CUDA wheel resolves) install, not necessarily the GPU one.
+      - torch>=2.6
+      - sentence-transformers>=6.0
+      - transformers>=5.15
+      - accelerate>=1.13
+      - google-genai>=2.20
