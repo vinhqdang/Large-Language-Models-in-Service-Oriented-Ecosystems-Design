@@ -51,7 +51,15 @@ applied and re-reviewed clean. Everything is merged to `main`.
 - `data/extracted/` (~11 GB) should be **manually deleted** once the next plan (retrieval indexing) has parsed it into a compact `data/processed/` — this is documented in `data/README.md` too, but it depends on someone actually doing it. Not done yet as of this log entry.
 - The corpus is **JSON-heavy** (6.6:1 over Markdown by file count) — the next plan must open with a real structural/schema inspection (directory names at depth 2-4, per-directory counts, a sampled JSON key-schema) before writing any parser. The current `InventoryReport` (a flat extension histogram) is deliberately not sufficient for this — that was a scoped decision, not an oversight, made during the corpus-acquisition plan's final review.
 
-## Next step (not started)
+## Session 2026-08-26 (in progress)
+
+Working on the retrieval-indexing plan per "Next step" below. Status:
+
+- **Environment fix found and verified:** in the `py313` conda env, `import torch` before `import sentence_transformers` segfaults (exit 139) on Windows — upgrading sentence-transformers 3.3.1→6.0.0 did *not* fix it. Workaround: **always `import sentence_transformers` before `import torch`** in any module that uses both. Confirmed clean with the reversed order. `z3` (needed later for CADENCE Stage 3) is still not installed — unrelated, separate gap for that stage's plan.
+- **Corpus re-fetch in progress.** The committed `data/corpus_inventory.json` (48,008 files) was produced in a previous session, but `data/extracted/` is gitignored and wasn't present on this clone, so it's being regenerated now (`conda run -n py313 python scripts/fetch_adr_corpus.py`). First attempt failed with `requests.exceptions.ConnectionError: Read timed out` from `zenodo.org` after streaming ~350 MB (all 3 internal retries exhausted — each retry restarts from byte 0, there's no resume support). Retrying manually; if it fails repeatedly, the fix is likely to raise `download_file`'s per-chunk `timeout=60` in `src/data/download.py` and/or add HTTP Range-based resume so retries don't restart from scratch.
+- **Not started yet:** the schema inspection (directory structure at depth 2-4, per-directory counts, sampled JSON key-schema) that must happen once `data/extracted/` exists, and the retrieval-indexing plan document itself.
+
+## Next step (in progress this session)
 
 Write and execute the **retrieval-indexing** implementation plan: parse the
 real corpus (per the schema inspection above) into an `ADRRecord` schema,
