@@ -90,6 +90,26 @@ def test_degrades_gracefully_after_exhausting_repair_attempts():
     assert len(result.selected_tactics) == 1
 
 
+def test_repair_prompt_names_concrete_tactic_options_for_uncovered_attributes():
+    client = _FakeRepairClient([
+        "CANDIDATE: We will use caching and authentication.\nRATIONALE: Fits.",
+    ])
+
+    run_repair_loop(
+        candidate="We will use caching.",
+        rationale="Improves performance.",
+        required_quality_attributes=("performance", "security"),
+        tactic_budget=2,
+        quality_attribute_weights={},
+        tactics=_catalog(),
+        repair_client=client,
+        max_repair_iterations=2,
+    )
+
+    prompt = client.prompts[0]
+    assert "Authentication" in prompt  # the only security tactic in _catalog()
+
+
 def test_max_repair_iterations_zero_checks_once_without_calling_repair_client():
     client = _FakeRepairClient([])  # would raise IndexError if called
 

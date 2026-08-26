@@ -19,13 +19,31 @@ class VerifiedDecision:
 
 
 def _build_repair_prompt(
-    candidate: str, result: FeasibilityResult, tactic_budget: int, required_quality_attributes: tuple[str, ...]
+    candidate: str,
+    result: FeasibilityResult,
+    tactic_budget: int,
+    required_quality_attributes: tuple[str, ...],
+    tactics: list[Tactic],
 ) -> str:
     # uncovered_quality_attributes (not unsat_core_quality_attributes) is
     # the authoritative "what needs fixing" list — see feasibility.py's
     # FeasibilityResult docstring for why the unsat core can be an
     # incomplete explanation. The core is included only as supplementary
     # "at least these conflict" context.
+    #
+    # Naming concrete tactic options per uncovered attribute matters: the
+    # tactic-extraction heuristic (src/solver/tactic_extraction.py) can
+    # only detect tactics the response actually mentions by name (or close
+    # paraphrase). Without this, an LLM asked to "cover security" has no
+    # reason to use recognizable phrasing, and a repair attempt can fail
+    # to move the needle even when it's a reasonable revision in plain
+    # English — this list is what lets a small model reliably produce
+    # extractable output, mirroring how Stage 2's agents are always given
+    # their own quality attribute's tactic vocabulary.
+    options_lines = "\n".join(
+        f"- {qa}: " + ", ".join(t.name for t in tactics if t.category == qa)
+        for qa in result.uncovered_quality_attributes
+    )
     return (
         f"The following architectural decision candidate cannot be verified as feasible:\n"
         f"{candidate}\n\n"
@@ -37,8 +55,11 @@ def _build_repair_prompt(
         f"{', '.join(result.uncovered_quality_attributes)} "
         f"(at least {', '.join(result.unsat_core_quality_attributes)} are known to conflict "
         "with the budget).\n\n"
+        "Tactics you could name explicitly to address each unaddressed attribute:\n"
+        f"{options_lines}\n\n"
         "Revise the decision to fit within the tactic budget while covering as many of the "
-        "required quality attributes as possible, consolidating around fewer, higher-impact "
+        "required quality attributes as possible — naming specific tactics from the lists "
+        "above by name where you use them — consolidating around fewer, higher-impact "
         "tactics where needed. Respond in exactly this format:\n"
         "CANDIDATE: <one or two sentence decision>\n"
         "RATIONALE: <one paragraph rationale>"
@@ -87,7 +108,7 @@ def run_repair_loop(
         if iteration == max_repair_iterations:
             break
 
-        repair_prompt = _build_repair_prompt(candidate, result, tactic_budget, required_quality_attributes)
+        repair_prompt = _build_repair_prompt(candidate, result, tactic_budget, required_quality_attributes, tactics)
         try:
             response = repair_client.generate(repair_prompt)
             candidate, rationale = parse_candidate_rationale(response)
