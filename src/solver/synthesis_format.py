@@ -11,7 +11,9 @@ class CandidateRationaleParseError(RuntimeError):
     """Raised when text doesn't contain a parseable CANDIDATE/RATIONALE pair."""
 
 
-_LABEL_LINE = re.compile(r"^\s*[*_\-\s]*(CANDIDATE|RATIONALE)[*_\s]*:[*_\s]*(.*)$", re.IGNORECASE)
+_LABEL_LINE = re.compile(
+    r"^\s*[*_\-\s]*(CANDIDATE|RATIONALE)[A-Za-z\s]{0,30}?[*_\s]*:[*_\s]*(.*)$", re.IGNORECASE
+)
 
 
 def parse_candidate_rationale(text: str) -> tuple[str, str]:

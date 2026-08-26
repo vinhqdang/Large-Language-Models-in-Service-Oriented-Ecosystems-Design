@@ -22,7 +22,9 @@ class DeliberationResult:
     rounds_run: int
 
 
-_LABEL_LINE = re.compile(r"^\s*[*_\-\s]*(CANDIDATE|RATIONALE)[*_\s]*:[*_\s]*(.*)$", re.IGNORECASE)
+_LABEL_LINE = re.compile(
+    r"^\s*[*_\-\s]*(CANDIDATE|RATIONALE)[A-Za-z\s]{0,30}?[*_\s]*:[*_\s]*(.*)$", re.IGNORECASE
+)
 
 
 def _parse_synthesis(text: str) -> tuple[str, str]:

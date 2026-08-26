@@ -95,6 +95,23 @@ def test_parse_synthesis_is_tolerant_of_markdown_case_and_multiline_rationale():
     )
 
 
+def test_parse_synthesis_tolerates_extra_words_before_the_colon():
+    """Regression: a real local-model run produced '**Candidate Decision:**'
+    and '**Rationale:**' (an extra descriptor word), which the original
+    strict label pattern failed to parse, crashing the whole pipeline."""
+    text = (
+        "**Candidate Decision:**\n"
+        "Use a message broker for asynchronous processing.\n\n"
+        "**Rationale:**\n"
+        "This decouples read traffic from the main application server."
+    )
+
+    candidate, rationale = _parse_synthesis(text)
+
+    assert candidate == "Use a message broker for asynchronous processing."
+    assert rationale == "This decouples read traffic from the main application server."
+
+
 def test_parse_synthesis_raises_clearly_on_unparseable_output():
     with pytest.raises(SynthesisParseError):
         _parse_synthesis("I think we should probably use read replicas, but I'm not sure.")
