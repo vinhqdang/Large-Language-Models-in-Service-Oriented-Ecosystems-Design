@@ -99,8 +99,24 @@ def test_strips_markdown_wrapped_around_the_score_value():
     assert result == [QualitativeScore("performance", 8.0, None)]
 
 
+def test_fraction_score_is_parsed_and_scaled_to_zero_to_ten():
+    """Regression: a real run of the full pipeline showed this model's
+    DEFAULT way of answering a '0-10' prompt is 'N/10' for every
+    attribute, not a rare edge case -- it must be handled directly, not
+    just rejected as unparseable."""
+    response = "PERFORMANCE_SCORE: 8/10\nPERFORMANCE_WEAKNESS: none\nSECURITY_SCORE: 3/5\nSECURITY_WEAKNESS: none\n"
+    client = _FakeClient(response)
+
+    result = run_qualitative_critique(
+        decision="d", rationale="r", quality_attributes=("performance", "security"), client=client,
+    )
+
+    assert result[0].score == 8.0  # 8/10 -> already on a 0-10 scale
+    assert result[1].score == 6.0  # 3/5 scaled to a 0-10 scale
+
+
 def test_unparseable_score_text_raises_critique_parse_error_not_value_error():
-    response = "PERFORMANCE_SCORE: 8/10\nPERFORMANCE_WEAKNESS: none\n"
+    response = "PERFORMANCE_SCORE: eight out of ten\nPERFORMANCE_WEAKNESS: none\n"
     client = _FakeClient(response)
 
     with pytest.raises(CritiqueParseError, match="performance"):

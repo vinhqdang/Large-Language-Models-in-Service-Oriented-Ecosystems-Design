@@ -65,8 +65,23 @@ def _find_label_value(response: str, quality_attribute: str, field: str) -> str 
     return match.group(1).strip() if match else None
 
 
+_FRACTION_SCORE = re.compile(r"^(\d+(?:\.\d+)?)\s*/\s*(\d+(?:\.\d+)?)$")
+
+
 def _parse_score(raw: str) -> float | None:
     cleaned = raw.strip().strip("*_ ")
+
+    # A real run showed this is this model's default way of answering a
+    # "0-10" prompt -- not a rare edge case, so it's handled directly
+    # (scaled to a 0-10 scale) rather than just rejected as unparseable.
+    fraction_match = _FRACTION_SCORE.match(cleaned)
+    if fraction_match:
+        numerator, denominator = float(fraction_match.group(1)), float(fraction_match.group(2))
+        if denominator == 0:
+            return None
+        score = (numerator / denominator) * MAX_SCORE
+        return max(MIN_SCORE, min(MAX_SCORE, score))
+
     try:
         score = float(cleaned)
     except ValueError:
