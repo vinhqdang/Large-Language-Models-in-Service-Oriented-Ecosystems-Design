@@ -21,3 +21,7 @@ dependencies:
       - google-genai>=2.20
       - z3-solver>=5.1
       - networkx>=3.6
+      - bert-score>=0.3
+      - rouge-score>=0.1
+      - nltk>=3.10
+      - sacrebleu>=2.6
