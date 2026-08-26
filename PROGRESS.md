@@ -18,25 +18,38 @@ decision-making in service-oriented architectures.
 
 Full design: `docs/superpowers/specs/2026-08-25-cadence-adr-algorithm-design.md`
 
-## Status: retrieval-indexing plan complete (CADENCE Stage 1 done)
+## Status: multi-agent deliberation plan complete (CADENCE Stages 1+2 done)
 
-`docs/superpowers/plans/2026-08-26-adr-retrieval-indexing.md` — all 4 tasks
-done, incrementally reviewed (the vector-index/Retriever review caught and
-fixed a real `k<=0` crash plus a hardening gap, both closed with tests).
-Everything is merged to `main`. Before this, `docs/superpowers/plans/2026-08-25-adr-corpus-acquisition.md`
-completed the corpus fetch pipeline (`src/data/download.py`, `src/data/inventory.py`,
-`src/data/paths.py`, `scripts/fetch_adr_corpus.py`) — see git history for
-that plan's details; not repeated here since it's superseded by what follows.
+`docs/superpowers/plans/2026-08-26-multi-agent-deliberation.md` — all 4
+tasks done, incrementally reviewed (review caught and fixed a real
+silent-failure bug in synthesis parsing plus a latent identity-vs-value
+bug in critique-round exclusion, both closed with tests). The real
+end-to-end demo (`scripts/run_deliberation_demo.py`) ran successfully: 5
+quality-attribute agents debated a sample decision context over 2 rounds
+using the real corpus + real local LLM, referencing real tactics from the
+knowledge graph (message queuing, JWT, IaC, event-driven architecture,
+etc.), and the synthesizer produced a coherent converged candidate +
+rationale. Everything is merged to `main`.
 
-**What exists in the repo now (CADENCE Stage 1, spec §3):**
+Before this, `docs/superpowers/plans/2026-08-26-adr-retrieval-indexing.md`
+(CADENCE Stage 1) and `docs/superpowers/plans/2026-08-25-adr-corpus-acquisition.md`
+completed — see git history for those plans' details; not repeated here
+since they're superseded by what follows.
+
+**What exists in the repo now (CADENCE Stages 1+2, spec §3):**
 - `src/retrieval/records.py` — `ADRRecord` schema + `parse_corpus`/`parse_adr_folder`: lenient parser for the real corpus's inconsistent ADR filenames/headings.
 - `src/retrieval/embeddings.py` — `embed_texts`/`load_embedding_model` (sentence-transformers `all-MiniLM-L6-v2`, model injected for testability).
 - `src/retrieval/index.py` — `VectorIndex` (sklearn `NearestNeighbors`, cosine).
-- `src/retrieval/retriever.py` — `Retriever.retrieve(query_text, k) -> list[ADRRecord]` — **this is the CADENCE Stage 1 entry point** the next plan (multi-agent deliberation) should import directly.
+- `src/retrieval/retriever.py` — `Retriever.retrieve(query_text, k) -> list[ADRRecord]` — **the CADENCE Stage 1 entry point**.
 - `scripts/build_adr_dataset.py` — parses the real corpus into `data/processed/adr_records.jsonl` (committed, 6,173 records, ~19.5 MB).
 - `scripts/build_retrieval_index.py` — embeds the processed dataset for real and saves `data/processed/adr_embeddings.npy` (committed, ~9.5 MB, `all-MiniLM-L6-v2` embeddings for all 6,173 records).
+- `src/deliberation/knowledge_graph.py` — `TACTICS` (25 hand-curated architectural tactics) + `build_knowledge_graph`/`supporting_tactics_for`/`trade_offs_for_tactic` (`networkx.DiGraph`).
+- `src/deliberation/llm_client.py` — `GeminiClient` (real API shape verified against installed SDK source, untested for real — no `GEMINI_API_KEY` configured), `LocalHFClient`/`load_local_hf_client` (real, verified reliable — see Environment notes on the `pipeline()` segfault it works around).
+- `src/deliberation/agent.py` — `QualityAttributeAgent.propose`/`.critique` — **the CADENCE Stage 2 per-agent entry point**.
+- `src/deliberation/orchestrator.py` — `DeliberationOrchestrator.deliberate(context, precedents) -> DeliberationResult` — **the CADENCE Stage 2 entry point** the next plan (constraint solver) should import directly, alongside `Retriever` from Stage 1.
+- `scripts/run_deliberation_demo.py` — real end-to-end Stage 1 → Stage 2 demo script (not committing any output artifact — this one's outputs are ephemeral transcripts, not data to persist).
 - `data/corpus_inventory.json`, `data/README.md` — corpus provenance + `processed/` schema docs.
-- 37 tests passing (`conda run -n py313 pytest -q`).
+- 60 tests passing (`conda run -n py313 pytest -q`).
 
 **What is NOT in the repo (gitignored, regenerate locally if ever needed —
 normal work should not need to):**
@@ -66,21 +79,23 @@ derived from Buchgeher et al.'s MSR study (IEEE Access, DOI [10.1109/ACCESS.2023
 
 ## Next step
 
-Write and execute the **multi-agent deliberation** implementation plan
-(spec §3 Stage 2): N quality-attribute advocate agents (performance,
-security, maintainability, scalability, cost/operability per ISO/IEC 25010),
-knowledge-graph-grounded (patterns/tactics catalog — construction method
-still needs its own design pass, per spec §4), bounded-round structured
-argumentation, consuming `Retriever.retrieve(...)` (this session's output)
-for precedent grounding. This plan doesn't exist yet.
+Write and execute the **constraint solver + repair loop** implementation
+plan (spec §3 Stage 3): install and smoke-test `z3` first (see Environment
+notes — not installed yet); encode a `DeliberationResult`'s implied
+trade-off commitments as weighted MaxSAT/SMT; on infeasibility, extract an
+unsat core and feed it back to the deliberation agents (Stage 2, this
+session's output) for targeted repair, iterating to a fixed cap; degrade
+gracefully to the best partial-feasibility candidate + explicit caveat if
+still infeasible. This plan doesn't exist yet — per spec §9, this is
+flagged as the highest-risk engineering component, so expect to spend real
+design effort on the trade-off-to-constraint encoding before writing tasks.
 
-After that, remaining plans in pipeline order: constraint solver + repair
-loop (install and smoke-test `z3` first — see Environment notes) → self-
-critique → evaluation harness (baselines: Dhar et al. ICSA'24-style,
-Context-Matters-style retrieval-only — possibly reusable from the corpus,
-see above — MAAD-style no-solver ablation; metrics: BERTScore/BLEU/ROUGE-1/
-METEOR + novel constraint-satisfaction-rate + repair-convergence) →
-manuscript (IEEEtran template already in repo root, 6 sections, ≤14 pages).
+After that: self-critique (Stage 4) → evaluation harness (baselines: Dhar
+et al. ICSA'24-style, Context-Matters-style retrieval-only — possibly
+reusable from the corpus, see above — MAAD-style no-solver ablation;
+metrics: BERTScore/BLEU/ROUGE-1/METEOR + novel constraint-satisfaction-rate
++ repair-convergence) → manuscript (IEEEtran template already in repo
+root, 6 sections, ≤14 pages).
 
 ## Working conventions established so far
 
