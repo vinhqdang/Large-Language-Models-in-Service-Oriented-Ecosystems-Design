@@ -532,13 +532,35 @@ class LocalHFClient:
 
 
 def load_local_hf_client(model_name: str = DEFAULT_LOCAL_MODEL) -> LocalHFClient:
-    from transformers import pipeline
+    """Load a local instruct model directly via AutoTokenizer/AutoModelForCausalLM.
 
-    hf_pipeline = pipeline("text-generation", model=model_name, torch_dtype="auto", device_map="auto")
+    Deliberately does NOT use transformers.pipeline("text-generation", ...):
+    on this machine that high-level wrapper segfaults unpredictably (native
+    crash, not a Python exception) at inconsistent points — sometimes during
+    import, sometimes during model load, sometimes during generation — while
+    the lower-level tokenizer/model/.generate() path used here has been
+    verified reliable across repeated runs on both CPU and CUDA, including
+    multiple sequential generate calls against one loaded model (the actual
+    usage pattern here: agents share one loaded model across many calls).
+    Root cause not identified; this is a working, verified alternative, not
+    a guess. See PROGRESS.md's environment notes if this needs revisiting.
+    """
+    import torch
+    from transformers import AutoModelForCausalLM, AutoTokenizer
+
+    device = "cuda" if torch.cuda.is_available() else "cpu"
+    tokenizer = AutoTokenizer.from_pretrained(model_name)
+    model = AutoModelForCausalLM.from_pretrained(model_name, device_map=device, torch_dtype="auto")
 
     def generator(messages):
-        outputs = hf_pipeline(messages, max_new_tokens=400, do_sample=True, temperature=0.7)
-        return outputs[0]["generated_text"][-1]["content"]
+        text = tokenizer.apply_chat_template(messages, add_generation_prompt=True, tokenize=False)
+        input_ids = tokenizer(text, return_tensors="pt").input_ids.to(device)
+        output_ids = model.generate(
+            input_ids, max_new_tokens=400, do_sample=True, temperature=0.7,
+            pad_token_id=tokenizer.eos_token_id,
+        )
+        new_tokens = output_ids[0][input_ids.shape[1]:]
+        return tokenizer.decode(new_tokens, skip_special_tokens=True)
 
     return LocalHFClient(generator)
 ```
@@ -550,8 +572,20 @@ Expected: PASS (4 passed).
 
 - [ ] **Step 5: Smoke-test the real local backend loads and generates (manual, not a pytest)**
 
-Run (as a script file, not `python -c`, per the `conda run` argument-wrapping
-quirk noted in `PROGRESS.md`):
+**Important — do not use `transformers.pipeline(...)` for this smoke test
+even to experiment.** On the machine this plan was written on, `pipeline
+("text-generation", ...)` segfaulted (native crash) unpredictably —
+sometimes on import, sometimes on load, sometimes on generate, across many
+repeated attempts, with no consistent trigger (not GPU-specific: also
+crashed with `device="cpu"`; not token-count-specific; not
+sampling-specific). The lower-level `AutoTokenizer`/`AutoModelForCausalLM`/
+`.generate()` path `load_local_hf_client` actually uses was verified
+reliable across many repeated runs, including 3 sequential real generate
+calls against one loaded model (CPU and CUDA, greedy and sampled) — that
+is the implementation above, already updated to avoid the crashy path. If
+you're verifying this for the first time on a new machine, run (as a
+script file, not `python -c`, per the `conda run` argument-wrapping quirk
+noted in `PROGRESS.md`):
 
 ```python
 # scratch smoke-test — not committed
@@ -559,11 +593,15 @@ from src.deliberation.llm_client import load_local_hf_client
 
 client = load_local_hf_client()
 print(client.generate("In one sentence, what is a circuit breaker?"))
+print(client.generate("What is caching used for?"))
 ```
 
 Expected: downloads `Qwen/Qwen2.5-1.5B-Instruct` on first run (~3 GB) and
-prints a coherent one-sentence answer. Confirms the pipeline wiring and
-message format are correct before Task 3/4 build on it.
+prints two coherent answers from the same loaded model. If this crashes on
+a new machine, do not fall back to `pipeline(...)` — narrow it down the
+same way this plan did (isolate torch import / tokenizer load / model load
+/ generate call with a file-based log, since a segfault can prevent stdout
+from flushing) before assuming it's the same issue.
 
 - [ ] **Step 6: Commit**
 
