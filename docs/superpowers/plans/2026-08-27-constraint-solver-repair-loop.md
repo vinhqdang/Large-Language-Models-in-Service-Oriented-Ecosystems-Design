@@ -790,6 +790,13 @@ class VerifiedDecision:
 def _build_repair_prompt(
     candidate: str, result: FeasibilityResult, tactic_budget: int, required_quality_attributes: tuple[str, ...]
 ) -> str:
+    # Uses uncovered_quality_attributes, not unsat_core_quality_attributes,
+    # as the authoritative "what needs fixing" list — per feasibility.py's
+    # docstring (added after code review), the unsat core is a valid but
+    # possibly-incomplete explanation, while uncovered_quality_attributes
+    # is the complete, sound signal now that phase 2 optimizes coverage
+    # lexicographically ahead of trade-off cost. The core is still
+    # mentioned as supplementary "at least these conflict" context.
     return (
         f"The following architectural decision candidate cannot be verified as feasible:\n"
         f"{candidate}\n\n"
@@ -797,8 +804,10 @@ def _build_repair_prompt(
         "tactics (an operability budget).\n"
         f"Required quality attributes that must each be addressed by at least one tactic: "
         f"{', '.join(required_quality_attributes)}.\n"
-        f"These quality attributes could not be jointly satisfied within the budget: "
-        f"{', '.join(result.unsat_core_quality_attributes)}.\n\n"
+        f"The best attempt so far leaves these quality attributes unaddressed: "
+        f"{', '.join(result.uncovered_quality_attributes)} "
+        f"(at least {', '.join(result.unsat_core_quality_attributes)} are known to conflict "
+        "with the budget).\n\n"
         "Revise the decision to fit within the tactic budget while covering as many of the "
         "required quality attributes as possible, consolidating around fewer, higher-impact "
         "tactics where needed. Respond in exactly this format:\n"
@@ -1053,6 +1062,26 @@ git push
 
 ## Self-Review Notes
 
+- **Correction found during Task 2's code review, applied before Task 4
+  was written:** the original design (embedded in Task 2's code block
+  above) used a single `COVERAGE_WEIGHT = 1000.0` constant to bias phase
+  2's optimizer toward covering required quality attributes ahead of
+  minimizing trade-off cost. Review found this was a weighted-*sum*
+  objective, not a true priority — a real input with enough
+  caller-supplied trade-off weight (e.g. four trade-offs at 300 each
+  against the one tactic covering a required QA) could out-vote coverage
+  entirely, silently leaving a coverable QA uncovered. Fixed in the
+  actual `src/solver/feasibility.py` (not reflected in this file's Task 2
+  snippet above) by using `z3.Optimize().set(priority="lex")` with two
+  separate `add_soft(..., id=...)` objective groups (`"coverage"` then
+  `"tradeoffs"`), verified empirically to make coverage dominate
+  regardless of weight magnitude. The review also found `z3`'s
+  `unsat_core()` can omit required QAs just as blocking as the ones it
+  names (inherent to unsat-core semantics, not a bug) — so Task 4's
+  `_build_repair_prompt` above was written from the start to treat
+  `uncovered_quality_attributes` (sound and complete, given the
+  lex-priority fix) as the authoritative repair signal, with the unsat
+  core included only as supplementary context.
 - **Spec coverage:** implements exactly CADENCE Stage 3 (spec §3) and
   resolves §9's flagged "own design pass" requirement for the constraint
   encoding. Does not implement Stage 4 (self-critique) — separate
