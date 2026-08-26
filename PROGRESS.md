@@ -51,22 +51,23 @@ applied and re-reviewed clean. Everything is merged to `main`.
 - `data/extracted/` (~11 GB) should be **manually deleted** once the next plan (retrieval indexing) has parsed it into a compact `data/processed/` — this is documented in `data/README.md` too, but it depends on someone actually doing it. Not done yet as of this log entry.
 - The corpus is **JSON-heavy** (6.6:1 over Markdown by file count) — the next plan must open with a real structural/schema inspection (directory names at depth 2-4, per-directory counts, a sampled JSON key-schema) before writing any parser. The current `InventoryReport` (a flat extension histogram) is deliberately not sufficient for this — that was a scoped decision, not an oversight, made during the corpus-acquisition plan's final review.
 
-## Session 2026-08-26 (in progress)
+## Session 2026-08-26
 
-Working on the retrieval-indexing plan per "Next step" below. Status:
+- **Environment fix found and verified:** in the `py313` conda env, `import torch` before `import sentence_transformers` segfaults (exit 139) on Windows — upgrading sentence-transformers 3.3.1→6.0.0 did *not* fix it. Workaround: **always `import sentence_transformers` before `import torch`** in any module that uses both. `z3` (needed later for CADENCE Stage 3) is still not installed — unrelated, separate gap for that stage's plan.
+- **Downloader hardened.** The Zenodo download kept read-timing-out after only a few MB, and the old code restarted from byte 0 on every retry, so it could never finish over a flaky connection. Fixed in `src/data/download.py`: HTTP Range-based resume across retries (falls back to a full restart if the server doesn't honor 206, including on an outright rejection like 416), wider read timeout, more attempts, and (per code review) a stale/unrelated `.part` file is never trusted and cleanup now covers every exception type, not just `requests.exceptions.RequestException`. 21 tests, reviewed twice (initial pass found 1 critical + 1 high + 1 medium issue, all fixed and re-verified clean). Corpus re-fetch then succeeded: `data/extracted/` regenerated, matches the previously committed `data/corpus_inventory.json` exactly (48,008 files).
+- **Real schema inspection done** (the corpus is the "Context Matters" replication package in full, not just a bare ADR dump):
+  - `Data/ADRs/{repo}_{adr_folder}/*.md` — the actual retrieval corpus. **883 on-disk folders, 6,173 `.md` files** (one folder has 0). Distribution: median 4 files/repo, mean 6.76, max 129; buckets `1-5`:545, `6-20`:289, `21-50`:41, `51+`:7 — confirms the spec's sparsity note.
+  - `Data/dataset_index.json` (954 entries) gives an extraction-confidence status per folder: `Verified`:750, `Doubt (name sequence)`:96, `Repo Inaccessible`:40 (0 files), `Doubt (no repo dir)`:33, `Doubt (missing file)`:30, `Doubt (file contents)`:5. `Data/data.csv` has the same info in one-row-per-repo CSV form (922 rows). Plan: keep all on-disk records for retrieval (more data helps), but carry the status through as `extraction_status` on each parsed record so a later plan (evaluation ground truth) can filter to `Verified`-only if it wants a cleaner held-out split.
+  - **Filenames are inconsistent** across repos — `0001-slug.md`, `0001 - slug.md`, `adr-0001 slug.md`, `ADR-1_slug.md`, 3-digit (`001-...`), 0-indexed (`0000-...`), and some files with **no leading number at all** (e.g. `splitting-and-bundling.md`). A parser must extract a sequence number leniently (regex on leading digits) and tolerate `None` — never assume a strict `NNNN-slug.md` pattern.
+  - ADR body format is the standard Nygard/MADR style (`# Title`, `Date:`, `## Status`, `## Context`, `## Decision`, `## Consequences`) but not universally — decided to keep `ADRRecord` minimal (title + full raw text + metadata) rather than build a brittle general section-splitter; downstream stages can regex out Status/Context/Decision from `raw_text` themselves if/when they specifically need it.
+  - **Bonus find, not in scope now but worth remembering:** `Experiments/` and `Results/` in the same package are the *Context Matters paper's own* generation+evaluation pipeline — `Results/{Baseline,All_N,First_K,Last_K,RAG_Based}/{Model}/Dataset/{repo}.json` (candidate ADRs, `{title, content, context}`) and `.../Evaluations/{repo}.json` (`rouge1_f`, `rouge2_f`, `rougeL_f`, `bleu_avg`, `meteor`, `bert_f1/precision/recall`, length stats — exactly the metric set spec §5 calls for) for 4 models × 5 strategies. This accounts for the bulk of the corpus's 41,654 JSON files. **When the evaluation-harness plan comes up, check whether the "Context-Matters-style retrieval-only" baseline (spec §5(b)) can reuse these existing generations/scores directly instead of re-running that pipeline.** `Experiments/RAG_Based/*.py` is also a working reference implementation of a retrieval-only ADR-generation baseline.
 
-- **Environment fix found and verified:** in the `py313` conda env, `import torch` before `import sentence_transformers` segfaults (exit 139) on Windows — upgrading sentence-transformers 3.3.1→6.0.0 did *not* fix it. Workaround: **always `import sentence_transformers` before `import torch`** in any module that uses both. Confirmed clean with the reversed order. `z3` (needed later for CADENCE Stage 3) is still not installed — unrelated, separate gap for that stage's plan.
-- **Corpus re-fetch in progress.** The committed `data/corpus_inventory.json` (48,008 files) was produced in a previous session, but `data/extracted/` is gitignored and wasn't present on this clone, so it's being regenerated now (`conda run -n py313 python scripts/fetch_adr_corpus.py`). First attempt failed with `requests.exceptions.ConnectionError: Read timed out` from `zenodo.org` after streaming ~350 MB (all 3 internal retries exhausted — each retry restarts from byte 0, there's no resume support). Retrying manually; if it fails repeatedly, the fix is likely to raise `download_file`'s per-chunk `timeout=60` in `src/data/download.py` and/or add HTTP Range-based resume so retries don't restart from scratch.
-- **Not started yet:** the schema inspection (directory structure at depth 2-4, per-directory counts, sampled JSON key-schema) that must happen once `data/extracted/` exists, and the retrieval-indexing plan document itself.
+## Next step
 
-## Next step (in progress this session)
-
-Write and execute the **retrieval-indexing** implementation plan: parse the
-real corpus (per the schema inspection above) into an `ADRRecord` schema,
-build embeddings + a vector index, implement Stage 1 of the CADENCE pipeline
-(spec §3). This plan doesn't exist yet — write it fresh once the schema
-inspection is done, per the same brainstorming → spec → plan → SDD-execution
-workflow used for corpus acquisition.
+`docs/superpowers/plans/2026-08-26-adr-retrieval-indexing.md` — implementation
+plan for parsing `Data/ADRs/` into `ADRRecord`s, building embeddings + a
+vector index, and exposing Stage 1 of the CADENCE pipeline (spec §3). Written
+this session against the real schema above; execute task-by-task next.
 
 After that, remaining plans in pipeline order: multi-agent deliberation (KG
 grounding) → constraint solver + repair loop → self-critique → evaluation
