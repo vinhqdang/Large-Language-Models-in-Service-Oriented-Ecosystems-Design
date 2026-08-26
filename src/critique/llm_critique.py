@@ -5,10 +5,15 @@ Stage 3's synthesizer/repair client.
 import re
 from dataclasses import dataclass
 
+MIN_SCORE = 0.0
+MAX_SCORE = 10.0
+
+_NO_WEAKNESS_PHRASES = {"none", "none identified", "no weakness", "n/a", "na"}
+
 
 class CritiqueParseError(RuntimeError):
-    """Raised when the critique response is missing a score for one or
-    more requested quality attributes."""
+    """Raised when the critique response is missing a parseable score for
+    one or more requested quality attributes."""
 
 
 @dataclass(frozen=True)
@@ -18,15 +23,64 @@ class QualitativeScore:
     weakness: str | None
 
 
-def _label_pattern(quality_attribute: str, field: str) -> re.Pattern:
-    # Tolerant of markdown, case, and a short run of extra descriptor
-    # words before the colon -- see PROGRESS.md's environment notes on
-    # why this must be built in from the start, not added after a crash.
-    qa_word = quality_attribute.replace("_", "[ _]?")
+def _qa_word(quality_attribute: str) -> str:
+    # QUALITY_ATTRIBUTES is a fixed, known vocabulary (no regex
+    # metacharacters, no attribute a prefix of another), so this
+    # substitution is safe without full re.escape — see the self-critique
+    # plan's Self-Review Notes.
+    return quality_attribute.replace("_", "[ _]?")
+
+
+def _strict_pattern(quality_attribute: str, field: str) -> re.Pattern:
+    # The field keyword directly followed by a colon (only markdown
+    # decoration tolerated in between, no extra English words) -- tried
+    # first so a correctly-formatted answer is always found and used even
+    # if the response also contains unrelated prose that happens to
+    # mention "<attribute> <field>" earlier (see the tolerant fallback
+    # below for why that matters).
     return re.compile(
-        rf"^\s*[*_\-\s]*{qa_word}[ _]?{field}[A-Za-z\s]{{0,30}}?[*_\s]*:[*_\s]*(.*)$",
+        rf"^\s*[*_\-\s]*{_qa_word(quality_attribute)}[ _]?{field}[*_\s]*:[*_\s]*(.*)$",
         re.IGNORECASE | re.MULTILINE,
     )
+
+
+def _tolerant_pattern(quality_attribute: str, field: str) -> re.Pattern:
+    # Tolerates a short run of extra descriptor words before the colon
+    # (e.g. "Weakness Notes:") -- see PROGRESS.md's environment notes.
+    # Deliberately only a FALLBACK, not tried first: this gap is loose
+    # enough to also match unrelated prose that happens to start with
+    # "<attribute> <field>" (e.g. "Performance Score Analysis: ..."), so
+    # it must never take priority over a real, strictly-formatted answer
+    # elsewhere in the same response.
+    return re.compile(
+        rf"^\s*[*_\-\s]*{_qa_word(quality_attribute)}[ _]?{field}[A-Za-z\s]{{0,30}}?[*_\s]*:[*_\s]*(.*)$",
+        re.IGNORECASE | re.MULTILINE,
+    )
+
+
+def _find_label_value(response: str, quality_attribute: str, field: str) -> str | None:
+    match = _strict_pattern(quality_attribute, field).search(response)
+    if match is None:
+        match = _tolerant_pattern(quality_attribute, field).search(response)
+    return match.group(1).strip() if match else None
+
+
+def _parse_score(raw: str) -> float | None:
+    cleaned = raw.strip().strip("*_ ")
+    try:
+        score = float(cleaned)
+    except ValueError:
+        return None
+    return max(MIN_SCORE, min(MAX_SCORE, score))
+
+
+def _parse_weakness(raw: str | None) -> str | None:
+    if raw is None:
+        return None
+    text = raw.strip().strip("*_ ")
+    if not text or text.lower().rstrip(".") in _NO_WEAKNESS_PHRASES:
+        return None
+    return text
 
 
 def run_qualitative_critique(
@@ -50,20 +104,12 @@ def run_qualitative_critique(
     scores = []
     missing = []
     for qa in quality_attributes:
-        score_match = _label_pattern(qa, "SCORE").search(response)
-        weakness_match = _label_pattern(qa, "WEAKNESS").search(response)
-        if not score_match:
+        raw_score = _find_label_value(response, qa, "SCORE")
+        score = _parse_score(raw_score) if raw_score is not None else None
+        if score is None:
             missing.append(qa)
             continue
-        score = float(score_match.group(1).strip())
-        weakness_text = weakness_match.group(1).strip() if weakness_match else ""
-        # Tolerate "none", "None.", "None identified", "no weakness", etc.
-        # -- a real run showed a small model doesn't always answer with the
-        # exact literal "none" requested, even when it clearly means "no
-        # weakness" (same class of format variance as the CANDIDATE/
-        # RATIONALE lesson in PROGRESS.md's environment notes).
-        no_weakness = weakness_text.lower().rstrip(".") in ("none", "none identified", "no weakness", "n/a", "na")
-        weakness = None if not weakness_text or no_weakness else weakness_text
+        weakness = _parse_weakness(_find_label_value(response, qa, "WEAKNESS"))
         scores.append(QualitativeScore(qa, score, weakness))
 
     if missing:

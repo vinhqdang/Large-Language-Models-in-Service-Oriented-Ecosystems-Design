@@ -67,6 +67,71 @@ def test_tolerates_none_identified_and_other_no_weakness_phrasings():
     assert result == [QualitativeScore("security", 9.0, None)]
 
 
+def test_prefers_a_strictly_formatted_answer_over_an_earlier_prose_preamble():
+    """Regression: a real run's response could plausibly include a prose
+    heading like 'Performance Score Analysis: ...' before the actual
+    structured answer -- the old single-tier tolerant regex locked onto
+    that preamble (crashing on non-numeric text) instead of finding the
+    real, strictly-formatted line later in the same response."""
+    response = (
+        "Performance Score Analysis: The following breaks down each "
+        "attribute in detail.\n\n"
+        "PERFORMANCE_SCORE: 8\n"
+        "PERFORMANCE_WEAKNESS: none\n"
+    )
+    client = _FakeClient(response)
+
+    result = run_qualitative_critique(
+        decision="d", rationale="r", quality_attributes=("performance",), client=client,
+    )
+
+    assert result == [QualitativeScore("performance", 8.0, None)]
+
+
+def test_strips_markdown_wrapped_around_the_score_value():
+    response = "**PERFORMANCE_SCORE:** **8**\nPERFORMANCE_WEAKNESS: none\n"
+    client = _FakeClient(response)
+
+    result = run_qualitative_critique(
+        decision="d", rationale="r", quality_attributes=("performance",), client=client,
+    )
+
+    assert result == [QualitativeScore("performance", 8.0, None)]
+
+
+def test_unparseable_score_text_raises_critique_parse_error_not_value_error():
+    response = "PERFORMANCE_SCORE: 8/10\nPERFORMANCE_WEAKNESS: none\n"
+    client = _FakeClient(response)
+
+    with pytest.raises(CritiqueParseError, match="performance"):
+        run_qualitative_critique(
+            decision="d", rationale="r", quality_attributes=("performance",), client=client,
+        )
+
+
+def test_out_of_range_scores_are_clamped_to_zero_to_ten():
+    response = "PERFORMANCE_SCORE: 12\nPERFORMANCE_WEAKNESS: none\nSECURITY_SCORE: -2\nSECURITY_WEAKNESS: none\n"
+    client = _FakeClient(response)
+
+    result = run_qualitative_critique(
+        decision="d", rationale="r", quality_attributes=("performance", "security"), client=client,
+    )
+
+    assert result[0].score == 10.0
+    assert result[1].score == 0.0
+
+
+def test_cost_operability_with_markdown_and_extra_words_via_tolerant_fallback():
+    response = "**Cost Operability Score:** 7\n**Cost Operability Weakness Notes:** none\n"
+    client = _FakeClient(response)
+
+    result = run_qualitative_critique(
+        decision="d", rationale="r", quality_attributes=("cost_operability",), client=client,
+    )
+
+    assert result == [QualitativeScore("cost_operability", 7.0, None)]
+
+
 def test_raises_naming_missing_attributes():
     response = "PERFORMANCE_SCORE: 8\nPERFORMANCE_WEAKNESS: none\n"  # security missing
     client = _FakeClient(response)
