@@ -50,6 +50,23 @@ def test_tolerant_of_markdown_case_and_extra_words_before_colon():
     assert result == [QualitativeScore("performance", 7.0, None)]
 
 
+def test_tolerates_none_identified_and_other_no_weakness_phrasings():
+    """Regression: a real local-model run answered 'None identified'
+    instead of the literal 'none' requested, which an exact-match check
+    failed to treat as null, silently reporting a fake weakness."""
+    response = (
+        "SECURITY_SCORE: 9\n"
+        "SECURITY_WEAKNESS: None identified\n"
+    )
+    client = _FakeClient(response)
+
+    result = run_qualitative_critique(
+        decision="d", rationale="r", quality_attributes=("security",), client=client,
+    )
+
+    assert result == [QualitativeScore("security", 9.0, None)]
+
+
 def test_raises_naming_missing_attributes():
     response = "PERFORMANCE_SCORE: 8\nPERFORMANCE_WEAKNESS: none\n"  # security missing
     client = _FakeClient(response)

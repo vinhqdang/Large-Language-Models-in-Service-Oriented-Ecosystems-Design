@@ -57,7 +57,13 @@ def run_qualitative_critique(
             continue
         score = float(score_match.group(1).strip())
         weakness_text = weakness_match.group(1).strip() if weakness_match else ""
-        weakness = None if not weakness_text or weakness_text.lower() == "none" else weakness_text
+        # Tolerate "none", "None.", "None identified", "no weakness", etc.
+        # -- a real run showed a small model doesn't always answer with the
+        # exact literal "none" requested, even when it clearly means "no
+        # weakness" (same class of format variance as the CANDIDATE/
+        # RATIONALE lesson in PROGRESS.md's environment notes).
+        no_weakness = weakness_text.lower().rstrip(".") in ("none", "none identified", "no weakness", "n/a", "na")
+        weakness = None if not weakness_text or no_weakness else weakness_text
         scores.append(QualitativeScore(qa, score, weakness))
 
     if missing:
