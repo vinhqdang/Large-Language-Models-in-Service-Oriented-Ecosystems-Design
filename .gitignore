@@ -220,4 +220,5 @@ __marimo__/
 # ADR corpus (large, downloaded — never commit)
 data/raw/
 data/extracted/
-data/processed/
+# data/processed/ is NOT ignored: it's the compact (~19.5 MB), git-tracked
+# parsed dataset that scripts/build_adr_dataset.py produces from data/extracted/.
