@@ -18,62 +18,66 @@ decision-making in service-oriented architectures.
 
 Full design: `docs/superpowers/specs/2026-08-25-cadence-adr-algorithm-design.md`
 
-## Status: corpus acquisition plan complete
+## Status: retrieval-indexing plan complete (CADENCE Stage 1 done)
 
-`docs/superpowers/plans/2026-08-25-adr-corpus-acquisition.md` — all 4 tasks
-done, individually reviewed, final whole-branch reviewed, one fix wave
-applied and re-reviewed clean. Everything is merged to `main`.
+`docs/superpowers/plans/2026-08-26-adr-retrieval-indexing.md` — all 4 tasks
+done, incrementally reviewed (the vector-index/Retriever review caught and
+fixed a real `k<=0` crash plus a hardening gap, both closed with tests).
+Everything is merged to `main`. Before this, `docs/superpowers/plans/2026-08-25-adr-corpus-acquisition.md`
+completed the corpus fetch pipeline (`src/data/download.py`, `src/data/inventory.py`,
+`src/data/paths.py`, `scripts/fetch_adr_corpus.py`) — see git history for
+that plan's details; not repeated here since it's superseded by what follows.
 
-**What exists in the repo now:**
-- `src/data/download.py` — checksum-verified, retrying, atomic-write streaming downloader.
-- `src/data/inventory.py`, `src/data/paths.py` — archive extraction + structural inventory, with Windows long-path (`\\?\`, including UNC) handling.
-- `scripts/fetch_adr_corpus.py` — fetches, extracts, and inventories the real ADR corpus.
-- `data/corpus_inventory.json`, `data/README.md` — committed; describe the real corpus structure and provenance.
-- `pyproject.toml` — `pythonpath = ["."]` so both `pytest` and running scripts directly work from repo root.
+**What exists in the repo now (CADENCE Stage 1, spec §3):**
+- `src/retrieval/records.py` — `ADRRecord` schema + `parse_corpus`/`parse_adr_folder`: lenient parser for the real corpus's inconsistent ADR filenames/headings.
+- `src/retrieval/embeddings.py` — `embed_texts`/`load_embedding_model` (sentence-transformers `all-MiniLM-L6-v2`, model injected for testability).
+- `src/retrieval/index.py` — `VectorIndex` (sklearn `NearestNeighbors`, cosine).
+- `src/retrieval/retriever.py` — `Retriever.retrieve(query_text, k) -> list[ADRRecord]` — **this is the CADENCE Stage 1 entry point** the next plan (multi-agent deliberation) should import directly.
+- `scripts/build_adr_dataset.py` — parses the real corpus into `data/processed/adr_records.jsonl` (committed, 6,173 records, ~19.5 MB).
+- `scripts/build_retrieval_index.py` — embeds the processed dataset for real and saves `data/processed/adr_embeddings.npy` (committed, ~9.5 MB, `all-MiniLM-L6-v2` embeddings for all 6,173 records).
+- `data/corpus_inventory.json`, `data/README.md` — corpus provenance + `processed/` schema docs.
+- 37 tests passing (`conda run -n py313 pytest -q`).
 
-**What is NOT in the repo (gitignored, regenerate locally):**
-- `data/raw/` — deleted automatically after extraction anyway (nothing to regenerate).
-- `data/extracted/` — the real corpus, ~11 GB, 48,008 files (41,654 `.json`, 6,258 `.md`, rest minor). **Regenerate with:**
-  ```
-  conda env create -n py313 -f environment.yml   # first time only
-  conda run -n py313 python scripts/fetch_adr_corpus.py
-  ```
-  Source: Zenodo DOI [10.5281/zenodo.18370195](https://doi.org/10.5281/zenodo.18370195) (~460 MB download). Expect it to take a while and possibly need 2-3 attempts if the connection drops mid-stream — the downloader retries automatically (3 attempts, exponential backoff) but a truly flaky connection may still need a manual re-run.
-- `.env` — **not committed anywhere, on purpose.** You must create it fresh on each machine with your own keys:
-  ```
-  GEMINI_API_KEY=...
-  OPENROUTER_API_KEY=...
-  ```
-  (Primary LLM backbone is `gemini-3.5-flash-lite`; local open-weight model via CUDA is the reproducible secondary backbone — no key needed for that, just local GPU + conda env. OpenRouter is optional/tertiary only, per the spec §6.)
+**What is NOT in the repo (gitignored, regenerate locally if ever needed —
+normal work should not need to):**
+- `data/raw/`, `data/extracted/` (~11 GB) — fully consumed by `scripts/build_adr_dataset.py` and deleted. Regenerate with `conda run -n py313 python scripts/fetch_adr_corpus.py` then `python scripts/build_adr_dataset.py` then `python scripts/build_retrieval_index.py` if `data/processed/` is ever lost.
+- `.env` — not committed. Create fresh per machine: `GEMINI_API_KEY=...`, `OPENROUTER_API_KEY=...` (primary LLM backbone `gemini-3.5-flash-lite`; local open-weight model via CUDA is the reproducible secondary backbone; OpenRouter optional/tertiary — spec §6).
 
-## Deferred but tracked (don't forget)
+## Environment notes (apply on every machine)
 
-- `data/extracted/` (~11 GB) should be **manually deleted** once the next plan (retrieval indexing) has parsed it into a compact `data/processed/` — this is documented in `data/README.md` too, but it depends on someone actually doing it. Not done yet as of this log entry.
-- The corpus is **JSON-heavy** (6.6:1 over Markdown by file count) — the next plan must open with a real structural/schema inspection (directory names at depth 2-4, per-directory counts, a sampled JSON key-schema) before writing any parser. The current `InventoryReport` (a flat extension histogram) is deliberately not sufficient for this — that was a scoped decision, not an oversight, made during the corpus-acquisition plan's final review.
+- Python 3.13 via conda env `py313`, GPU available (`torch` CUDA confirmed working — NVIDIA RTX 5000 Ada Generation Laptop GPU on the dev machine).
+- **Import order matters:** `import sentence_transformers` before `import torch` in any module that uses both — the reverse order segfaults (exit 139) on Windows in this env. `src/retrieval/embeddings.py` already enforces this; preserve it in any new module that imports both.
+- `z3` (needed for CADENCE Stage 3, the constraint solver) is **not installed yet** — install and smoke-test it before writing that plan's code.
+- `conda run -n py313 python <script>.py` occasionally mis-wraps arguments (silently drops flags/exits 127 with no useful output) — if that happens, retry once, or fall back to the env's python.exe directly (`<conda envs dir>\py313\python.exe <script>.py`).
+- `pip install -U sentence-transformers` (and friends) is safe to do again if a future dependency bump seems to reintroduce the segfault — re-verify with a plain `python -c "import sentence_transformers; import torch"` smoke test, not a guess.
 
-## Session 2026-08-26
+## Real corpus schema (for any future plan reading `data/extracted/` or `data/processed/`)
 
-- **Environment fix found and verified:** in the `py313` conda env, `import torch` before `import sentence_transformers` segfaults (exit 139) on Windows — upgrading sentence-transformers 3.3.1→6.0.0 did *not* fix it. Workaround: **always `import sentence_transformers` before `import torch`** in any module that uses both. `z3` (needed later for CADENCE Stage 3) is still not installed — unrelated, separate gap for that stage's plan.
-- **Downloader hardened.** The Zenodo download kept read-timing-out after only a few MB, and the old code restarted from byte 0 on every retry, so it could never finish over a flaky connection. Fixed in `src/data/download.py`: HTTP Range-based resume across retries (falls back to a full restart if the server doesn't honor 206, including on an outright rejection like 416), wider read timeout, more attempts, and (per code review) a stale/unrelated `.part` file is never trusted and cleanup now covers every exception type, not just `requests.exceptions.RequestException`. 21 tests, reviewed twice (initial pass found 1 critical + 1 high + 1 medium issue, all fixed and re-verified clean). Corpus re-fetch then succeeded: `data/extracted/` regenerated, matches the previously committed `data/corpus_inventory.json` exactly (48,008 files).
-- **Real schema inspection done** (the corpus is the "Context Matters" replication package in full, not just a bare ADR dump):
-  - `Data/ADRs/{repo}_{adr_folder}/*.md` — the actual retrieval corpus. **883 on-disk folders, 6,173 `.md` files** (one folder has 0). Distribution: median 4 files/repo, mean 6.76, max 129; buckets `1-5`:545, `6-20`:289, `21-50`:41, `51+`:7 — confirms the spec's sparsity note.
-  - `Data/dataset_index.json` (954 entries) gives an extraction-confidence status per folder: `Verified`:750, `Doubt (name sequence)`:96, `Repo Inaccessible`:40 (0 files), `Doubt (no repo dir)`:33, `Doubt (missing file)`:30, `Doubt (file contents)`:5. `Data/data.csv` has the same info in one-row-per-repo CSV form (922 rows). Plan: keep all on-disk records for retrieval (more data helps), but carry the status through as `extraction_status` on each parsed record so a later plan (evaluation ground truth) can filter to `Verified`-only if it wants a cleaner held-out split.
-  - **Filenames are inconsistent** across repos — `0001-slug.md`, `0001 - slug.md`, `adr-0001 slug.md`, `ADR-1_slug.md`, 3-digit (`001-...`), 0-indexed (`0000-...`), and some files with **no leading number at all** (e.g. `splitting-and-bundling.md`). A parser must extract a sequence number leniently (regex on leading digits) and tolerate `None` — never assume a strict `NNNN-slug.md` pattern.
-  - ADR body format is the standard Nygard/MADR style (`# Title`, `Date:`, `## Status`, `## Context`, `## Decision`, `## Consequences`) but not universally — decided to keep `ADRRecord` minimal (title + full raw text + metadata) rather than build a brittle general section-splitter; downstream stages can regex out Status/Context/Decision from `raw_text` themselves if/when they specifically need it.
-  - **Bonus find, not in scope now but worth remembering:** `Experiments/` and `Results/` in the same package are the *Context Matters paper's own* generation+evaluation pipeline — `Results/{Baseline,All_N,First_K,Last_K,RAG_Based}/{Model}/Dataset/{repo}.json` (candidate ADRs, `{title, content, context}`) and `.../Evaluations/{repo}.json` (`rouge1_f`, `rouge2_f`, `rougeL_f`, `bleu_avg`, `meteor`, `bert_f1/precision/recall`, length stats — exactly the metric set spec §5 calls for) for 4 models × 5 strategies. This accounts for the bulk of the corpus's 41,654 JSON files. **When the evaluation-harness plan comes up, check whether the "Context-Matters-style retrieval-only" baseline (spec §5(b)) can reuse these existing generations/scores directly instead of re-running that pipeline.** `Experiments/RAG_Based/*.py` is also a working reference implementation of a retrieval-only ADR-generation baseline.
+The corpus is the **full "Context Matters" replication package**, not a bare
+ADR dump — Zenodo DOI [10.5281/zenodo.18370195](https://doi.org/10.5281/zenodo.18370195),
+derived from Buchgeher et al.'s MSR study (IEEE Access, DOI [10.1109/ACCESS.2023.3287654](https://doi.org/10.1109/ACCESS.2023.3287654)).
+
+- `Data/ADRs/{repo}_{adr_folder}/*.md` — the retrieval corpus: 883 folders, 6,173 `.md` files. Median 4 files/repo, mean 6.76, max 129 (confirms the spec's sparsity note). Filenames are inconsistent across repos (`0001-slug.md`, `0001 - slug.md`, `adr-0001 slug.md`, `ADR-1_slug.md`, 3-digit, 0-indexed, and some files with **no leading number at all**) — `src/retrieval/records.py` handles this leniently; don't assume a strict pattern in future code either.
+- `Data/dataset_index.json` (954 entries) — extraction-confidence status per folder: `Verified`:750, `Doubt (name sequence)`:96, `Repo Inaccessible`:40, `Doubt (no repo dir)`:33, `Doubt (missing file)`:30, `Doubt (file contents)`:5. Carried through as `ADRRecord.extraction_status` — filter to `Verified`-only later if a cleaner held-out evaluation split is needed.
+- ADR body format is usually Nygard/MADR (`# Title`, `Date:`, `## Status`, `## Context`, `## Decision`, `## Consequences`) but not universally, so `ADRRecord` deliberately only extracts `title` + full `raw_text`, no general section-splitter — see the retrieval-indexing plan's self-review notes for why, and regex out a specific section from `raw_text` only if/when a future stage actually needs it.
+- **Not yet used, worth remembering for the evaluation-harness plan:** `Experiments/` and `Results/` in the same package are the Context Matters paper's *own* generation+evaluation pipeline — `Results/{Baseline,All_N,First_K,Last_K,RAG_Based}/{Model}/Dataset/{repo}.json` (candidate ADRs) and `.../Evaluations/{repo}.json` (`rouge1_f`, `rouge2_f`, `rougeL_f`, `bleu_avg`, `meteor`, `bert_f1/precision/recall` — exactly spec §5's metric set) for 4 models × 5 strategies. **Check whether the "Context-Matters-style retrieval-only" baseline (spec §5(b)) can reuse these existing generations/scores directly instead of re-running that pipeline** — this data no longer exists on disk (it was in the now-deleted `data/extracted/`), so re-fetch the corpus first if this is pursued.
 
 ## Next step
 
-`docs/superpowers/plans/2026-08-26-adr-retrieval-indexing.md` — implementation
-plan for parsing `Data/ADRs/` into `ADRRecord`s, building embeddings + a
-vector index, and exposing Stage 1 of the CADENCE pipeline (spec §3). Written
-this session against the real schema above; execute task-by-task next.
+Write and execute the **multi-agent deliberation** implementation plan
+(spec §3 Stage 2): N quality-attribute advocate agents (performance,
+security, maintainability, scalability, cost/operability per ISO/IEC 25010),
+knowledge-graph-grounded (patterns/tactics catalog — construction method
+still needs its own design pass, per spec §4), bounded-round structured
+argumentation, consuming `Retriever.retrieve(...)` (this session's output)
+for precedent grounding. This plan doesn't exist yet.
 
-After that, remaining plans in pipeline order: multi-agent deliberation (KG
-grounding) → constraint solver + repair loop → self-critique → evaluation
-harness (baselines: Dhar et al. ICSA'24-style, Context-Matters-style
-retrieval-only, MAAD-style no-solver ablation; metrics: BERTScore/BLEU/
-ROUGE-1/METEOR + novel constraint-satisfaction-rate + repair-convergence) →
+After that, remaining plans in pipeline order: constraint solver + repair
+loop (install and smoke-test `z3` first — see Environment notes) → self-
+critique → evaluation harness (baselines: Dhar et al. ICSA'24-style,
+Context-Matters-style retrieval-only — possibly reusable from the corpus,
+see above — MAAD-style no-solver ablation; metrics: BERTScore/BLEU/ROUGE-1/
+METEOR + novel constraint-satisfaction-rate + repair-convergence) →
 manuscript (IEEEtran template already in repo root, 6 sections, ≤14 pages).
 
 ## Working conventions established so far
@@ -81,4 +85,4 @@ manuscript (IEEEtran template already in repo root, 6 sections, ≤14 pages).
 - Python 3.13 via conda env `py313` for everything.
 - Work happens directly on `main` (no feature branches) — user's explicit choice.
 - Push after every commit, no Claude identity in commits (global user convention).
-- Implementation plans executed via subagent-driven-development: fresh implementer per task, task review, final whole-branch review, one fix wave max.
+- Implementation plans executed task-by-task: write failing tests, implement, verify passing, sanity-check against real data when the real data is small enough to (never in automated unit tests — those stay fast and network/data-free), get an independent code review before committing non-trivial logic, commit, push.
