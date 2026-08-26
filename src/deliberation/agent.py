@@ -19,6 +19,10 @@ class QualityAttributeAgent:
         self._client = llm_client
         self._graph = knowledge_graph
 
+    @property
+    def quality_attribute(self) -> str:
+        return self._quality_attribute
+
     def _system_prompt(self) -> str:
         tactics = supporting_tactics_for(self._graph, self._quality_attribute)
         lines = [

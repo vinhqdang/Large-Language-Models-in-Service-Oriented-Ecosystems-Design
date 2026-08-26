@@ -21,6 +21,13 @@ def _adr(record_id, title, raw_text):
     )
 
 
+def test_quality_attribute_property_exposes_constructor_value():
+    graph = build_knowledge_graph(TACTICS)
+    agent = QualityAttributeAgent("maintainability", _FakeClient(), graph)
+
+    assert agent.quality_attribute == "maintainability"
+
+
 def test_propose_includes_quality_attribute_and_own_tactics_in_system_prompt():
     graph = build_knowledge_graph(TACTICS)
     client = _FakeClient()
