@@ -19,3 +19,5 @@ dependencies:
       - transformers>=5.15
       - accelerate>=1.13
       - google-genai>=2.20
+      - z3-solver>=5.1
+      - networkx>=3.6
