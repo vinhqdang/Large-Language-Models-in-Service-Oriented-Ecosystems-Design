@@ -1,9 +1,12 @@
+import pytest
+
 from src.deliberation.agent import AgentPosition
 from src.deliberation.knowledge_graph import Tactic
 from src.deliberation.orchestrator import DeliberationResult
 from src.retrieval.records import ADRRecord
 from src.solver.repair import VerifiedDecision
 from src.critique.finalize import FinalADR, finalize_decision
+from src.critique.llm_critique import CritiqueParseError
 
 
 def _catalog():
@@ -133,3 +136,48 @@ def test_carries_forward_infeasible_solver_result_with_caveat():
     assert result.uncovered_quality_attributes == ["security"]
     assert result.repair_iterations == 2
     assert result.solver_caveat == "Could not cover security within budget."
+
+
+class _FlakyCritiqueClient:
+    def __init__(self, responses):
+        self.responses = list(responses)
+        self.calls = 0
+
+    def generate(self, prompt, system=None):
+        self.calls += 1
+        return self.responses.pop(0)
+
+
+def test_finalize_decision_retries_critique_and_recovers_on_a_later_attempt():
+    client = _FlakyCritiqueClient([
+        "not a recognizable format at all",
+        "PERFORMANCE_SCORE: 8\nPERFORMANCE_WEAKNESS: none\n"
+        "SECURITY_SCORE: 6\nSECURITY_WEAKNESS: Single-factor auth only.\n",
+    ])
+
+    result = finalize_decision(
+        verified_decision=_verified_decision(),
+        deliberation_result=_deliberation_result(),
+        precedents=[_precedent()],
+        quality_attributes=("performance", "security"),
+        tactics=_catalog(),
+        critique_client=client,
+    )
+
+    assert client.calls == 2
+    assert result.overall_score > 0
+
+
+def test_finalize_decision_raises_after_exhausting_critique_retries():
+    client = _FlakyCritiqueClient(["bad"] * 5)
+
+    with pytest.raises(CritiqueParseError):
+        finalize_decision(
+            verified_decision=_verified_decision(),
+            deliberation_result=_deliberation_result(),
+            precedents=[_precedent()],
+            quality_attributes=("performance", "security"),
+            tactics=_catalog(),
+            critique_client=client,
+        )
+    assert client.calls == 3  # MAX_CRITIQUE_ATTEMPTS

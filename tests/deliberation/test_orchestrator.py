@@ -129,3 +129,53 @@ def test_deliberate_raises_when_synthesizer_output_is_unparseable():
 
     with pytest.raises(SynthesisParseError):
         orchestrator.deliberate(context="ctx", precedents=[])
+
+
+def test_deliberate_retries_synthesis_and_recovers_on_a_later_attempt():
+    """Regression: a real run showed the synthesizer sometimes deviates
+    from the requested wording entirely (e.g. 'Candidacy:' instead of
+    'Candidate:') -- since generation is stochastic, a bounded retry often
+    self-corrects rather than requiring the parser to chase every
+    possible wording variant."""
+    graph = build_knowledge_graph(TACTICS)
+    agent = QualityAttributeAgent("performance", _FakeAgentClient("performance"), graph)
+
+    class _FlakySynthesizerClient:
+        def __init__(self, responses):
+            self.responses = list(responses)
+            self.calls = 0
+
+        def generate(self, prompt, system=None):
+            self.calls += 1
+            return self.responses.pop(0)
+
+    client = _FlakySynthesizerClient([
+        "**Candidacy:** use read replicas\n**Rationale:** balances performance and cost",
+        "CANDIDATE: use read replicas\nRATIONALE: balances performance and cost",
+    ])
+    orchestrator = DeliberationOrchestrator([agent], client, max_rounds=1)
+
+    result = orchestrator.deliberate(context="ctx", precedents=[])
+
+    assert result.converged_candidate == "use read replicas"
+    assert client.calls == 2
+
+
+def test_deliberate_raises_after_exhausting_synthesis_retries():
+    graph = build_knowledge_graph(TACTICS)
+    agent = QualityAttributeAgent("performance", _FakeAgentClient("performance"), graph)
+
+    class _AlwaysBadSynthesizerClient:
+        def __init__(self):
+            self.calls = 0
+
+        def generate(self, prompt, system=None):
+            self.calls += 1
+            return "no recognizable format here"
+
+    client = _AlwaysBadSynthesizerClient()
+    orchestrator = DeliberationOrchestrator([agent], client, max_rounds=1)
+
+    with pytest.raises(SynthesisParseError):
+        orchestrator.deliberate(context="ctx", precedents=[])
+    assert client.calls == 3  # MAX_SYNTHESIS_ATTEMPTS

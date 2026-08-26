@@ -12,6 +12,9 @@ class SynthesisParseError(RuntimeError):
     returning an empty converged candidate."""
 
 
+MAX_SYNTHESIS_ATTEMPTS = 3
+
+
 @dataclass(frozen=True)
 class DeliberationResult:
     converged_candidate: str
@@ -85,8 +88,24 @@ class DeliberationOrchestrator:
             "CANDIDATE: <one or two sentence decision>\n"
             "RATIONALE: <one paragraph rationale>"
         )
-        synthesis = self._synthesizer.generate(synthesis_prompt)
-        candidate, rationale = _parse_synthesis(synthesis)
+        # Real runs show a small model doesn't always follow the requested
+        # format on the first try (e.g. "Candidacy:" instead of
+        # "Candidate:") — since generation is stochastic (do_sample=True),
+        # retrying the same prompt a bounded number of times often
+        # self-corrects rather than requiring ever-more-tolerant parsing
+        # to chase every possible wording variant.
+        last_error: SynthesisParseError | None = None
+        candidate = rationale = None
+        for _ in range(MAX_SYNTHESIS_ATTEMPTS):
+            synthesis = self._synthesizer.generate(synthesis_prompt)
+            try:
+                candidate, rationale = _parse_synthesis(synthesis)
+                last_error = None
+                break
+            except SynthesisParseError as exc:
+                last_error = exc
+        if last_error is not None:
+            raise last_error
 
         return DeliberationResult(
             converged_candidate=candidate,

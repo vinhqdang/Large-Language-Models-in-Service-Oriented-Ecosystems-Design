@@ -3,13 +3,15 @@ Stage 4's utility scoring with every prior stage's provenance.
 """
 from dataclasses import dataclass
 
-from src.critique.llm_critique import run_qualitative_critique
+from src.critique.llm_critique import CritiqueParseError, run_qualitative_critique
 from src.critique.structural_utility import compute_structural_utility
 from src.deliberation.agent import AgentPosition
 from src.deliberation.knowledge_graph import Tactic
 from src.deliberation.orchestrator import DeliberationResult
 from src.retrieval.records import ADRRecord
 from src.solver.repair import VerifiedDecision
+
+MAX_CRITIQUE_ATTEMPTS = 3
 
 
 @dataclass(frozen=True)
@@ -46,9 +48,24 @@ def finalize_decision(
     tactics: list[Tactic],
     critique_client,
 ) -> FinalADR:
-    qualitative_scores = run_qualitative_critique(
-        verified_decision.final_candidate, verified_decision.rationale, quality_attributes, critique_client
-    )
+    # Retry a bounded number of times on a parse failure -- generation is
+    # stochastic, so a differently-worded retry often self-corrects rather
+    # than requiring the parser to chase every possible wording variant
+    # (same rationale as DeliberationOrchestrator's synthesis retry).
+    last_error: CritiqueParseError | None = None
+    qualitative_scores = None
+    for _ in range(MAX_CRITIQUE_ATTEMPTS):
+        try:
+            qualitative_scores = run_qualitative_critique(
+                verified_decision.final_candidate, verified_decision.rationale, quality_attributes, critique_client
+            )
+            last_error = None
+            break
+        except CritiqueParseError as exc:
+            last_error = exc
+    if last_error is not None:
+        raise last_error
+
     qualitative_by_qa = {s.quality_attribute: s for s in qualitative_scores}
 
     utility_scores = []
