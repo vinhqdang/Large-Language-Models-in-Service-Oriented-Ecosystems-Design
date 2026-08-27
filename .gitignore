@@ -222,3 +222,10 @@ data/raw/
 data/extracted/
 # data/processed/ is NOT ignored: it's the compact (~19.5 MB), git-tracked
 # parsed dataset that scripts/build_adr_dataset.py produces from data/extracted/.
+
+# LaTeX build byproducts (regenerable via pdflatex; manuscript/*.tex and the
+# compiled *.pdf ARE tracked as the actual deliverables)
+manuscript/*.aux
+manuscript/*.out
+manuscript/*.toc
+manuscript/*.synctex.gz
