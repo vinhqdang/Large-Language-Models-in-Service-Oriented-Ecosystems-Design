@@ -5,7 +5,6 @@ is imported before anything that triggers a torch import via the local-HF
 deliberation client, per the sentence_transformers-before-torch rule in
 PROGRESS.md.
 """
-import json
 import sys
 from pathlib import Path
 
@@ -20,7 +19,7 @@ from src.deliberation.agent import QualityAttributeAgent
 from src.deliberation.knowledge_graph import QUALITY_ATTRIBUTES, TACTICS, build_knowledge_graph
 from src.deliberation.llm_client import load_local_hf_client
 from src.deliberation.orchestrator import DeliberationOrchestrator
-from src.retrieval.records import ADRRecord
+from src.retrieval.records import load_records_jsonl
 from src.retrieval.retriever import Retriever
 
 PROCESSED_DIR = _PROJECT_ROOT / "data" / "processed"
@@ -35,16 +34,8 @@ SAMPLE_CONTEXT = (
 )
 
 
-def _load_records(records_path: Path) -> list[ADRRecord]:
-    records = []
-    with open(records_path, encoding="utf-8") as f:
-        for line in f:
-            records.append(ADRRecord(**json.loads(line)))
-    return records
-
-
 def run_demo(records_path: Path, embeddings_path: Path, context: str, max_rounds: int = 3):
-    records = _load_records(records_path)
+    records = load_records_jsonl(records_path)
     embeddings = np.load(embeddings_path)
     embedding_model = load_embedding_model()
     retriever = Retriever(records, embeddings, embedding_model)

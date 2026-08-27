@@ -1,6 +1,6 @@
 import json
 
-from src.retrieval.records import parse_adr_folder, parse_corpus
+from src.retrieval.records import ADRRecord, load_records_jsonl, parse_adr_folder, parse_corpus
 
 
 def test_parse_adr_folder_extracts_title_and_sequence_number(tmp_path):
@@ -111,3 +111,18 @@ def test_parse_corpus_walks_all_folders_and_looks_up_status(tmp_path):
     assert by_repo["repoB_adr"].extraction_status == "unknown"
     assert by_repo["repoB_adr"].repository_url is None
     assert len(records) == 2
+
+
+def test_load_records_jsonl_round_trips_and_preserves_file_order(tmp_path):
+    records = [
+        ADRRecord("r/1.md", "r", None, "1.md", 1, "First", "text 1", "Verified"),
+        ADRRecord("r/2.md", "r", None, "2.md", 2, "Second", "text 2", "Verified"),
+    ]
+    path = tmp_path / "adr_records.jsonl"
+    path.write_text(
+        "\n".join(json.dumps(r.__dict__) for r in records) + "\n", encoding="utf-8"
+    )
+
+    result = load_records_jsonl(path)
+
+    assert result == records

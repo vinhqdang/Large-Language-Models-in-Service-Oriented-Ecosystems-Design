@@ -73,6 +73,19 @@ def parse_adr_folder(
     return records
 
 
+def load_records_jsonl(records_path: Path) -> list[ADRRecord]:
+    """Load a processed-dataset JSONL file (data/processed/adr_records.jsonl)
+    back into ADRRecords, unfiltered and in file order -- the order every
+    real script relies on to stay aligned with data/processed/adr_embeddings.npy's
+    rows (see scripts/build_retrieval_index.py, which built them together).
+    """
+    records = []
+    with open(records_path, encoding="utf-8") as f:
+        for line in f:
+            records.append(ADRRecord(**json.loads(line)))
+    return records
+
+
 def parse_corpus(data_dir: Path) -> list[ADRRecord]:
     index_path = data_dir / "dataset_index.json"
     index = json.loads(index_path.read_text(encoding="utf-8")) if index_path.exists() else {}
