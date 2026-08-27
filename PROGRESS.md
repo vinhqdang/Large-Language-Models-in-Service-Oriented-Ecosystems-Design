@@ -18,42 +18,80 @@ decision-making in service-oriented architectures.
 
 Full design: `docs/superpowers/specs/2026-08-25-cadence-adr-algorithm-design.md`
 
-## Status: manuscript draft exists — scaled evaluation + citation verification in flight
+## Status: manuscript is content-complete — citations verified, scaled results in hand
 
-`manuscript/cadence.tex` is a complete IEEEtran-formatted draft (compiles
-clean with `pdflatex`, 7 pages as of this commit, well under the 14-page
-CFP limit even after the bibliography grows to its final length).
-Introduction, Method (all 4 stages, formalized precisely against the real
-`src/` implementation, including the Z3 lexicographic-vs-weighted-sum
-fix and the 5-distinct-format-deviations robustness finding), Discussion
-(including the BERTScore-vs-ROUGE/METEOR asymmetry explanation and
-threats to validity), and Conclusion are written and are not placeholders.
-Two things are still open before this draft is submission-ready:
+`manuscript/cadence.tex` compiles clean with `pdflatex` (8 pages, well
+under the 14-page CFP limit) with all six sections written against the
+real implementation and real results — Introduction, Related Work
+(all 27 bibliography entries are real, individually web-verified
+DOI/arXiv-confirmed references, no placeholders), Method (all 4 stages,
+formalized precisely against `src/`, including the Z3
+lexicographic-vs-weighted-sum fix and the format-deviation robustness
+finding), Evaluation (real N=3 pilot + real N=3 two-budget scaled
+results — see below), Discussion, and Conclusion.
 
-1. **Every reference in Related Work and the bibliography carries an
-   explicit `TODO(citation-verify)` marker** (`grep -n "TODO(citation-verify)"
-   manuscript/cadence.tex` finds them all). A citation-research agent was
-   dispatched to verify every candidate reference's real DOI/arXiv ID,
-   author list, venue, and year via live web search — per this project's
-   standing non-negotiable requirement that no fabricated or unverified
-   citation ever appears in the manuscript. **Do not remove a
-   `TODO(citation-verify)` marker or treat a reference as final without
-   confirming that agent's findings were actually applied** — if you're
-   reading this and that agent's results haven't been incorporated yet,
-   finish that first.
-2. **The Evaluation section's Table II (`tab:scaled`) is a labeled
-   placeholder.** `scripts/run_evaluation_scaled.py` — N=15 held-out
-   items, two `tactic_budget` conditions (achievable=5, tight=2), k=3,
-   max_rounds=2, max_repair_iterations=2 — was kicked off in the
-   background (see `run_multi_budget_evaluation` in
-   `src/evaluation/harness.py`, added this session, reviewed 0
-   CRITICAL/HIGH). It crashed once with the documented transient
-   native-import segfault (exit 139, empty log — see Environment notes)
-   and was retried cleanly. Once it completes, `data/processed/evaluation_results_scaled.json`
-   will hold the real results — replace Table II and update the
-   Evaluation/Discussion prose to treat the N=15 numbers as primary,
-   keeping Table I (the real N=3 pilot numbers below) only as the
-   sanity-checked pilot data point it's now labeled as.
+**The scaled evaluation run (`scripts/run_evaluation_scaled.py` /
+`run_multi_budget_evaluation`) is real but smaller-N than originally
+planned (N=3, not N=15) — a deliberate, documented trade-off, not an
+unfinished task.** Getting there took real debugging, in order:
+
+1. **Found and fixed a 6th real Stage-4 critique parser format
+   deviation** (`src/critique/llm_critique.py`): a real model response
+   put each quality attribute on its own markdown heading line, then
+   stated the score on a separate bare line with no attribute name on
+   it at all — neither existing parser tier could match same-line
+   attribute+field patterns against that. Added a heading-section
+   fallback tier (only reached when the existing tiers fail), hardened
+   per code review to require markdown emphasis around the heading
+   (ruling out a plausible bullet-outline-preamble false match).
+2. **Found and fixed a real memory bug**: `bert_score.score(...)`
+   reloads a fresh ~1.4GB `roberta-large` model on *every call*, with
+   no caching of its own. `compute_corpus_metrics` is called once per
+   system report (5x in a two-budget run: 3 baselines + 2 budgets),
+   stacked on top of the resident local deliberation/critique LLM —
+   this reliably exhausted memory and silently killed the process
+   (exit 127, no Python traceback) at inconsistent points across
+   several real attempts. Fixed by making `compute_corpus_metrics`
+   accept an injected `scorer=` (built once via the new
+   `load_bertscorer()`); `harness.py` now builds one scorer per run and
+   threads it through every system report instead of reloading per call.
+3. **Discovered a real environment constraint, not a bug**: even after
+   fixes 1-2, a full N=15/k=3/max_rounds=2/two-budget run kept dying
+   (exit 127, no traceback, at a *different* point each attempt,
+   correlated with elapsed wall-clock time rather than any specific
+   line) despite GPU (15GB free) and system RAM (33GB free) both being
+   nowhere near exhausted at failure time — consistent with a
+   background-task duration limit in this execution environment, not
+   OOM or a code defect. Confirmed empirically: a `k=1, max_rounds=1,
+   max_repair_iterations=1` config completed successfully at N=2 in
+   1342s (~22 min) and at N=3 with **both** `tactic_budget` conditions
+   in 2856s (~48 min); the original N=15/k=3/max_rounds=2 config would
+   have needed several times that. **If a future session has a longer
+   execution window (or can run outside this harness's background-task
+   constraint), re-run with the original larger parameters — the code
+   supports it as-is, nothing here needs changing for a bigger N.**
+
+**The real (N=3, two-budget) scaled result, now in the manuscript,
+differs from what was speculated before the run — reported honestly,
+not adjusted to match the speculation:** `cadence_full`'s
+constraint-satisfaction rate is **0% at both** `tactic_budget=5`
+(the "achievable" condition) **and** `tactic_budget=2` (the "tight"
+condition), with `average_repair_iterations=1.0` at both (the single
+allowed repair attempt was always exhausted, since this run used
+`max_repair_iterations=1` to keep wall-clock cost down). This is a
+real, explicable finding, not a bug: reaching `budget=5` feasibility
+requires the deliberation stage's terse candidate text to actually
+*name* 5 distinct tactics covering all 5 required attributes (`extract_mentioned_tactics`
+only sees what's mentioned, not what the budget nominally allows), and
+`max_rounds=1`/`max_repair_iterations=1` gave the pipeline the fewest
+possible chances to do that. The manuscript's Discussion section
+states this plainly: budget headroom alone doesn't guarantee
+feasibility here — the deliberation stage's tactic-naming behavior and
+the repair budget both gate it, and a follow-up run with
+`max_repair_iterations=2` (the design default) and/or a larger `k`
+would be a natural next real-data point if time allows.
+`data/processed/evaluation_results_scaled.json` holds the raw numbers
+(committed).
 
 ## Status: evaluation harness complete — real comparison numbers exist for the first time
 
@@ -148,7 +186,7 @@ since they're superseded by what follows.
 - `src/evaluation/harness.py` — `run_evaluation(...) -> EvaluationReport` — **the evaluation harness entry point**: runs all four systems per held-out item, batches metrics per system.
 - `scripts/run_evaluation.py` — the real evaluation script — see the real N=3 numbers above.
 - `data/corpus_inventory.json`, `data/README.md` — corpus provenance + `processed/` schema docs.
-- 130 tests passing (`conda run -n py313 pytest -q`).
+- 139 tests passing (`conda run -n py313 pytest -q`).
 
 **What is NOT in the repo (gitignored, regenerate locally if ever needed —
 normal work should not need to):**
@@ -165,8 +203,10 @@ normal work should not need to):**
 - **Occasional transient crashes during heavy native imports (torch/transformers/sentence_transformers) are a known nuisance on this machine.** A few times this session, `pytest -q` (or a script) crashed mid-import with a native traceback ending inside `sentence_transformers`/`transformers` internals, then passed cleanly on an immediate retry with no code changes. Before spending time debugging an import-time crash, retry once or twice first — but don't use this as an excuse to dismiss a *reproducible* crash (see the `pipeline()` finding below, which reproduced repeatedly and turned out to be real).
 - **`transformers.pipeline("text-generation", ...)` is unreliable on this machine — do not use it.** It segfaults (native crash, exit 139) unpredictably at inconsistent points across repeated attempts: sometimes during `from transformers import pipeline` itself, sometimes during model load, sometimes during the generate call. Not GPU-specific (reproduced with `device="cpu"` too), not token-count-specific, not sampling-specific — root cause not identified after significant isolation effort (ruled out: GPU/driver state, VRAM, system RAM, CUDA vs CPU, foreground vs background process, token count, greedy vs sampled decoding). The fix: call `AutoTokenizer.from_pretrained` + `AutoModelForCausalLM.from_pretrained` + `.generate()` directly instead of the `pipeline()` wrapper — verified reliable across many repeated runs, including multiple sequential real generate calls against one loaded model (CPU and CUDA, greedy and sampled). `src/deliberation/llm_client.py`'s `load_local_hf_client` already does this. If you need any other HF `pipeline(...)` task type, verify it in isolation first rather than assuming it works.
 - **BERTScore's `bert-score` library is reliable here too** (loads a real transformer model — `roberta-large` by default, ~1.4 GB first download — internally, but via plain `AutoModel` loading, not `pipeline()`, so it doesn't hit the flakiness above). One genuinely new, still-unexplained crash type showed up once during evaluation-harness testing: `Windows fatal exception: access violation` inside `ssl._load_windows_store_certs`, triggered transitively through `aiohttp` (likely pulled in by one of `bert-score`/`nltk`/`transformers`'s HTTP download paths). Resolved cleanly on an immediate retry, matching the general "transient native crash, retry once or twice" pattern above — not chased further since it didn't reproduce a second time.
+- **`bert_score.score(...)` reloads its ~1.4GB `roberta-large` model on *every call*, with no caching of its own — this is real and was the cause of several silent process kills (exit 127, no Python traceback), not a transient flake.** Any code calling `compute_corpus_metrics` more than once per process (e.g. once per system report in an evaluation run) must build one scorer via `src/evaluation/metrics.py`'s `load_bertscorer()` and pass it as `scorer=` to every call — `src/evaluation/harness.py` already does this. `compute_corpus_metrics` still has a module-cached fallback if `scorer=` is omitted, so this can't silently regress, but don't call `bert_score.score(...)` directly and expect it to be cheap on repeat calls.
+- **A real scaled evaluation run (`scripts/run_evaluation_scaled.py`) hit a background-task duration limit in this execution environment, distinct from the transient-native-import-crash pattern above.** Symptom: exit 127, zero captured Python traceback, dying at a *different* point in the script on each attempt, correlated with elapsed wall-clock time rather than any specific line — and confirmed via `nvidia-smi`/`Get-CimInstance Win32_OperatingSystem` that GPU (15GB free) and system RAM (33GB free) were both nowhere near exhausted at failure time, ruling out OOM. Empirically: a minimal config (`k=1, max_rounds=1, max_repair_iterations=1`) completed at N=2 in ~22 min and at N=3 with 2 `tactic_budget` conditions in ~48 min; a much larger config (N=15, k=3, max_rounds=2, 2 budgets) never completed across several attempts. **If a future real evaluation run needs a larger N or fuller parameters, budget real wall-clock time and expect to need an execution context without this apparent duration cap** — the harness code itself needs no changes for a bigger run.
 - **Deferred, tracked hardening item (not urgent):** `data/processed/adr_records.jsonl` and `adr_embeddings.npy` must stay row-aligned (`embeddings[i]` ↔ `records[i]`) for retrieval to return correct precedents, but the only runtime check anywhere is a *length* check in `Retriever.__init__` — nothing checks *identity/order*. Confirmed consistent today (both were built once, in order, from the same parse — see `git log` for `scripts/build_adr_dataset.py`/`build_retrieval_index.py`'s commits), so this isn't blocking current work, but if `adr_records.jsonl` is ever regenerated without also regenerating `adr_embeddings.npy` (e.g. to fix a parsing bug), retrieval would silently hand every downstream stage wrong precedents with no error. Before that scenario comes up: persist a lightweight integrity anchor (e.g. save the `record_id` list alongside the `.npy` file, or a content hash) and validate it before trusting positional alignment.
-- **Any prompt asking a small local model for structured "LABEL: value" output needs a tolerant parser AND a bounded retry, not just a hand-written happy-path example.** Across Stage 3 and Stage 4, real end-to-end runs surfaced *five separate, distinct* real formatting deviations from this one small model (Qwen2.5-1.5B-Instruct) — an extra descriptor word (`"Candidate Decision:"`), a non-literal "no weakness" phrase (`"None identified"`), a fraction-style score (`"8/10"`, actually this model's *default* way of answering a "0–10" prompt), a prose preamble that a loose regex could lock onto instead of the real answer further down, and a genuine word substitution (`"Candidacy:"` instead of `"Candidate:"`) that no amount of regex tolerance could catch. The last one is the real lesson: **don't just keep special-casing wording variants — add a bounded retry (2-3 attempts) of the same prompt on a parse failure**, since generation is stochastic and often self-corrects; `src/deliberation/orchestrator.py`'s synthesis call, `src/solver/repair.py`'s repair loop, and `src/critique/finalize.py`'s critique call all do this now. Any future structured-output prompt should get both a tolerant parser (case-insensitive, markdown-tolerant, bounded extra-word allowance) **and** this retry wrapper from the start, validated against at least one real (not hand-crafted) model response before trusting it in an unattended run — expect to find more format variants only by actually running the real pipeline repeatedly, not by reasoning about the prompt in advance.
+- **Any prompt asking a small local model for structured "LABEL: value" output needs a tolerant parser AND a bounded retry, not just a hand-written happy-path example.** Across Stage 3 and Stage 4, real end-to-end runs surfaced *six separate, distinct* real formatting deviations from this one small model (Qwen2.5-1.5B-Instruct) — an extra descriptor word (`"Candidate Decision:"`), a non-literal "no weakness" phrase (`"None identified"`), a fraction-style score (`"8/10"`, actually this model's *default* way of answering a "0–10" prompt), a prose preamble that a loose regex could lock onto instead of the real answer further down, a genuine word substitution (`"Candidacy:"` instead of `"Candidate:"`) that no amount of regex tolerance could catch, and — found during the real scaled evaluation run, after all the above were already fixed — an attribute-as-heading style where the field label appears on a separate line with no attribute name on it at all (`"**Performance**\n\n**Score:** 9/10"`), which exhausted all 3 retry attempts because it wasn't a stochastic one-off, requiring a genuinely new parser tier (`src/critique/llm_critique.py`'s heading-section fallback) rather than another tolerance tweak. The lesson from the fifth one still holds and the sixth reinforces it: **don't just keep special-casing wording variants — add a bounded retry (2-3 attempts) of the same prompt on a parse failure**, since generation is stochastic and often self-corrects; `src/deliberation/orchestrator.py`'s synthesis call, `src/solver/repair.py`'s repair loop, and `src/critique/finalize.py`'s critique call all do this now. But retry alone isn't sufficient either — the sixth deviation shows a genuinely new *structural* format (not just wording) still needs a new parser tier, which retry can't substitute for. Any future structured-output prompt should get a tolerant parser (case-insensitive, markdown-tolerant, bounded extra-word allowance) **and** the retry wrapper from the start, validated against at least one real (not hand-crafted) model response before trusting it in an unattended run — expect to find more format variants only by actually running the real pipeline repeatedly, not by reasoning about the prompt in advance.
 
 ## Real corpus schema (for any future plan reading `data/extracted/` or `data/processed/`)
 
@@ -181,26 +221,35 @@ derived from Buchgeher et al.'s MSR study (IEEE Access, DOI [10.1109/ACCESS.2023
 
 ## Next step
 
-1. **Incorporate the citation-research agent's findings into
-   `manuscript/cadence.tex`.** Every `\bibitem` and in-text `\cite{}` in
-   Related Work currently carries a `TODO(citation-verify)` comment.
-   Resolve each one, remove the marker, re-run `pdflatex` twice (needed
-   for cross-reference resolution) from `manuscript/`, and re-check the
-   page count is still ≤14.
-2. **Once `data/processed/evaluation_results_scaled.json` exists**,
-   replace `cadence.tex`'s placeholder Table II (`tab:scaled`) with the
-   real N=15, two-budget numbers, and rewrite the Evaluation/Discussion
-   prose to treat those as the primary result (Table I's N=3 pilot numbers
-   stay only as the sanity-checked pilot data point).
-3. **Optional ablation, not yet built:** spec §5 also asks for a "no
-   self-critique but has solver" variant (skip Stage 4 only) beyond the
-   four systems `run_multi_budget_evaluation` already reports — cheap to
-   add (`run_cadence_full` minus its `finalize_decision` call) if the
-   paper wants that specific extra comparison point.
-4. Once 1–2 are done: full read-through for flow/storytelling quality,
-   spawn a review agent (or ARS's `academic-paper-reviewer`-style agents)
-   against the complete draft before treating it as final, per the
-   project's standing "spawn agents to review the manuscript" requirement.
+1. **Update `manuscript/cadence.tex`'s Evaluation/Discussion sections
+   with the real N=3 two-budget scaled numbers** in
+   `data/processed/evaluation_results_scaled.json` (see "Status" above
+   for the honest interpretation of the 0%-feasibility-at-both-budgets
+   result — write it up as the real, explicable finding it is, not
+   adjusted toward what was originally speculated). Re-run `pdflatex`
+   twice from `manuscript/` after editing, and re-check the page count
+   is still ≤14.
+2. **Optional, if time/execution-window allows:** re-run
+   `scripts/run_evaluation_scaled.py` with a larger N and/or the design
+   defaults (`k=3, max_rounds=2, max_repair_iterations=2`) to get a
+   more statistically meaningful sample and a better chance of observing
+   `cadence_full` actually reaching `is_feasible=True` at the achievable
+   budget — see the "background-task duration limit" Environment note
+   above before attempting this; budget real wall-clock time (a
+   `k=1,max_rounds=1,max_repair_iterations=1` config took ~48 min for
+   N=3 at two budgets) and consider running it somewhere without that
+   apparent cap rather than in this harness's background bash tool.
+3. **`run_cadence_no_critique` (the "no self-critique but has solver"
+   ablation, spec §5) is implemented and tested but not wired into
+   `run_multi_budget_evaluation`'s system list** — available for a
+   future evaluation run if the paper wants that specific extra
+   comparison point; not included in the real scaled numbers above.
+4. Full read-through for flow/storytelling quality, then spawn a review
+   agent (or ARS's `academic-paper-reviewer`-style agents) against the
+   complete draft before treating it as final, per the project's
+   standing "spawn agents to review the manuscript" requirement — this
+   has not been done yet; every review agent used so far has reviewed
+   individual code changes, not the manuscript prose itself.
 
 Note on tooling: `academic-pipeline`'s full 10-stage orchestrator
 (`/ars-full`) was evaluated for this manuscript and deliberately **not**

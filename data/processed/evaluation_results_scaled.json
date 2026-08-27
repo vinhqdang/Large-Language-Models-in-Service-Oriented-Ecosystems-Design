@@ -1,0 +1,100 @@
+{
+  "5": {
+    "n_items": 3,
+    "system_reports": [
+      {
+        "system_name": "zero_shot",
+        "average_scores": {
+          "bertscore_f1": 0.8103343645731608,
+          "bleu": 1.902558921376986,
+          "rouge1_f": 0.18207613284871693,
+          "meteor": 0.24344686841944418
+        },
+        "feasibility_rate": null,
+        "average_repair_iterations": null
+      },
+      {
+        "system_name": "retrieval_only",
+        "average_scores": {
+          "bertscore_f1": 0.8173191944758097,
+          "bleu": 1.6683796273087446,
+          "rouge1_f": 0.22886053472080647,
+          "meteor": 0.24978031225381092
+        },
+        "feasibility_rate": null,
+        "average_repair_iterations": null
+      },
+      {
+        "system_name": "multiagent_no_solver",
+        "average_scores": {
+          "bertscore_f1": 0.8085642655690511,
+          "bleu": 0.5867320616814374,
+          "rouge1_f": 0.12546288929437277,
+          "meteor": 0.09244772223203616
+        },
+        "feasibility_rate": null,
+        "average_repair_iterations": null
+      },
+      {
+        "system_name": "cadence_full",
+        "average_scores": {
+          "bertscore_f1": 0.8022111058235168,
+          "bleu": 0.6202548803850293,
+          "rouge1_f": 0.14855017289094366,
+          "meteor": 0.11475608162475182
+        },
+        "feasibility_rate": 0.0,
+        "average_repair_iterations": 1.0
+      }
+    ]
+  },
+  "2": {
+    "n_items": 3,
+    "system_reports": [
+      {
+        "system_name": "zero_shot",
+        "average_scores": {
+          "bertscore_f1": 0.8103343645731608,
+          "bleu": 1.902558921376986,
+          "rouge1_f": 0.18207613284871693,
+          "meteor": 0.24344686841944418
+        },
+        "feasibility_rate": null,
+        "average_repair_iterations": null
+      },
+      {
+        "system_name": "retrieval_only",
+        "average_scores": {
+          "bertscore_f1": 0.8173191944758097,
+          "bleu": 1.6683796273087446,
+          "rouge1_f": 0.22886053472080647,
+          "meteor": 0.24978031225381092
+        },
+        "feasibility_rate": null,
+        "average_repair_iterations": null
+      },
+      {
+        "system_name": "multiagent_no_solver",
+        "average_scores": {
+          "bertscore_f1": 0.8085642655690511,
+          "bleu": 0.5867320616814374,
+          "rouge1_f": 0.12546288929437277,
+          "meteor": 0.09244772223203616
+        },
+        "feasibility_rate": null,
+        "average_repair_iterations": null
+      },
+      {
+        "system_name": "cadence_full",
+        "average_scores": {
+          "bertscore_f1": 0.8009641369183859,
+          "bleu": 0.8046803696543204,
+          "rouge1_f": 0.12158104465976895,
+          "meteor": 0.09736571143924827
+        },
+        "feasibility_rate": 0.0,
+        "average_repair_iterations": 1.0
+      }
+    ]
+  }
+}
