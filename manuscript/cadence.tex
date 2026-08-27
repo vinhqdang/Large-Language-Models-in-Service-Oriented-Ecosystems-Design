@@ -52,21 +52,25 @@ The remainder of this paper is organized as follows. Section~\ref{sec:related} p
 
 \subsection{LLM-Assisted Architectural Decision-Making}
 
-Dhar et al.~\cite{dhar2024llm} demonstrate that a single LLM, prompted with a stated architectural problem, can produce a plausible ADR, but their approach neither retrieves precedent nor verifies the result against any formal notion of feasibility: the model's output is accepted as-is. A complementary line of work treats the growing body of real, mined ADRs as a resource in its own right rather than a target for generation: large-scale mining studies of ADR adoption in open-source projects~\cite{buchgeher2023adr} establish both the raw corpus this paper's retrieval stage draws on and the empirical observation --- corroborated in our own corpus statistics --- that ADR adoption per repository is sparse, which any retrieval-based system must be designed to tolerate rather than assume away. Building on such corpora, retrieval-grounded generation work~\cite{contextmatters2026} shows that conditioning an LLM's ADR generation on retrieved precedent measurably improves output quality over unconditioned generation, and explicitly frames the task this paper's held-out evaluation also uses: given only a decision's title, generate the body. This precedent motivates our own held-out query construction (Section~\ref{sec:evaluation}) and supplies the retrieval-only baseline our evaluation compares against directly. Neither line of work, however, reconciles multiple quality-attribute concerns against each other or checks feasibility formally --- both are gaps CADENCE is designed to close.
+Dhar et al.~\cite{dhar2024llm} demonstrate that a single LLM, prompted with a stated architectural problem, can produce a plausible ADR, but their approach neither retrieves precedent nor verifies the result against any formal notion of feasibility: the model's output is accepted as-is. Follow-on work from the same group frames ADR authoring as an explicit drafting process rather than one-shot generation~\cite{dhar2025drafting}, and a separate recent study evaluates LLMs specifically as \emph{detectors} of violations against already-recorded architectural decisions~\cite{su2026violations} --- a complementary, downstream concern (checking compliance with a decision already made) rather than assisting the decision itself. A complementary line of work treats the growing body of real, mined ADRs as a resource in its own right rather than a target for generation: large-scale mining studies of ADR adoption in open-source projects~\cite{buchgeher2023adr} establish both the raw corpus this paper's retrieval stage draws on and the empirical observation --- corroborated in our own corpus statistics --- that ADR adoption per repository is sparse, which any retrieval-based system must be designed to tolerate rather than assume away. Building on such corpora, retrieval-grounded generation work~\cite{contextmatters2026,contextmatters-zenodo} shows that conditioning an LLM's ADR generation on retrieved precedent measurably improves output quality over unconditioned generation, and explicitly frames the task this paper's held-out evaluation also uses: given only a decision's title, generate the body. This precedent motivates our own held-out query construction (Section~\ref{sec:evaluation}) and supplies both the retrieval-only baseline our evaluation compares against directly and the corpus itself. Neither line of work, however, reconciles multiple quality-attribute concerns against each other or checks feasibility formally --- both are gaps CADENCE is designed to close.
 
-The closest prior system to CADENCE is MAAD~\cite{maad2025}, a four-agent architectural decision-making pipeline in which an Analyst, a Modeler, a Designer, and an Evaluator agent each handle one sequential phase of the decision process. MAAD and CADENCE share the premise that a single LLM call is insufficient and that multiple agents should participate in producing an architectural decision, but the two systems differ in three concrete, load-bearing ways. First, MAAD's agents occupy sequential \emph{functional} roles --- each agent does a different \emph{kind} of work at a different point in a pipeline --- whereas CADENCE's agents occupy simultaneous, \emph{adversarial} roles: every agent does the same kind of work (propose and critique a candidate decision) but from the standpoint of a different, often conflicting quality attribute, so that the tension between (for instance) a performance-motivated tactic and its maintainability cost is represented as an argument between agents rather than resolved silently inside one agent's internal reasoning. Second, MAAD's Evaluator is itself an LLM judge: it assesses the Designer's output using the same kind of model that produced it, so MAAD's final confidence signal is, ultimately, one language model's opinion of another's work. CADENCE's Stage~3 feasibility check is a formal constraint solver over an explicit tactic budget and quality-attribute coverage requirement; a decision either satisfies the encoded constraints or it does not, independent of any model's subjective assessment, and when it does not, the solver's unsatisfiable core gives the repair loop a structured, specific target rather than generic revision instructions. Third, CADENCE's retrieval stage is grounded in a large, real, citable corpus of mined ADRs from open-source practice, giving deliberation a case-based starting point that MAAD's requirements-only formulation does not provide. We discuss MAAD further, and compare against a solver-free multi-agent ablation modeled directly on this difference, in Section~\ref{sec:evaluation}.
+The closest prior system to CADENCE is MAAD~\cite{maad2025}, a four-agent architectural decision-making pipeline in which an Analyst, a Modeler, a Designer, and an Evaluator agent each handle one sequential phase of the decision process; a related paper from an overlapping author group targets the adjacent problem of generating the \emph{rationale} behind an already-made decision rather than the decision itself~\cite{zhou2025rationale}. MAAD and CADENCE share the premise that a single LLM call is insufficient and that multiple agents should participate in producing an architectural decision, but the two systems differ in three concrete, load-bearing ways. First, MAAD's agents occupy sequential \emph{functional} roles --- each agent does a different \emph{kind} of work at a different point in a pipeline --- whereas CADENCE's agents occupy simultaneous, \emph{adversarial} roles: every agent does the same kind of work (propose and critique a candidate decision) but from the standpoint of a different, often conflicting quality attribute, so that the tension between (for instance) a performance-motivated tactic and its maintainability cost is represented as an argument between agents rather than resolved silently inside one agent's internal reasoning. Second, MAAD's Evaluator is itself an LLM judge: it assesses the Designer's output using the same kind of model that produced it, so MAAD's final confidence signal is, ultimately, one language model's opinion of another's work. CADENCE's Stage~3 feasibility check is a formal constraint solver over an explicit tactic budget and quality-attribute coverage requirement; a decision either satisfies the encoded constraints or it does not, independent of any model's subjective assessment, and when it does not, the solver's unsatisfiable core gives the repair loop a structured, specific target rather than generic revision instructions. Third, CADENCE's retrieval stage is grounded in a large, real, citable corpus of mined ADRs from open-source practice, giving deliberation a case-based starting point that MAAD's requirements-only formulation does not provide. We discuss MAAD further, and compare against a solver-free multi-agent ablation modeled directly on this difference, in Section~\ref{sec:evaluation}.
+
+\subsection{LLMs for Service-Oriented and Microservice Architecture}
+
+This paper's special-issue theme --- LLMs in service-oriented ecosystems design --- has its own emerging, directly relevant literature that CADENCE's problem framing builds on. A recent review positions LLMs across the service-computing lifecycle broadly, from discovery and composition to design assistance, and identifies architectural decision support as an open direction rather than a solved problem~\cite{kumara2026llm4soc}. More specifically to design synthesis, recent work uses contrastive learning alongside LLMs to recommend monolith-to-microservice decompositions~\cite{sellami2025microservice}, and a complementary evaluation synthesizes candidate microservice architectures directly from textual requirements~\cite{albuquerque2026microservice}. These systems target a structurally different problem from CADENCE's --- decomposing or synthesizing a service topology, rather than deciding and justifying one architectural commitment against competing quality-attribute concerns --- but they confirm that LLM-assisted service-oriented design is an active, contested area in which no prior system combines case-grounded retrieval, adversarial multi-agent deliberation, and formal feasibility verification, the specific combination CADENCE contributes.
 
 \subsection{LLM--Solver Integration}
 
-Combining LLMs with formal solvers to check or verify what a model proposes is an active area outside the architecture domain: representative approaches translate natural-language problems into a formal logical representation and dispatch it to a symbolic solver so that the solver, not the LLM, is responsible for the deductive step~\cite{pan2023logiclm}, and closely related work verifies LLM-authored natural-language proofs by first compiling them into a checkable formal representation~\cite{olausson2023linc}. These techniques target logical inference and formal proof checking; CADENCE applies the same underlying pattern --- let the LLM produce a candidate, let a solver check it, and feed the solver's failure signal back to the LLM for repair --- to a different, softer verification target: whether a candidate architectural decision's implied tactic commitments are jointly satisfiable within an explicit resource budget and quality-attribute coverage requirement, encoded as weighted MaxSAT/SMT rather than propositional or first-order logic. To our knowledge, no prior work applies solver-in-the-loop verification specifically to architectural trade-off feasibility; we cite this literature as prior art for the general LLM-plus-solver \emph{technique}, not as prior work on the specific \emph{application}.
+Combining LLMs with formal solvers to check or verify what a model proposes is an active area outside the architecture domain: representative approaches translate natural-language problems into a formal logical representation and dispatch it to a symbolic solver so that the solver, not the LLM, is responsible for the deductive step~\cite{pan2023logiclm}, and closely related work verifies LLM-authored natural-language proofs by first compiling them into a checkable formal representation~\cite{olausson2023linc}. More recent work bridges LLMs and symbolic solvers directly through the Model Context Protocol, giving a model a structured tool interface to a solver rather than a one-shot translation step~\cite{szeider2025mcpsolver}, and, closest in spirit to CADENCE's Stage~3, one planning system explicitly drives an LLM repair loop from a Z3 solver's unsatisfiable core when a proposed plan is infeasible~\cite{hao2024planningz3} --- the same solver-in-the-loop repair pattern this paper applies to architectural tactic feasibility rather than task planning. These techniques target logical inference, formal proof checking, and classical planning; CADENCE applies the same underlying pattern --- let the LLM produce a candidate, let a solver check it, and feed the solver's failure signal back to the LLM for repair --- to a different, softer verification target: whether a candidate architectural decision's implied tactic commitments are jointly satisfiable within an explicit resource budget and quality-attribute coverage requirement, encoded as weighted MaxSAT/SMT rather than propositional or first-order logic or a planning domain. To our knowledge, no prior work applies solver-in-the-loop verification specifically to architectural trade-off feasibility; we cite this literature as prior art for the general LLM-plus-solver \emph{technique}, not as prior work on the specific \emph{application}.
 
 \subsection{Multi-Agent Deliberation and Self-Critique with LLMs}
 
-Multi-agent debate among LLM instances has been shown to improve factual accuracy and reasoning quality over single-model generation by exposing a claim to independent critique before it is accepted~\cite{duetal2023debate}. CADENCE's Stage~2 deliberation applies this general finding to a domain-specific structure: rather than generic, undifferentiated debate, each agent's role and critique perspective is fixed to one ISO/IEC~25010 quality attribute and grounded in a shared knowledge graph of architectural tactics and their documented trade-offs, so the debate is anchored to concrete, checkable claims rather than open-ended argument. Separately, self-refinement work shows that a model can improve its own output by critiquing and revising it in a subsequent pass, without external supervision~\cite{madaan2023selfrefine}. CADENCE's Stage~4 draws on this idea but departs from it in one respect that we consider important for high-stakes decisions: the self-critique pass is not a further revision of the same reasoning chain, but an independently-scored finalization that combines a deterministic structural component --- computed directly from Stage~3's solver output, not re-derived by an LLM --- with the qualitative LLM judgment, so the system's final confidence is never solely the same model marking its own homework.
+Multi-agent debate among LLM instances has been shown to improve factual accuracy and reasoning quality over single-model generation by exposing a claim to independent critique before it is accepted~\cite{duetal2023debate}, an effect corroborated by independent work showing debate encourages divergent thinking that a single model's self-reflection alone does not reliably produce~\cite{liang2024divergent}, and extended to using multi-agent debate itself as an evaluation mechanism for other models' outputs~\cite{chan2024chateval}. CADENCE's Stage~2 deliberation applies this general finding to a domain-specific structure: rather than generic, undifferentiated debate, each agent's role and critique perspective is fixed to one ISO/IEC~25010 quality attribute and grounded in a shared knowledge graph of architectural tactics and their documented trade-offs, so the debate is anchored to concrete, checkable claims rather than open-ended argument. Separately, self-refinement work shows that a model can improve its own output by critiquing and revising it in a subsequent pass, without external supervision~\cite{madaan2023selfrefine}, and verbal-reinforcement approaches extend this across multiple attempts using episodic memory of past failures~\cite{shinn2023reflexion}. This literature is not uniformly optimistic, however: a widely-cited negative result finds that LLMs prompted to self-correct their own reasoning \emph{without external feedback} frequently fail to improve, and can even degrade an already-correct answer~\cite{huang2024selfcorrect} --- a finding we take seriously and address directly in Stage~4's design (Section~\ref{sec:method}) and in our threats-to-validity discussion (Section~\ref{sec:discussion}). CADENCE's Stage~4 draws on the self-refinement idea but departs from both strands in one respect we consider important for high-stakes decisions: the self-critique pass is not a further revision of the same reasoning chain in isolation, but an independently-scored finalization that combines a deterministic structural component --- computed directly from Stage~3's solver output, not re-derived by an LLM --- with the qualitative LLM judgment, so the system's final confidence is never solely the same model marking its own homework without external (solver-verified) grounding.
 
-\subsection{Case-Based Reasoning and Software Architecture Tactics}
+\subsection{Case-Based Reasoning and Retrieval-Augmented Generation}
 
-Case-based reasoning --- solving new problems by adapting solutions to similar past problems --- is a natural fit for architectural decision-making, since real decisions are rarely made from first principles but from precedent, convention, and prior experience. CADENCE's Stage~1 operationalizes this classical idea with dense vector retrieval over a real ADR corpus rather than a hand-curated case base, following the same retrieval methodology increasingly used to ground LLM generation in verifiable external evidence~\cite{lewis2020rag}. The architectural tactics that structure CADENCE's knowledge graph and constraint encoding --- caching, connection pooling, horizontal scaling, circuit breakers, and the like, together with their well-known cross-quality-attribute trade-offs --- are drawn from the established software architecture tactics catalog~\cite{bass2021saip}, which this paper's Stage~2/3 machinery operationalizes into a form an LLM-driven deliberation and a formal solver can both act on.
+Case-based reasoning --- solving new problems by adapting solutions to similar past problems --- is a natural fit for architectural decision-making, since real decisions are rarely made from first principles but from precedent, convention, and prior experience; recent work formalizes how case-based reasoning's classical case-retrieve-reuse-revise cycle maps onto LLM agents specifically~\cite{hatalis2025cbrllm}, and a concrete instantiation combines case-based retrieval with generation for a different high-stakes domain (legal question answering), demonstrating the pattern's applicability beyond architecture~\cite{wiratunga2024cbrrag}. CADENCE's Stage~1 operationalizes this classical idea with dense vector retrieval over a real ADR corpus rather than a hand-curated case base, following the same retrieval-augmented generation methodology increasingly used to ground LLM generation in verifiable external evidence more broadly~\cite{lewis2020rag}, including within software engineering specifically, where a recent survey catalogs repository-level retrieval strategies for code generation that parallel this paper's corpus-level retrieval for architectural precedent~\cite{tao2025ragcode}. The architectural tactics that structure CADENCE's knowledge graph and constraint encoding --- caching, connection pooling, horizontal scaling, circuit breakers, and the like, together with their well-known cross-quality-attribute trade-offs --- are drawn from the established software architecture tactics catalog~\cite{bass2021saip}, which this paper's Stage~2/3 machinery operationalizes into a form an LLM-driven deliberation and a formal solver can both act on.
 
 \section{The CADENCE Algorithm}
 \label{sec:method}
@@ -110,7 +114,7 @@ A structured-output prompt's hand-written happy-path parser reliably breaks agai
 
 \subsection{Corpus and Experimental Setup}
 
-We evaluate against the ``Context Matters'' replication package (Zenodo, DOI:~10.5281/zenodo.18370195), derived from the same mining study that provides Stage~1's retrieval corpus~\cite{buchgeher2023adr}. After parsing, the corpus yields 6{,}173 individual ADR files across 883 repository folders (median 4, mean 6.76, maximum 129 files per repository, confirming the corpus's documented per-repository sparsity). Each folder carries an extraction-confidence status from the package's own \texttt{dataset\_index.json}; we restrict our held-out evaluation set to the 750 folders marked \texttt{Verified}, so that ground-truth quality is not itself a confound. Following this corpus's own upstream precedent --- its companion sub-study is explicitly titled ``ADR Generation from Titles'' --- we construct each held-out query as the record's title (standing in for a stated decision context) and treat the record's full body as ground truth, matching the task formulation the retrieval-only baseline below is itself drawn from.
+We evaluate against the ``Context Matters'' replication package~\cite{contextmatters-zenodo} (Zenodo, DOI:~10.5281/zenodo.18370195), derived from the same mining study that provides Stage~1's retrieval corpus~\cite{buchgeher2023adr}. After parsing, the corpus yields 6{,}173 individual ADR files across 883 repository folders (median 4, mean 6.76, maximum 129 files per repository, confirming the corpus's documented per-repository sparsity). Each folder carries an extraction-confidence status from the package's own \texttt{dataset\_index.json}; we restrict our held-out evaluation set to the 750 folders marked \texttt{Verified}, so that ground-truth quality is not itself a confound. Following this corpus's own upstream precedent --- its companion sub-study is explicitly titled ``ADR Generation from Titles'' --- we construct each held-out query as the record's title (standing in for a stated decision context) and treat the record's full body as ground truth, matching the task formulation the retrieval-only baseline below is itself drawn from.
 
 The retrieval index embeds all 6{,}173 records with a sentence-embedding model (\texttt{all-MiniLM-L6-v2}) into a cosine-similarity nearest-neighbor index; a held-out query record is always excluded from its own retrieval results. The local, reproducible LLM backbone used for deliberation, repair, and critique throughout is Qwen2.5-1.5B-Instruct, run via direct \texttt{AutoModelForCausalLM.generate()} calls under CUDA.
 
@@ -186,7 +190,7 @@ Stage~2's synthesis prompt deliberately asks for a terse, one-or-two-sentence de
 
 \subsection{Threats to Validity}
 
-Our held-out evaluation set is drawn from a single corpus (a mining study of open-source ADR adoption); results may not transfer to proprietary or non-open-source architectural practice, where decision drivers, review culture, and documentation discipline can differ substantially. The local LLM backbone (Qwen2.5-1.5B-Instruct) is small by current standards, chosen for reproducibility rather than peak capability; we expect stronger backbones to shift absolute numbers, though we have no reason to expect the qualitative pattern of stage-wise contribution to invert. Our tactic catalog (25 hand-curated tactics across 5 quality attributes) is deliberately small and each tactic supports exactly one attribute in our current encoding, which sets a hard ceiling on achievable coverage under a tight budget by construction; a larger or multiply-supporting tactic catalog would relax this ceiling and merits future work. Finally, our qualitative critique score (Stage~4) is itself LLM-generated, and while it is deliberately blended with a deterministic structural component rather than trusted alone, it is not a substitute for human expert judgment, which we did not collect for this submission.
+Our held-out evaluation set is drawn from a single corpus (a mining study of open-source ADR adoption); results may not transfer to proprietary or non-open-source architectural practice, where decision drivers, review culture, and documentation discipline can differ substantially. The local LLM backbone (Qwen2.5-1.5B-Instruct) is small by current standards, chosen for reproducibility rather than peak capability; we expect stronger backbones to shift absolute numbers, though we have no reason to expect the qualitative pattern of stage-wise contribution to invert. Our tactic catalog (25 hand-curated tactics across 5 quality attributes) is deliberately small and each tactic supports exactly one attribute in our current encoding, which sets a hard ceiling on achievable coverage under a tight budget by construction; a larger or multiply-supporting tactic catalog would relax this ceiling and merits future work. Finally, our qualitative critique score (Stage~4) is itself LLM-generated. We take seriously the documented finding that LLMs asked to self-correct their own reasoning without external grounding often fail to improve, or even degrade, an already-correct answer~\cite{huang2024selfcorrect}; this is precisely why Stage~4's qualitative component is deliberately blended with a deterministic structural component computed from Stage~3's already solver-verified output rather than trusted alone --- the qualitative pass critiques a decision that has already been externally checked, not one it is asked to validate unaided. Even so, this blending is a mitigation, not a proof that the qualitative component is reliable, and it is not a substitute for human expert judgment, which we did not collect for this submission.
 
 \subsection{Engineering Lessons for Solver-Verified LLM Pipelines}
 
@@ -200,63 +204,88 @@ We presented CADENCE, a four-stage algorithm for LLM-assisted architectural deci
 \section*{Acknowledgments}
 The author thanks the maintainers of the ``Context Matters'' ADR replication package for making a real, richly annotated ADR corpus publicly available, without which this work's retrieval stage and evaluation would not have been possible.
 
-\begin{thebibliography}{99}
+\begin{thebibliography}{27}
 
 \bibitem{dhar2024llm}
-R.~Dhar, K.~Vaidhyanathan, and V.~Varma, ``Can LLMs Generate Architectural Design Decisions? -An Exploratory Empirical Study,'' in \textit{Proc. IEEE 21st Int. Conf. Software Architecture (ICSA)}, 2024. arXiv:2403.01709.
+R.~Dhar, K.~Vaidhyanathan, and V.~Varma, ``Can LLMs Generate Architectural Design Decisions? -- An Exploratory Empirical Study,'' in \textit{Proc. IEEE 21st Int. Conf. Software Architecture (ICSA)}, 2024. arXiv:2403.01709.
 
 \bibitem{contextmatters2026}
-% TODO(citation-verify): confirm exact title/author list/venue/year and DOI
-% or arXiv ID for the "Context Matters" ADR-generation-from-titles paper
-% (design spec cites arXiv:2604.03826) once the citation-research agent
-% returns verified results.
-Authors TBD, ``Context Matters: [title to be confirmed],'' 2026. arXiv:2604.03826 (pending verification).
+A.~Gupta, R.~Dhar, D.~Feitosa, and K.~Vaidhyanathan, ``Context Matters: Evaluating Context Strategies for Automated ADR Generation Using LLMs,'' accepted at \textit{EASE 2026 Research Track}. arXiv:2604.03826.
+
+\bibitem{contextmatters-zenodo}
+Anonymous, ``Context Matters -- Replication Package,'' Zenodo, 2026, doi: 10.5281/zenodo.18370195.
 
 \bibitem{maad2025}
-% TODO(citation-verify): confirm exact title/author list/venue/year for
-% MAAD (design spec cites arXiv:2507.21382, "forthcoming ACM TOSEM") once
-% the citation-research agent returns verified results.
-Authors TBD, ``MAAD: [title to be confirmed],'' to appear in \textit{ACM Trans. Softw. Eng. Methodol.} arXiv:2507.21382 (pending verification).
+R.~Li, Y.~Zhang, X.~Zhou, P.~Liang, W.~Sun, J.~Xuan, Z.~Jin, and Y.~Liu, ``MAAD: Automate Software Architecture Design through Knowledge-Driven Multi-Agent Collaboration,'' arXiv preprint, 2025. arXiv:2507.21382.
+
+\bibitem{zhou2025rationale}
+X.~Zhou, R.~Li, P.~Liang, B.~Zhang, M.~Shahin, Z.~Li, and C.~Yang, ``Using LLMs in Generating Design Rationale for Software Architecture Decisions,'' accepted for publication in \textit{ACM Trans. Softw. Eng. Methodol. (TOSEM)}, 2025. arXiv:2504.20781.
 
 \bibitem{buchgeher2023adr}
 G.~Buchgeher, R.~Schöberl, P.~Geist, J.~Dorninger, C.~Haindl, and R.~Weinreich, ``Using Architecture Decision Records in Open Source Projects -- An MSR Study on GitHub,'' \textit{IEEE Access}, vol.~11, pp.~63725--63740, 2023, doi: 10.1109/ACCESS.2023.3287654.
 
-\bibitem{pan2023logiclm}
-% TODO(citation-verify): confirm exact citation for the LLM-to-symbolic-solver
-% translation work cited here (candidate: Pan et al., "Logic-LM") once the
-% citation-research agent returns verified results.
-Authors TBD, ``Logic-LM: [title to be confirmed],'' 2023 (pending verification).
+\bibitem{dhar2025drafting}
+R.~Dhar, A.~Kakran, A.~Karan, K.~Vaidhyanathan, and V.~Varma, ``DRAFT-ing Architectural Design Decisions using LLMs,'' arXiv preprint, 2025. arXiv:2504.08207.
 
-\bibitem{olausson2023linc}
-% TODO(citation-verify): confirm exact citation for the LLM-authored-proof
-% verification-via-formal-compilation work cited here (candidate: Olausson
-% et al., "LINC") once the citation-research agent returns verified results.
-Authors TBD, ``LINC: [title to be confirmed],'' 2023 (pending verification).
+\bibitem{su2026violations}
+R.~Su, A.~Bakhtin, N.~Ahmad, M.~Esposito, V.~Lenarduzzi, and D.~Taibi, ``Evaluating Large Language Models for Detecting Architectural Decision Violations,'' arXiv preprint, 2026. arXiv:2602.07609.
 
-\bibitem{duetal2023debate}
-% TODO(citation-verify): confirm exact citation for the multi-agent LLM
-% debate work cited here once the citation-research agent returns verified
-% results.
-Authors TBD, ``Improving Factuality and Reasoning in Language Models through Multiagent Debate,'' 2023 (pending verification).
-
-\bibitem{madaan2023selfrefine}
-% TODO(citation-verify): confirm exact citation for the LLM self-refinement
-% work cited here (candidate: Madaan et al., "Self-Refine") once the
-% citation-research agent returns verified results.
-Authors TBD, ``Self-Refine: Iterative Refinement with Self-Feedback,'' 2023 (pending verification).
-
-\bibitem{lewis2020rag}
-% TODO(citation-verify): confirm exact citation for the retrieval-augmented
-% generation work cited here (candidate: Lewis et al., "RAG") once the
-% citation-research agent returns verified results.
-Authors TBD, ``Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks,'' 2020 (pending verification).
+\bibitem{iso25010}
+ISO/IEC, \textit{ISO/IEC 25010:2023 -- Systems and Software Engineering -- Systems and Software Quality Requirements and Evaluation (SQuaRE) -- Product Quality Model}, 2nd ed. Geneva, Switzerland: Int. Organization for Standardization, 2023.
 
 \bibitem{bass2021saip}
-% TODO(citation-verify): confirm exact current edition/ISBN for the
-% architectural tactics catalog cited here (candidate: Bass, Clements,
-% Kazman, "Software Architecture in Practice") once the citation-research
-% agent returns verified results.
-L.~Bass, P.~Clements, and R.~Kazman, \textit{Software Architecture in Practice}, 4th ed. Boston, MA, USA: Addison-Wesley, 2021 (edition/ISBN pending verification).
+L.~Bass, P.~Clements, and R.~Kazman, \textit{Software Architecture in Practice}, 4th ed. Boston, MA, USA: Addison-Wesley Professional, 2021, ISBN: 978-0-13-688609-9.
+
+\bibitem{kumara2026llm4soc}
+I.~Kumara, H.~Kaplan, J.~Owotogbe, D.~A.~Tamburri, and W.-J.~van den Heuvel, ``Large Language Models for Service-Oriented Computing (LLM4SOC): Review and Research Directions,'' in \textit{Proc. SummerSOC 2025}, Communications in Computer and Information Science, vol.~2602, Springer, Cham, 2026, doi: 10.1007/978-3-032-07313-6\_6.
+
+\bibitem{sellami2025microservice}
+K.~Sellami and M.~A.~Saied, ``Contrastive Learning-Enhanced Large Language Models for Monolith-to-Microservice Decomposition,'' \textit{Empirical Softw. Eng.}, 2025, doi: 10.1007/s10664-025-10732-z. arXiv:2502.04604.
+
+\bibitem{albuquerque2026microservice}
+D.~Albuquerque, J.~Renan, G.~Rodríguez, E.~Dantas, A.~França, M.~Perkusich, K.~Gorgônio, and A.~Perkusich, ``From Textual Requirements to Microservice Architectures: A Comprehensive Evaluation of LLM-Based Design Synthesis,'' arXiv preprint, 2026. arXiv:2607.28307.
+
+\bibitem{pan2023logiclm}
+L.~Pan, A.~Albalak, X.~Wang, and W.~Y.~Wang, ``Logic-LM: Empowering Large Language Models with Symbolic Solvers for Faithful Logical Reasoning,'' in \textit{Findings of the Assoc. Comput. Linguistics: EMNLP 2023}, pp.~3806--3824, doi: 10.18653/v1/2023.findings-emnlp.248.
+
+\bibitem{olausson2023linc}
+T.~X.~Olausson, A.~Gu, B.~Lipkin, C.~E.~Zhang, A.~Solar-Lezama, J.~B.~Tenenbaum, and R.~Levy, ``LINC: A Neurosymbolic Approach for Logical Reasoning by Combining Language Models with First-Order Logic Provers,'' in \textit{Proc. 2023 Conf. Empirical Methods in Natural Language Processing (EMNLP)}, pp.~5153--5176, doi: 10.18653/v1/2023.emnlp-main.313. arXiv:2310.15164.
+
+\bibitem{szeider2025mcpsolver}
+S.~Szeider, ``Bridging Language Models and Symbolic Solvers via the Model Context Protocol,'' in \textit{Proc. 28th Int. Conf. Theory and Applications of Satisfiability Testing (SAT 2025)}, LIPIcs vol.~341, doi: 10.4230/LIPIcs.SAT.2025.30.
+
+\bibitem{hao2024planningz3}
+Y.~Hao, Y.~Chen, Y.~Zhang, and C.~Fan, ``Large Language Models Can Solve Real-World Planning Rigorously with Formal Verification Tools,'' arXiv preprint, 2024. arXiv:2404.11891.
+
+\bibitem{duetal2023debate}
+Y.~Du, S.~Li, A.~Torralba, J.~B.~Tenenbaum, and I.~Mordatch, ``Improving Factuality and Reasoning in Language Models through Multiagent Debate,'' in \textit{Proc. 41st Int. Conf. Machine Learning (ICML)}, PMLR vol.~235, pp.~11733--11763, 2024. arXiv:2305.14325.
+
+\bibitem{liang2024divergent}
+T.~Liang, Z.~He, W.~Jiao, X.~Wang, Y.~Wang, R.~Wang, Y.~Yang, S.~Shi, and Z.~Tu, ``Encouraging Divergent Thinking in Large Language Models through Multi-Agent Debate,'' in \textit{Proc. 2024 Conf. Empirical Methods in Natural Language Processing (EMNLP)}, 2024. arXiv:2305.19118.
+
+\bibitem{chan2024chateval}
+C.-M.~Chan, W.~Chen, Y.~Su, J.~Yu, W.~Xue, S.~Zhang, J.~Fu, and Z.~Liu, ``ChatEval: Towards Better LLM-based Evaluators through Multi-Agent Debate,'' in \textit{Proc. Int. Conf. Learning Representations (ICLR)}, 2024. arXiv:2308.07201.
+
+\bibitem{madaan2023selfrefine}
+A.~Madaan \textit{et al.}, ``Self-Refine: Iterative Refinement with Self-Feedback,'' in \textit{Proc. Advances in Neural Information Processing Systems (NeurIPS)}, 2023. arXiv:2303.17651.
+
+\bibitem{shinn2023reflexion}
+N.~Shinn, F.~Cassano, E.~Berman, A.~Gopinath, K.~Narasimhan, and S.~Yao, ``Reflexion: Language Agents with Verbal Reinforcement Learning,'' in \textit{Proc. NeurIPS}, 2023. arXiv:2303.11366.
+
+\bibitem{huang2024selfcorrect}
+J.~Huang, X.~Chen, S.~Mishra, H.~S.~Zheng, A.~W.~Yu, X.~Song, and D.~Zhou, ``Large Language Models Cannot Self-Correct Reasoning Yet,'' in \textit{Proc. Int. Conf. Learning Representations (ICLR)}, 2024. arXiv:2310.01798.
+
+\bibitem{lewis2020rag}
+P.~Lewis \textit{et al.}, ``Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks,'' in \textit{Proc. NeurIPS}, 2020. arXiv:2005.11401.
+
+\bibitem{tao2025ragcode}
+Y.~Tao, Y.~Li, Y.~Qin, and Y.~Liu, ``Retrieval-Augmented Code Generation: A Survey with Focus on Repository-Level Approaches,'' arXiv preprint, 2025. arXiv:2510.04905.
+
+\bibitem{wiratunga2024cbrrag}
+N.~Wiratunga, R.~Abeyratne, L.~Jayawardena, K.~Martin, S.~Massie, I.~Nkisi-Orji, R.~Weerasinghe, A.~Liret, and B.~Fleisch, ``CBR-RAG: Case-Based Reasoning for Retrieval Augmented Generation in LLMs for Legal Question Answering,'' in \textit{Proc. Int. Conf. Case-Based Reasoning (ICCBR)}, 2024. arXiv:2404.04302.
+
+\bibitem{hatalis2025cbrllm}
+K.~Hatalis, D.~Christou, and V.~Kondapalli, ``Review of Case-Based Reasoning for LLM Agents: Theoretical Foundations, Architectural Components, and Cognitive Integration,'' arXiv preprint, 2025. arXiv:2504.06943.
 
 \end{thebibliography}
 
