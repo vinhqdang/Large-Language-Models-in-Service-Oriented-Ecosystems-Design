@@ -303,11 +303,12 @@ genuinely still open:
    new issues the fixes themselves might have introduced (e.g. read
    through Sections II and III once more for flow now that a table,
    figure, and algorithm block have been inserted).
-4. One LOW-confidence item from the technical review, not yet chased:
-   confirm MAAD's exact agent role names ("Analyst, Modeler, Designer,
-   Evaluator") directly against the paper's actual text (arXiv:2507.21382)
-   rather than a search snippet, before treating Table I's characterization
-   of MAAD as fully verified.
+~~4. One LOW-confidence item from the technical review: confirm MAAD's
+   exact agent role names against the paper's actual text.~~ **Done** —
+   fetched arxiv.org/abs/2507.21382 directly: confirms MAAD's four
+   agents are exactly Analyst, Modeler, Designer, Evaluator, each doing
+   what the manuscript's Table I and Section II-A describe. Nothing
+   left open from the review round except items 1-3 above.
 
 Note on tooling: `academic-pipeline`'s full 10-stage orchestrator
 (`/ars-full`) was evaluated for this manuscript and deliberately **not**
