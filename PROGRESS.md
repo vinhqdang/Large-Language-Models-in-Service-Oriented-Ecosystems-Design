@@ -18,6 +18,43 @@ decision-making in service-oriented architectures.
 
 Full design: `docs/superpowers/specs/2026-08-25-cadence-adr-algorithm-design.md`
 
+## Status: manuscript draft exists — scaled evaluation + citation verification in flight
+
+`manuscript/cadence.tex` is a complete IEEEtran-formatted draft (compiles
+clean with `pdflatex`, 7 pages as of this commit, well under the 14-page
+CFP limit even after the bibliography grows to its final length).
+Introduction, Method (all 4 stages, formalized precisely against the real
+`src/` implementation, including the Z3 lexicographic-vs-weighted-sum
+fix and the 5-distinct-format-deviations robustness finding), Discussion
+(including the BERTScore-vs-ROUGE/METEOR asymmetry explanation and
+threats to validity), and Conclusion are written and are not placeholders.
+Two things are still open before this draft is submission-ready:
+
+1. **Every reference in Related Work and the bibliography carries an
+   explicit `TODO(citation-verify)` marker** (`grep -n "TODO(citation-verify)"
+   manuscript/cadence.tex` finds them all). A citation-research agent was
+   dispatched to verify every candidate reference's real DOI/arXiv ID,
+   author list, venue, and year via live web search — per this project's
+   standing non-negotiable requirement that no fabricated or unverified
+   citation ever appears in the manuscript. **Do not remove a
+   `TODO(citation-verify)` marker or treat a reference as final without
+   confirming that agent's findings were actually applied** — if you're
+   reading this and that agent's results haven't been incorporated yet,
+   finish that first.
+2. **The Evaluation section's Table II (`tab:scaled`) is a labeled
+   placeholder.** `scripts/run_evaluation_scaled.py` — N=15 held-out
+   items, two `tactic_budget` conditions (achievable=5, tight=2), k=3,
+   max_rounds=2, max_repair_iterations=2 — was kicked off in the
+   background (see `run_multi_budget_evaluation` in
+   `src/evaluation/harness.py`, added this session, reviewed 0
+   CRITICAL/HIGH). It crashed once with the documented transient
+   native-import segfault (exit 139, empty log — see Environment notes)
+   and was retried cleanly. Once it completes, `data/processed/evaluation_results_scaled.json`
+   will hold the real results — replace Table II and update the
+   Evaluation/Discussion prose to treat the N=15 numbers as primary,
+   keeping Table I (the real N=3 pilot numbers below) only as the
+   sanity-checked pilot data point it's now labeled as.
+
 ## Status: evaluation harness complete — real comparison numbers exist for the first time
 
 `docs/superpowers/plans/2026-08-27-evaluation-harness.md` — all 4 tasks
@@ -144,40 +181,36 @@ derived from Buchgeher et al.'s MSR study (IEEE Access, DOI [10.1109/ACCESS.2023
 
 ## Next step
 
-**The full CADENCE pipeline and its evaluation harness both work
-end-to-end for real, with real (if small-N) comparison numbers already in
-hand** (see the table above). Two things remain before the manuscript can
-be written with real results:
+1. **Incorporate the citation-research agent's findings into
+   `manuscript/cadence.tex`.** Every `\bibitem` and in-text `\cite{}` in
+   Related Work currently carries a `TODO(citation-verify)` comment.
+   Resolve each one, remove the marker, re-run `pdflatex` twice (needed
+   for cross-reference resolution) from `manuscript/`, and re-check the
+   page count is still ≤14.
+2. **Once `data/processed/evaluation_results_scaled.json` exists**,
+   replace `cadence.tex`'s placeholder Table II (`tab:scaled`) with the
+   real N=15, two-budget numbers, and rewrite the Evaluation/Discussion
+   prose to treat those as the primary result (Table I's N=3 pilot numbers
+   stay only as the sanity-checked pilot data point).
+3. **Optional ablation, not yet built:** spec §5 also asks for a "no
+   self-critique but has solver" variant (skip Stage 4 only) beyond the
+   four systems `run_multi_budget_evaluation` already reports — cheap to
+   add (`run_cadence_full` minus its `finalize_decision` call) if the
+   paper wants that specific extra comparison point.
+4. Once 1–2 are done: full read-through for flow/storytelling quality,
+   spawn a review agent (or ARS's `academic-paper-reviewer`-style agents)
+   against the complete draft before treating it as final, per the
+   project's standing "spawn agents to review the manuscript" requirement.
 
-1. **Scale up the real evaluation run.** `scripts/run_evaluation.py`
-   defaults (`n_test_items=3`, `max_rounds=1`, `k=2`, `tactic_budget=4`)
-   were chosen to verify the harness cheaply, not to produce
-   publication-quality numbers. For real results: raise `n_test_items` to
-   something statistically meaningful (20–50+), consider `max_rounds=2`
-   to match the other stage demos, and **run two `tactic_budget`
-   conditions** — one achievable (≥5, so `cadence_full` can actually reach
-   `is_feasible=True` and the constraint-satisfaction-rate metric has
-   something other than 0% to report) and one deliberately tight (to
-   demonstrate graceful degradation on purpose, not by accident). Budget
-   real wall-clock time — this session's demos show each local-model call
-   takes real seconds, and `multiagent_no_solver`/`cadence_full` each make
-   many calls per item. Consider whether `Results/RAG_Based/` in the
-   corpus (see "Real corpus schema" below) can supplement or cross-check
-   the `retrieval_only` baseline rather than everything coming from fresh
-   runs.
-2. **Ablations spec §5 also asks for beyond what §5(b)/(c) already give
-   for free:** a "no self-critique but has solver" variant (skip Stage 4
-   only) isn't one of the four systems built — cheap to add
-   (`run_cadence_full` minus its `finalize_decision` call) if the paper
-   wants that specific comparison point; not built yet since it wasn't
-   explicitly requested when the evaluation-harness plan was scoped.
-
-After that: manuscript (IEEEtran template already in repo root, 6
-sections, ≤14 pages, all references DOI-verified per standing project
-requirement) — write it against the real numbers from step 1, not the
-N=3 verification numbers above, and make sure the BERTScore-vs-ROUGE/
-METEOR asymmetry (see the table's discussion above) is addressed
-explicitly in the evaluation/discussion sections.
+Note on tooling: `academic-pipeline`'s full 10-stage orchestrator
+(`/ars-full`) was evaluated for this manuscript and deliberately **not**
+used — it hard-requires mandatory, non-skippable user confirmation
+checkpoints between every stage (an explicit IRON RULE in its own
+SKILL.md), which doesn't fit a single autonomous session. The manuscript
+above was instead written directly against the real spec/implementation,
+using ARS's individually-invocable `research_architect_agent` /
+`synthesis_agent` / `report_compiler_agent` and a dedicated
+citation-verification subagent rather than the full pipeline.
 
 ## Working conventions established so far
 
