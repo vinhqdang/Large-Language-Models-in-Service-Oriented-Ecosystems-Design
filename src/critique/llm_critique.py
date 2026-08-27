@@ -58,11 +58,65 @@ def _tolerant_pattern(quality_attribute: str, field: str) -> re.Pattern:
     )
 
 
-def _find_label_value(response: str, quality_attribute: str, field: str) -> str | None:
+def _heading_pattern(quality_attribute: str) -> re.Pattern:
+    # A line containing (only) the attribute name as its own markdown-bold
+    # heading, e.g. "**Performance**" -- a real scaled-evaluation run showed
+    # a response style that states the attribute as a standalone heading,
+    # then the field on a later, separate line with no attribute name on it
+    # at all (see _bare_field_pattern below). Neither _strict_pattern nor
+    # _tolerant_pattern can match that, since both require the attribute
+    # name and field label on the same line.
+    #
+    # Markdown emphasis (*/_) is REQUIRED around the name, not merely
+    # tolerated: every real heading observed uses **bold**, and requiring
+    # it rules out a plausible false positive a code review caught --  an
+    # LLM response can include an earlier plain outline/bullet list (e.g.
+    # "- Performance\n- Security\n...") before the real detailed sections,
+    # which a looser "optional decoration" pattern would wrongly match
+    # first, anchoring the section boundary to the outline instead of the
+    # real heading.
+    return re.compile(
+        rf"^\s*[*_]{{1,2}}\s*{_qa_word(quality_attribute)}\s*[*_]{{1,2}}\s*$",
+        re.IGNORECASE | re.MULTILINE,
+    )
+
+
+def _bare_field_pattern(field: str) -> re.Pattern:
+    return re.compile(rf"^\s*[*_\-\s]*{field}[*_\s]*:[*_\s]*(.*)$", re.IGNORECASE | re.MULTILINE)
+
+
+def _find_value_in_heading_section(
+    response: str, quality_attribute: str, field: str, quality_attributes: tuple[str, ...]
+) -> str | None:
+    heading_match = _heading_pattern(quality_attribute).search(response)
+    if heading_match is None:
+        return None
+
+    # Bound the section to end at the next OTHER attribute's heading (or
+    # end of response), so a bare field line belonging to a later
+    # attribute's section is never mistaken for this attribute's answer.
+    section_start = heading_match.end()
+    section_end = len(response)
+    for other_qa in quality_attributes:
+        if other_qa == quality_attribute:
+            continue
+        other_match = _heading_pattern(other_qa).search(response, section_start)
+        if other_match is not None:
+            section_end = min(section_end, other_match.start())
+
+    bare_match = _bare_field_pattern(field).search(response[section_start:section_end])
+    return bare_match.group(1).strip() if bare_match else None
+
+
+def _find_label_value(
+    response: str, quality_attribute: str, field: str, quality_attributes: tuple[str, ...]
+) -> str | None:
     match = _strict_pattern(quality_attribute, field).search(response)
     if match is None:
         match = _tolerant_pattern(quality_attribute, field).search(response)
-    return match.group(1).strip() if match else None
+    if match is not None:
+        return match.group(1).strip()
+    return _find_value_in_heading_section(response, quality_attribute, field, quality_attributes)
 
 
 _FRACTION_SCORE = re.compile(r"^(\d+(?:\.\d+)?)\s*/\s*(\d+(?:\.\d+)?)$")
@@ -119,12 +173,12 @@ def run_qualitative_critique(
     scores = []
     missing = []
     for qa in quality_attributes:
-        raw_score = _find_label_value(response, qa, "SCORE")
+        raw_score = _find_label_value(response, qa, "SCORE", quality_attributes)
         score = _parse_score(raw_score) if raw_score is not None else None
         if score is None:
             missing.append(qa)
             continue
-        weakness = _parse_weakness(_find_label_value(response, qa, "WEAKNESS"))
+        weakness = _parse_weakness(_find_label_value(response, qa, "WEAKNESS", quality_attributes))
         scores.append(QualitativeScore(qa, score, weakness))
 
     if missing:
