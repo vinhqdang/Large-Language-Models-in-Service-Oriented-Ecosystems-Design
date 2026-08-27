@@ -1,4 +1,5 @@
 """Baseline and full-CADENCE system runners for evaluation (spec §5)."""
+import warnings
 from dataclasses import dataclass
 
 from src.deliberation.agent import QualityAttributeAgent
@@ -22,7 +23,19 @@ def retrieve_excluding_self(
 ) -> list[ADRRecord]:
     results = retriever.retrieve(query, k=k + 1)
     filtered = [r for r in results if r.record_id != exclude_record_id]
-    return filtered[:k]
+    trimmed = filtered[:k]
+    if len(trimmed) < k:
+        # Not an error -- a small corpus/Retriever can legitimately have
+        # fewer than k eligible precedents -- but every system that calls
+        # this relies on getting the *same* generation budget for a fair
+        # comparison (see the evaluation-harness plan's Self-Review Notes),
+        # so a silent shortfall should be visible, not swallowed.
+        warnings.warn(
+            f"retrieve_excluding_self: requested k={k} but only {len(trimmed)} "
+            f"precedents available after excluding {exclude_record_id!r}",
+            stacklevel=2,
+        )
+    return trimmed
 
 
 def run_zero_shot(context: str, client) -> SystemOutput:

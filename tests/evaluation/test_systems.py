@@ -1,4 +1,5 @@
 import numpy as np
+import pytest
 
 from src.deliberation.knowledge_graph import TACTICS, build_knowledge_graph, QUALITY_ATTRIBUTES
 from src.retrieval.records import ADRRecord
@@ -41,6 +42,15 @@ def test_retrieve_excluding_self_never_returns_the_excluded_record():
 
     assert "self" not in [r.record_id for r in results]
     assert len(results) == 2
+
+
+def test_retrieve_excluding_self_warns_when_fewer_than_k_precedents_remain():
+    retriever = _make_retriever(["self", "a"])  # only 1 non-self record exists
+
+    with pytest.warns(UserWarning, match="only 1 precedents available"):
+        results = retrieve_excluding_self(retriever, "query", exclude_record_id="self", k=3)
+
+    assert [r.record_id for r in results] == ["a"]
 
 
 def test_run_zero_shot_calls_client_once_with_only_the_context():
