@@ -36,6 +36,7 @@ RESULTS_PATH = PROCESSED_DIR / "evaluation_results_scaled.json"
 def run_evaluation_scaled_script(
     records_path: Path,
     embeddings_path: Path,
+    seed: int,
     n_test_items: int = 15,
     min_length: int = 300,
     k: int = 3,
@@ -43,11 +44,21 @@ def run_evaluation_scaled_script(
     tactic_budgets: tuple[int, ...] = (5, 2),
     max_repair_iterations: int = 2,
 ) -> dict[int, EvaluationReport]:
+    # `seed` is required, not defaulted -- scripts/run_evaluation.py's pilot
+    # run relies on sample_test_set's own default (42) over this same
+    # corpus. An earlier version of this script defaulted `seed` to 43 to
+    # avoid colliding with that, but two independently hardcoded literals
+    # in two different files, kept apart only by a comment, is exactly the
+    # kind of silent-default risk that caused the original bug (both
+    # scripts scoring the identical 3 held-out items). Requiring every
+    # caller to state its seed explicitly removes that risk instead of
+    # relocating it.
+    #
     # See scripts/run_evaluation.py for why the Retriever must be built over
     # the full unfiltered record set (row-alignment with adr_embeddings.npy).
     all_records = load_records_jsonl(records_path)
     verified = [r for r in all_records if r.extraction_status == "Verified"]
-    test_records = sample_test_set(verified, n=n_test_items, min_length=min_length)
+    test_records = sample_test_set(verified, n=n_test_items, min_length=min_length, seed=seed)
 
     embeddings = np.load(embeddings_path)
     embedding_model = load_embedding_model()
@@ -75,7 +86,10 @@ def _reports_to_json(reports_by_budget: dict[int, EvaluationReport]) -> dict:
 
 
 if __name__ == "__main__":
-    reports_by_budget = run_evaluation_scaled_script(RECORDS_PATH, EMBEDDINGS_PATH)
+    # seed=43: deliberately different from sample_test_set's default (42),
+    # which scripts/run_evaluation.py's pilot run relies on implicitly --
+    # see run_evaluation_scaled_script's docstring comment above.
+    reports_by_budget = run_evaluation_scaled_script(RECORDS_PATH, EMBEDDINGS_PATH, seed=43)
 
     for budget, report in reports_by_budget.items():
         print(f"\n=== tactic_budget={budget} ({report.n_items} held-out items) ===")
