@@ -238,11 +238,11 @@ Table~\ref{tab:pilot} reports a small-$N$ pilot run used to verify the full pipe
 \toprule
 System & $B$ & BERTScore F1 & BLEU & ROUGE-1 F1 & METEOR \\
 \midrule
-\texttt{zero\_shot}             & --- & 0.810 & 1.90 & 0.182 & 0.243 \\
-\texttt{retrieval\_only}        & --- & 0.817 & 1.67 & 0.229 & 0.250 \\
-\texttt{multiagent\_no\_solver} & --- & 0.809 & 0.59 & 0.125 & 0.092 \\
-\texttt{cadence\_full}          & 5   & 0.802 & 0.62 & 0.149 & 0.115 \\
-\texttt{cadence\_full}          & 2   & 0.801 & 0.80 & 0.122 & 0.097 \\
+\texttt{zero\_shot}             & --- & 0.825 & 3.21 & 0.276 & 0.210 \\
+\texttt{retrieval\_only}        & --- & 0.816 & 3.10 & 0.317 & 0.226 \\
+\texttt{multiagent\_no\_solver} & --- & 0.808 & 0.64 & 0.190 & 0.090 \\
+\texttt{cadence\_full}          & 5   & 0.811 & 0.70 & 0.195 & 0.086 \\
+\texttt{cadence\_full}          & 2   & 0.812 & 1.30 & 0.202 & 0.100 \\
 \bottomrule
 \end{tabular}
 
@@ -252,7 +252,7 @@ System & $B$ & BERTScore F1 & BLEU & ROUGE-1 F1 & METEOR \\
 
 Both the pilot run's \texttt{cadence\_full} constraint-satisfaction rate of 0\% (\texttt{tactic\_budget=4}, a configuration mathematically infeasible by construction against a tactic catalog in which every tactic supports exactly one attribute) and the scaled run's 0\% at \emph{both} $B=5$ and $B=2$ are real, not a defect in Stage~3 --- but the scaled run's result is more informative and more honest than we anticipated when designing this experiment: we expected $B=5$, an ``achievable'' budget matching the number of required attributes exactly, to let \texttt{cadence\_full} reach \texttt{is\_feasible=True} in practice. It did not, in this $N=3$ sample. The reason is a real, explicable property of the pipeline, not a bug: Stage~3's tactic-extraction step (Section~\ref{sec:method-stage3}) can only select a tactic the deliberated candidate's terse text actually \emph{names}, and reaching $B=5$ feasibility requires the candidate to name five distinct tactics collectively covering all five required attributes --- budget headroom alone does not guarantee this if Stage~2's synthesis converges on a candidate that names fewer, or overlapping, tactics. This run also used \texttt{max\_repair\_iterations=1} rather than this work's design default of~2, to keep the run's real wall-clock cost bounded, giving the repair loop only a single attempt to correct an initial shortfall. We consider this a genuine, useful negative result rather than a failure to report: it shows that CADENCE's constraint-satisfaction rate is jointly gated by the tactic budget \emph{and} by how many distinct, budget-relevant tactics the deliberation stage's necessarily terse synthesis actually names, and that the repair loop needs enough iterations to close that gap --- a dependency the pilot run's single, tighter budget condition could not have surfaced on its own. We revisit this honestly in Section~\ref{sec:discussion} rather than let the table stand without explanation.
 
-Across the pilot run, both scaled-run budget conditions, and both baselines and CADENCE throughout, BERTScore F1 stays in a narrow 0.801--0.819 band while ROUGE-1 and METEOR are consistently, noticeably lower for the two deliberation-based systems (\texttt{multiagent\_no\_solver} and \texttt{cadence\_full}) than for the two single-pass systems --- the same qualitative pattern holds across both independent runs, which we take as evidence the pattern is systematic rather than a small-sample artifact of either run alone. We discuss why in Section~\ref{sec:discussion}.
+Table~\ref{tab:pilot} and Table~\ref{tab:scaled} draw on two genuinely disjoint held-out samples (distinct random seeds over the same corpus, verified to share no items), not the same three items scored twice --- a distinction worth stating explicitly, since it is what lets the next observation mean something. Across both tables, and across both scaled-run budget conditions, BERTScore F1 stays in a narrow 0.801--0.825 band while ROUGE-1 and METEOR are consistently, noticeably lower for the two deliberation-based systems (\texttt{multiagent\_no\_solver} and \texttt{cadence\_full}) than for the two single-pass systems, and \texttt{cadence\_full}'s constraint-satisfaction rate is 0\% at every reported budget in both samples. That the same qualitative pattern reproduces on an independently-sampled set of held-out items is real evidence toward it being systematic rather than a small-sample artifact of either run alone --- though with $N=3$ per sample, six items total, we still stop short of calling this statistically established, and say so plainly in Section~\ref{sec:discussion}. We discuss why the pattern occurs in Section~\ref{sec:discussion}.
 
 \section{Discussion}
 \label{sec:discussion}

@@ -5,10 +5,10 @@
       {
         "system_name": "zero_shot",
         "average_scores": {
-          "bertscore_f1": 0.8103343645731608,
-          "bleu": 1.902558921376986,
-          "rouge1_f": 0.18207613284871693,
-          "meteor": 0.24344686841944418
+          "bertscore_f1": 0.8254404465357462,
+          "bleu": 3.213478323525287,
+          "rouge1_f": 0.27599009314596457,
+          "meteor": 0.21045208863132248
         },
         "feasibility_rate": null,
         "average_repair_iterations": null
@@ -16,10 +16,10 @@
       {
         "system_name": "retrieval_only",
         "average_scores": {
-          "bertscore_f1": 0.8173191944758097,
-          "bleu": 1.6683796273087446,
-          "rouge1_f": 0.22886053472080647,
-          "meteor": 0.24978031225381092
+          "bertscore_f1": 0.8162766695022583,
+          "bleu": 3.0962299691783386,
+          "rouge1_f": 0.31667479889791456,
+          "meteor": 0.2261343102127997
         },
         "feasibility_rate": null,
         "average_repair_iterations": null
@@ -27,10 +27,10 @@
       {
         "system_name": "multiagent_no_solver",
         "average_scores": {
-          "bertscore_f1": 0.8085642655690511,
-          "bleu": 0.5867320616814374,
-          "rouge1_f": 0.12546288929437277,
-          "meteor": 0.09244772223203616
+          "bertscore_f1": 0.8078292806943258,
+          "bleu": 0.644587185072888,
+          "rouge1_f": 0.18981415415725947,
+          "meteor": 0.08952887431550714
         },
         "feasibility_rate": null,
         "average_repair_iterations": null
@@ -38,10 +38,10 @@
       {
         "system_name": "cadence_full",
         "average_scores": {
-          "bertscore_f1": 0.8022111058235168,
-          "bleu": 0.6202548803850293,
-          "rouge1_f": 0.14855017289094366,
-          "meteor": 0.11475608162475182
+          "bertscore_f1": 0.8108271757761637,
+          "bleu": 0.7022174574653577,
+          "rouge1_f": 0.19486402799705535,
+          "meteor": 0.08605734331616229
         },
         "feasibility_rate": 0.0,
         "average_repair_iterations": 1.0
@@ -54,10 +54,10 @@
       {
         "system_name": "zero_shot",
         "average_scores": {
-          "bertscore_f1": 0.8103343645731608,
-          "bleu": 1.902558921376986,
-          "rouge1_f": 0.18207613284871693,
-          "meteor": 0.24344686841944418
+          "bertscore_f1": 0.8254404465357462,
+          "bleu": 3.213478323525287,
+          "rouge1_f": 0.27599009314596457,
+          "meteor": 0.21045208863132248
         },
         "feasibility_rate": null,
         "average_repair_iterations": null
@@ -65,10 +65,10 @@
       {
         "system_name": "retrieval_only",
         "average_scores": {
-          "bertscore_f1": 0.8173191944758097,
-          "bleu": 1.6683796273087446,
-          "rouge1_f": 0.22886053472080647,
-          "meteor": 0.24978031225381092
+          "bertscore_f1": 0.8162766695022583,
+          "bleu": 3.0962299691783386,
+          "rouge1_f": 0.31667479889791456,
+          "meteor": 0.2261343102127997
         },
         "feasibility_rate": null,
         "average_repair_iterations": null
@@ -76,10 +76,10 @@
       {
         "system_name": "multiagent_no_solver",
         "average_scores": {
-          "bertscore_f1": 0.8085642655690511,
-          "bleu": 0.5867320616814374,
-          "rouge1_f": 0.12546288929437277,
-          "meteor": 0.09244772223203616
+          "bertscore_f1": 0.8078292806943258,
+          "bleu": 0.644587185072888,
+          "rouge1_f": 0.18981415415725947,
+          "meteor": 0.08952887431550714
         },
         "feasibility_rate": null,
         "average_repair_iterations": null
@@ -87,10 +87,10 @@
       {
         "system_name": "cadence_full",
         "average_scores": {
-          "bertscore_f1": 0.8009641369183859,
-          "bleu": 0.8046803696543204,
-          "rouge1_f": 0.12158104465976895,
-          "meteor": 0.09736571143924827
+          "bertscore_f1": 0.811853845914205,
+          "bleu": 1.3033153303642082,
+          "rouge1_f": 0.2022125242973989,
+          "meteor": 0.10015085199586271
         },
         "feasibility_rate": 0.0,
         "average_repair_iterations": 1.0
