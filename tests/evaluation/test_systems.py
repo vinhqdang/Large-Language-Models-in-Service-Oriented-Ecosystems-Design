@@ -6,7 +6,7 @@ from src.retrieval.records import ADRRecord
 from src.retrieval.retriever import Retriever
 from src.evaluation.systems import (
     SystemOutput, retrieve_excluding_self, run_zero_shot, run_retrieval_only,
-    run_multiagent_no_solver, run_cadence_full,
+    run_multiagent_no_solver, run_cadence_full, run_cadence_no_critique,
 )
 
 
@@ -116,6 +116,29 @@ def test_run_cadence_full_returns_feasibility_and_repair_iterations():
     )
 
     assert result.system_name == "cadence_full"
+    assert result.is_feasible is not None
+    assert result.repair_iterations is not None
+    assert "Use caching." in result.generated_text
+
+
+def test_run_cadence_no_critique_returns_feasibility_without_a_critique_call(monkeypatch):
+    import src.evaluation.systems as systems_module
+
+    retriever = _make_retriever(["self", "a"])
+    graph = build_knowledge_graph(TACTICS)
+    client = _FakeClient("CANDIDATE: Use caching.\nRATIONALE: Improves performance.")
+
+    def _must_not_be_called(*args, **kwargs):
+        raise AssertionError("finalize_decision (Stage 4) must not be called by run_cadence_no_critique")
+
+    monkeypatch.setattr(systems_module, "finalize_decision", _must_not_be_called)
+
+    result = run_cadence_no_critique(
+        "ctx", retriever, exclude_record_id="self", client=client, graph=graph, tactics=TACTICS,
+        quality_attributes=QUALITY_ATTRIBUTES, k=1, max_rounds=1, tactic_budget=2, max_repair_iterations=1,
+    )
+
+    assert result.system_name == "cadence_no_critique"
     assert result.is_feasible is not None
     assert result.repair_iterations is not None
     assert "Use caching." in result.generated_text

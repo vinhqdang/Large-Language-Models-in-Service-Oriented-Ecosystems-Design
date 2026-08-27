@@ -92,6 +92,8 @@ def run_cadence_full(
     tactic_budget: int = 4,
     max_repair_iterations: int = 2,
 ) -> SystemOutput:
+    """All 4 stages: retrieval, deliberation, solver verification/repair,
+    and self-critique finalization -- the full CADENCE pipeline."""
     precedents = retrieve_excluding_self(retriever, context, exclude_record_id, k)
     agents = [QualityAttributeAgent(qa, client, graph) for qa in quality_attributes]
     orchestrator = DeliberationOrchestrator(agents, client, max_rounds=max_rounds)
@@ -119,4 +121,42 @@ def run_cadence_full(
     text = f"{final_adr.decision}\n\n{final_adr.rationale}"
     return SystemOutput(
         "cadence_full", text, is_feasible=final_adr.is_feasible, repair_iterations=final_adr.repair_iterations
+    )
+
+
+def run_cadence_no_critique(
+    context: str,
+    retriever: Retriever,
+    exclude_record_id: str,
+    client,
+    graph,
+    tactics,
+    quality_attributes: tuple[str, ...],
+    k: int = 3,
+    max_rounds: int = 2,
+    tactic_budget: int = 4,
+    max_repair_iterations: int = 2,
+) -> SystemOutput:
+    """Stage 1-3 only (retrieval + deliberation + solver verification/repair),
+    skipping Stage 4's self-critique finalization -- the ablation isolating
+    what the critique stage adds beyond solver-verified feasibility alone.
+    """
+    precedents = retrieve_excluding_self(retriever, context, exclude_record_id, k)
+    agents = [QualityAttributeAgent(qa, client, graph) for qa in quality_attributes]
+    orchestrator = DeliberationOrchestrator(agents, client, max_rounds=max_rounds)
+    deliberation = orchestrator.deliberate(context, precedents)
+
+    verified = run_repair_loop(
+        candidate=deliberation.converged_candidate,
+        rationale=deliberation.rationale,
+        required_quality_attributes=quality_attributes,
+        tactic_budget=tactic_budget,
+        quality_attribute_weights={},
+        tactics=tactics,
+        repair_client=client,
+        max_repair_iterations=max_repair_iterations,
+    )
+    text = f"{verified.final_candidate}\n\n{verified.rationale}"
+    return SystemOutput(
+        "cadence_no_critique", text, is_feasible=verified.is_feasible, repair_iterations=verified.repair_iterations
     )
