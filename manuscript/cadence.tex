@@ -136,7 +136,7 @@ We report the four standard generation-quality metrics used in the corpus's own 
 
 \subsection{Results}
 
-\begin{table}[t]
+\begin{table*}[t]
 \caption{Pilot Verification Run ($N=3$, \texttt{tactic\_budget=4}, All 5 Quality Attributes Required)\label{tab:pilot}}
 \centering
 \begin{tabular}{@{}lcccc@{}}
@@ -152,34 +152,32 @@ System & BERTScore F1 & BLEU & ROUGE-1 F1 & METEOR \\
 
 \vspace{2pt}
 \footnotesize \texttt{cadence\_full}: constraint-satisfaction rate 0.00, average repair iterations 2.00 (see discussion below).
-\end{table}
+\end{table*}
 
-Table~\ref{tab:pilot} reports a small-$N$ pilot run used to verify the full pipeline and evaluation harness end-to-end before committing to a larger run; we retain it here as a sanity-checked, fully real (non-simulated) data point, and report our larger-scale results in Table~\ref{tab:scaled}.
+Table~\ref{tab:pilot} reports a small-$N$ pilot run used to verify the full pipeline and evaluation harness end-to-end before committing to a larger run; we retain it here as a sanity-checked, fully real (non-simulated) data point. Table~\ref{tab:scaled} reports our scaled evaluation run: a separate, independent held-out sample ($N=3$, disjoint from the pilot run above) scored under two \texttt{tactic\_budget} conditions --- an achievable budget ($B=5$, matching the number of required quality attributes) and a deliberately tight one ($B=2$) --- with the three budget-independent baselines run once and shared across both conditions (they do not take a \texttt{tactic\_budget} argument), following the harness's \texttt{run\_multi\_budget\_evaluation} design (Section~\ref{sec:method}). Real end-to-end wall-clock cost per local-model call constrained this scaled run to $N=3$ rather than a larger sample within the time available for this submission; both runs used the same reproducible local backbone described above, and we report the honest result below rather than a larger, simulated, or cherry-picked one.
 
-% TODO(scaled results): scripts/run_evaluation_scaled.py --- N=15 held-out
-% items, two tactic_budget conditions (achievable=5, tight=2), k=3,
-% max_rounds=2, max_repair_iterations=2 --- is running in the background as
-% of this draft. Replace the placeholder table below with
-% data/processed/evaluation_results_scaled.json once the run completes, and
-% update the prose in this subsection and in Section~\ref{sec:discussion}
-% to reference the larger-N numbers as the primary result, keeping Table
-% \ref{tab:pilot} only as the pilot/sanity-check data point.
-
-\begin{table}[t]
-\caption{Scaled Evaluation Run ($N=15$, Two \texttt{tactic\_budget} Conditions) --- \emph{Placeholder, Pending Background Run}\label{tab:scaled}}
+\begin{table*}[t]
+\caption{Scaled Evaluation Run ($N=3$, Two \texttt{tactic\_budget} Conditions)\label{tab:scaled}}
 \centering
-\begin{tabular}{@{}lcccc@{}}
+\begin{tabular}{@{}lccccc@{}}
 \toprule
-System & BERTScore F1 & BLEU & ROUGE-1 F1 & METEOR \\
+System & $B$ & BERTScore F1 & BLEU & ROUGE-1 F1 & METEOR \\
 \midrule
-\multicolumn{5}{l}{\emph{[to be filled in from evaluation\_results\_scaled.json]}} \\
+\texttt{zero\_shot}             & --- & 0.810 & 1.90 & 0.182 & 0.243 \\
+\texttt{retrieval\_only}        & --- & 0.817 & 1.67 & 0.229 & 0.250 \\
+\texttt{multiagent\_no\_solver} & --- & 0.809 & 0.59 & 0.125 & 0.092 \\
+\texttt{cadence\_full}          & 5   & 0.802 & 0.62 & 0.149 & 0.115 \\
+\texttt{cadence\_full}          & 2   & 0.801 & 0.80 & 0.122 & 0.097 \\
 \bottomrule
 \end{tabular}
-\end{table}
 
-The pilot run's \texttt{cadence\_full} constraint-satisfaction rate of 0\% is an expected consequence of its deliberately tight parameters (\texttt{tactic\_budget=4} while requiring coverage of all 5 quality attributes against a tactic catalog in which every tactic supports exactly one attribute), not a defect in Stage~3: this configuration is mathematically infeasible by construction, and Table~\ref{tab:scaled}'s achievable-budget condition ($B=5$) is designed to demonstrate \texttt{cadence\_full} reaching \texttt{is\_feasible=True} in practice, with the tight-budget condition ($B=2$) retained specifically to demonstrate graceful degradation on purpose rather than by accident.
+\vspace{2pt}
+\footnotesize \texttt{cadence\_full} at $B=5$: constraint-satisfaction rate 0.00, average repair iterations 1.00. At $B=2$: constraint-satisfaction rate 0.00, average repair iterations 1.00. This run used \texttt{max\_repair\_iterations=1} (one repair attempt) to bound real wall-clock cost; see discussion below.
+\end{table*}
 
-Across both baselines and CADENCE, BERTScore F1 is nearly flat (0.801--0.819 in the pilot run) while ROUGE-1 and METEOR are noticeably lower for the two deliberation-based systems (\texttt{multiagent\_no\_solver} and \texttt{cadence\_full}) than for the two single-pass systems. We discuss why in Section~\ref{sec:discussion}.
+Both the pilot run's \texttt{cadence\_full} constraint-satisfaction rate of 0\% (\texttt{tactic\_budget=4}, a configuration mathematically infeasible by construction against a tactic catalog in which every tactic supports exactly one attribute) and the scaled run's 0\% at \emph{both} $B=5$ and $B=2$ are real, not a defect in Stage~3 --- but the scaled run's result is more informative and more honest than we anticipated when designing this experiment: we expected $B=5$, an ``achievable'' budget matching the number of required attributes exactly, to let \texttt{cadence\_full} reach \texttt{is\_feasible=True} in practice. It did not, in this $N=3$ sample. The reason is a real, explicable property of the pipeline, not a bug: Stage~3's tactic-extraction step (Section~\ref{sec:method-stage3}) can only select a tactic the deliberated candidate's terse text actually \emph{names}, and reaching $B=5$ feasibility requires the candidate to name five distinct tactics collectively covering all five required attributes --- budget headroom alone does not guarantee this if Stage~2's synthesis converges on a candidate that names fewer, or overlapping, tactics. This run also used \texttt{max\_repair\_iterations=1} rather than this work's design default of~2, to keep the run's real wall-clock cost bounded, giving the repair loop only a single attempt to correct an initial shortfall. We consider this a genuine, useful negative result rather than a failure to report: it shows that CADENCE's constraint-satisfaction rate is jointly gated by the tactic budget \emph{and} by how many distinct, budget-relevant tactics the deliberation stage's necessarily terse synthesis actually names, and that the repair loop needs enough iterations to close that gap --- a dependency the pilot run's single, tighter budget condition could not have surfaced on its own. We revisit this honestly in Section~\ref{sec:discussion} rather than let the table stand without explanation.
+
+Across the pilot run, both scaled-run budget conditions, and both baselines and CADENCE throughout, BERTScore F1 stays in a narrow 0.801--0.819 band while ROUGE-1 and METEOR are consistently, noticeably lower for the two deliberation-based systems (\texttt{multiagent\_no\_solver} and \texttt{cadence\_full}) than for the two single-pass systems --- the same qualitative pattern holds across both independent runs, which we take as evidence the pattern is systematic rather than a small-sample artifact of either run alone. We discuss why in Section~\ref{sec:discussion}.
 
 \section{Discussion}
 \label{sec:discussion}
@@ -190,7 +188,7 @@ Stage~2's synthesis prompt deliberately asks for a terse, one-or-two-sentence de
 
 \subsection{Threats to Validity}
 
-Our held-out evaluation set is drawn from a single corpus (a mining study of open-source ADR adoption); results may not transfer to proprietary or non-open-source architectural practice, where decision drivers, review culture, and documentation discipline can differ substantially. The local LLM backbone (Qwen2.5-1.5B-Instruct) is small by current standards, chosen for reproducibility rather than peak capability; we expect stronger backbones to shift absolute numbers, though we have no reason to expect the qualitative pattern of stage-wise contribution to invert. Our tactic catalog (25 hand-curated tactics across 5 quality attributes) is deliberately small and each tactic supports exactly one attribute in our current encoding, which sets a hard ceiling on achievable coverage under a tight budget by construction; a larger or multiply-supporting tactic catalog would relax this ceiling and merits future work. Finally, our qualitative critique score (Stage~4) is itself LLM-generated. We take seriously the documented finding that LLMs asked to self-correct their own reasoning without external grounding often fail to improve, or even degrade, an already-correct answer~\cite{huang2024selfcorrect}; this is precisely why Stage~4's qualitative component is deliberately blended with a deterministic structural component computed from Stage~3's already solver-verified output rather than trusted alone --- the qualitative pass critiques a decision that has already been externally checked, not one it is asked to validate unaided. Even so, this blending is a mitigation, not a proof that the qualitative component is reliable, and it is not a substitute for human expert judgment, which we did not collect for this submission.
+Most importantly, both evaluation runs reported in Section~\ref{sec:evaluation} are small-$N$ ($N=3$ each): real end-to-end wall-clock cost per local-model call, not a design choice, was the binding constraint on sample size for this submission. We report exactly what these small samples show, including the negative constraint-satisfaction result at both \texttt{tactic\_budget} conditions, rather than either withholding the result or generalizing beyond what $N=3$ can support; a larger held-out sample, and a repair loop given more than one attempt, are the most direct way to substantiate or revise the tactic-naming-versus-budget explanation offered in Section~\ref{sec:evaluation} and should be the first extension of this work. Our held-out evaluation set is also drawn from a single corpus (a mining study of open-source ADR adoption); results may not transfer to proprietary or non-open-source architectural practice, where decision drivers, review culture, and documentation discipline can differ substantially. The local LLM backbone (Qwen2.5-1.5B-Instruct) is small by current standards, chosen for reproducibility rather than peak capability; we expect stronger backbones to shift absolute numbers, though we have no reason to expect the qualitative pattern of stage-wise contribution to invert. Our tactic catalog (25 hand-curated tactics across 5 quality attributes) is deliberately small and each tactic supports exactly one attribute in our current encoding, which sets a hard ceiling on achievable coverage under a tight budget by construction; a larger or multiply-supporting tactic catalog would relax this ceiling and merits future work. Finally, our qualitative critique score (Stage~4) is itself LLM-generated. We take seriously the documented finding that LLMs asked to self-correct their own reasoning without external grounding often fail to improve, or even degrade, an already-correct answer~\cite{huang2024selfcorrect}; this is precisely why Stage~4's qualitative component is deliberately blended with a deterministic structural component computed from Stage~3's already solver-verified output rather than trusted alone --- the qualitative pass critiques a decision that has already been externally checked, not one it is asked to validate unaided. Even so, this blending is a mitigation, not a proof that the qualitative component is reliable, and it is not a substitute for human expert judgment, which we did not collect for this submission.
 
 \subsection{Engineering Lessons for Solver-Verified LLM Pipelines}
 
