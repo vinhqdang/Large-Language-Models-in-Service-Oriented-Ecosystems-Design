@@ -18,17 +18,60 @@ decision-making in service-oriented architectures.
 
 Full design: `docs/superpowers/specs/2026-08-25-cadence-adr-algorithm-design.md`
 
-## Status: manuscript is content-complete — citations verified, scaled results in hand
+## Status: manuscript is reviewed, fact-checked, and content-complete
 
-`manuscript/cadence.tex` compiles clean with `pdflatex` (8 pages, well
+`manuscript/cadence.tex` compiles clean with `pdflatex` (10 pages, well
 under the 14-page CFP limit) with all six sections written against the
 real implementation and real results — Introduction, Related Work
 (all 27 bibliography entries are real, individually web-verified
-DOI/arXiv-confirmed references, no placeholders), Method (all 4 stages,
-formalized precisely against `src/`, including the Z3
-lexicographic-vs-weighted-sum fix and the format-deviation robustness
-finding), Evaluation (real N=3 pilot + real N=3 two-budget scaled
-results — see below), Discussion, and Conclusion.
+DOI/arXiv-confirmed references; includes a system-comparison table
+against the three closest prior systems), Method (all 4 stages,
+formalized precisely against `src/`, with a TikZ pipeline diagram and
+formal Algorithm~1 pseudocode alongside the prose), Evaluation (real
+N=3 pilot + real N=3 two-budget scaled results, verified drawn from
+two genuinely disjoint held-out samples — see below), Discussion, and
+Conclusion.
+
+**Two independent review agents (technical-accuracy + academic-writing
+quality) read the full compiled PDF and found real, fixable issues —
+all addressed and re-verified, not just noted:**
+- Technical review caught and I independently re-verified: the tactic
+  catalog is 26 tactics (5/6/5/5/5 split), not 25 evenly split; the
+  corpus is 882 repos (mean 7.00 files/repo), not 883/6.76; Stage 2's
+  deliberation prompts never actually receive the knowledge graph's
+  trade-off edges (only `supports` edges — trade-offs are consumed
+  downstream by Stage 3/4), so the manuscript's claim was softened to
+  match; the critique parser is 3 tiers / 6 real deviations, not 2/5;
+  a ROUGE-1 divergence figure was ~2x too high; and — the most
+  consequential finding — **`scripts/run_evaluation.py` (pilot) and
+  `scripts/run_evaluation_scaled.py` (scaled) both silently used
+  `sample_test_set`'s hardcoded `seed=42` default, so Table II and
+  Table III were scoring the identical 3 held-out items, not
+  independent samples**, undermining the "pattern holds across
+  independent runs" claim. Fixed by making `seed` a required parameter
+  on `run_evaluation_scaled_script` (no silent default — the review
+  flagged that a second hardcoded-default literal would just relocate
+  the same risk) and re-running with `seed=43` to get a genuinely
+  disjoint sample; the same qualitative pattern (flat BERTScore,
+  diverging ROUGE/METEOR, 0% constraint-satisfaction at both budgets)
+  reproduced almost exactly on the new, verified-disjoint data —
+  strengthening rather than undermining the paper's claim once it was
+  actually true.
+- Academic-writing review (acting as a skeptical IEEE TSC reviewer,
+  verdict: Major Revision) found real structural gaps — no pipeline
+  diagram, no algorithm block, no related-work comparison table, and
+  the abstract not disclosing the N=3 sample-size constraint — all
+  added/fixed. It also correctly flagged that Contribution 2's
+  "empirically-validated" language oversold relative to a 0%
+  constraint-satisfaction result; reframed to state plainly that
+  feasibility-in-practice is an open question this submission reports
+  a diagnosed negative result on, not a validated positive one.
+- **A methodology lesson worth remembering**: while fixing the seed
+  bug, my own "full test suite passes" check was wrong once — `conda
+  run`'s wrapper reported exit code 0 even though pytest's own summary
+  line said "1 failed, 2 passed". Always read the actual pytest
+  summary text (`N passed`/`N failed`), never trust the wrapper's exit
+  code alone, especially through `conda run`.
 
 **The scaled evaluation run (`scripts/run_evaluation_scaled.py` /
 `run_multi_budget_evaluation`) is real but smaller-N than originally
@@ -89,7 +132,13 @@ states this plainly: budget headroom alone doesn't guarantee
 feasibility here — the deliberation stage's tactic-naming behavior and
 the repair budget both gate it, and a follow-up run with
 `max_repair_iterations=2` (the design default) and/or a larger `k`
-would be a natural next real-data point if time allows.
+would be a natural next real-data point if time allows. **This finding
+reproduced almost exactly on the later, genuinely-disjoint-sample
+re-run (`seed=43`, see the review-fixes section above)** — same 0%
+constraint-satisfaction rate at both budgets, same flat-BERTScore/
+diverging-ROUGE-METEOR pattern — which is real evidence the pattern is
+systematic rather than a one-sample artifact, though still only on
+$N=3$ per sample.
 `data/processed/evaluation_results_scaled.json` holds the raw numbers
 (committed).
 
@@ -186,7 +235,7 @@ since they're superseded by what follows.
 - `src/evaluation/harness.py` — `run_evaluation(...) -> EvaluationReport` — **the evaluation harness entry point**: runs all four systems per held-out item, batches metrics per system.
 - `scripts/run_evaluation.py` — the real evaluation script — see the real N=3 numbers above.
 - `data/corpus_inventory.json`, `data/README.md` — corpus provenance + `processed/` schema docs.
-- 139 tests passing (`conda run -n py313 pytest -q`).
+- 140 tests passing (`conda run -n py313 pytest -q` — **verify by reading the actual "N passed" summary line, not just the exit code**; `conda run`'s wrapper has been observed reporting exit 0 even when pytest itself reported a real failure).
 
 **What is NOT in the repo (gitignored, regenerate locally if ever needed —
 normal work should not need to):**
@@ -221,35 +270,44 @@ derived from Buchgeher et al.'s MSR study (IEEE Access, DOI [10.1109/ACCESS.2023
 
 ## Next step
 
-1. **Update `manuscript/cadence.tex`'s Evaluation/Discussion sections
-   with the real N=3 two-budget scaled numbers** in
-   `data/processed/evaluation_results_scaled.json` (see "Status" above
-   for the honest interpretation of the 0%-feasibility-at-both-budgets
-   result — write it up as the real, explicable finding it is, not
-   adjusted toward what was originally speculated). Re-run `pdflatex`
-   twice from `manuscript/` after editing, and re-check the page count
-   is still ≤14.
-2. **Optional, if time/execution-window allows:** re-run
-   `scripts/run_evaluation_scaled.py` with a larger N and/or the design
-   defaults (`k=3, max_rounds=2, max_repair_iterations=2`) to get a
-   more statistically meaningful sample and a better chance of observing
-   `cadence_full` actually reaching `is_feasible=True` at the achievable
-   budget — see the "background-task duration limit" Environment note
-   above before attempting this; budget real wall-clock time (a
-   `k=1,max_rounds=1,max_repair_iterations=1` config took ~48 min for
-   N=3 at two budgets) and consider running it somewhere without that
-   apparent cap rather than in this harness's background bash tool.
-3. **`run_cadence_no_critique` (the "no self-critique but has solver"
+The manuscript has been through one full review-and-fix cycle
+(technical-accuracy + academic-writing agents, see "Status" above) and
+all findings from that round are addressed and committed. What's
+genuinely still open:
+
+1. **Optional, if a future session has a longer execution window:**
+   re-run `scripts/run_evaluation_scaled.py` with a larger N and/or the
+   design defaults (`k=3, max_rounds=2, max_repair_iterations=2`) —
+   both the technical and academic reviews independently flagged $N=3$
+   (six items total across both tables) as underpowered for the
+   "systematic pattern" and "empirically validated" claims, even though
+   those claims are now honestly hedged rather than overstated. A
+   larger sample and a `max_repair_iterations=2` run are the most
+   direct way to actually settle (not just diagnose) whether
+   `cadence_full` can reach `is_feasible=True` at an achievable budget.
+   See the "background-task duration limit" Environment note below
+   before attempting a much bigger run in this harness's background
+   bash tool — a `k=1,max_rounds=1,max_repair_iterations=1` config
+   took ~46-48 min for N=3 at two budgets each of the two times it
+   completed; call `run_evaluation_scaled_script(..., seed=<something
+   not 42 or 43>)` for a third independent sample if replicating again.
+2. **`run_cadence_no_critique` (the "no self-critique but has solver"
    ablation, spec §5) is implemented and tested but not wired into
    `run_multi_budget_evaluation`'s system list** — available for a
    future evaluation run if the paper wants that specific extra
    comparison point; not included in the real scaled numbers above.
-4. Full read-through for flow/storytelling quality, then spawn a review
-   agent (or ARS's `academic-paper-reviewer`-style agents) against the
-   complete draft before treating it as final, per the project's
-   standing "spawn agents to review the manuscript" requirement — this
-   has not been done yet; every review agent used so far has reviewed
-   individual code changes, not the manuscript prose itself.
+3. **Another review pass, if time allows before the 31 Oct 2026
+   deadline**, ideally by a human co-author or a fresh review agent
+   given the now-updated draft — the two agents used so far reviewed
+   the pre-fix draft; nothing has re-checked the post-fix version for
+   new issues the fixes themselves might have introduced (e.g. read
+   through Sections II and III once more for flow now that a table,
+   figure, and algorithm block have been inserted).
+4. One LOW-confidence item from the technical review, not yet chased:
+   confirm MAAD's exact agent role names ("Analyst, Modeler, Designer,
+   Evaluator") directly against the paper's actual text (arXiv:2507.21382)
+   rather than a search snippet, before treating Table I's characterization
+   of MAAD as fully verified.
 
 Note on tooling: `academic-pipeline`'s full 10-stage orchestrator
 (`/ars-full`) was evaluated for this manuscript and deliberately **not**
