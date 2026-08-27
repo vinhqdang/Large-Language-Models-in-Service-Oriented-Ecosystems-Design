@@ -3,7 +3,7 @@ score against ground truth, produce a comparison report.
 """
 from dataclasses import dataclass
 
-from src.evaluation.metrics import MetricScores, average_scores, compute_corpus_metrics
+from src.evaluation.metrics import MetricScores, average_scores, compute_corpus_metrics, load_bertscorer
 from src.evaluation.systems import (
     run_cadence_full, run_multiagent_no_solver, run_retrieval_only, run_zero_shot,
 )
@@ -25,9 +25,9 @@ class EvaluationReport:
     n_items: int
 
 
-def _build_system_report(system_name: str, outputs: list, references: list[str]) -> SystemReport:
+def _build_system_report(system_name: str, outputs: list, references: list[str], scorer) -> SystemReport:
     generated = [o.generated_text for o in outputs]
-    scores = compute_corpus_metrics(generated, references)
+    scores = compute_corpus_metrics(generated, references, scorer=scorer)
     feasibilities = [o.is_feasible for o in outputs if o.is_feasible is not None]
     repairs = [o.repair_iterations for o in outputs if o.repair_iterations is not None]
     return SystemReport(
@@ -88,6 +88,7 @@ def run_evaluation(
     max_repair_iterations: int = 2,
 ) -> EvaluationReport:
     references = [r.raw_text for r in test_records]
+    scorer = load_bertscorer()  # load once, reuse across every system report below
     baseline_outputs = _run_baseline_systems(test_records, retriever, client, graph, quality_attributes, k, max_rounds)
     cadence_outputs = _run_cadence_system(
         test_records, retriever, client, graph, tactics, quality_attributes,
@@ -96,7 +97,7 @@ def run_evaluation(
     outputs_by_system = {**baseline_outputs, "cadence_full": cadence_outputs}
 
     system_reports = [
-        _build_system_report(system_name, outputs, references)
+        _build_system_report(system_name, outputs, references, scorer)
         for system_name, outputs in outputs_by_system.items()
     ]
     return EvaluationReport(system_reports=system_reports, n_items=len(test_records))
@@ -122,9 +123,10 @@ def run_multi_budget_evaluation(
     redundant LLM calls, not a fairer comparison.
     """
     references = [r.raw_text for r in test_records]
+    scorer = load_bertscorer()  # load once, reuse across every system report below
     baseline_outputs = _run_baseline_systems(test_records, retriever, client, graph, quality_attributes, k, max_rounds)
     baseline_reports = [
-        _build_system_report(system_name, outputs, references)
+        _build_system_report(system_name, outputs, references, scorer)
         for system_name, outputs in baseline_outputs.items()
     ]
 
@@ -134,7 +136,7 @@ def run_multi_budget_evaluation(
             test_records, retriever, client, graph, tactics, quality_attributes,
             k, max_rounds, budget, max_repair_iterations,
         )
-        cadence_report = _build_system_report("cadence_full", cadence_outputs, references)
+        cadence_report = _build_system_report("cadence_full", cadence_outputs, references, scorer)
         reports_by_budget[budget] = EvaluationReport(
             system_reports=baseline_reports + [cadence_report], n_items=len(test_records)
         )
