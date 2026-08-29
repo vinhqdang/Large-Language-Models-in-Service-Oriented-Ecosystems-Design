@@ -5,10 +5,10 @@
       {
         "system_name": "zero_shot",
         "average_scores": {
-          "bertscore_f1": 0.8254404465357462,
-          "bleu": 3.213478323525287,
-          "rouge1_f": 0.27599009314596457,
-          "meteor": 0.21045208863132248
+          "bertscore_f1": 0.8243644038836161,
+          "bleu": 4.237533118030014,
+          "rouge1_f": 0.3002850882686441,
+          "meteor": 0.25191051591010954
         },
         "feasibility_rate": null,
         "average_repair_iterations": null
@@ -16,10 +16,10 @@
       {
         "system_name": "retrieval_only",
         "average_scores": {
-          "bertscore_f1": 0.8162766695022583,
-          "bleu": 3.0962299691783386,
-          "rouge1_f": 0.31667479889791456,
-          "meteor": 0.2261343102127997
+          "bertscore_f1": 0.8125784595807394,
+          "bleu": 3.759500168123401,
+          "rouge1_f": 0.31167656437379393,
+          "meteor": 0.2380152677591342
         },
         "feasibility_rate": null,
         "average_repair_iterations": null
@@ -27,24 +27,35 @@
       {
         "system_name": "multiagent_no_solver",
         "average_scores": {
-          "bertscore_f1": 0.8078292806943258,
-          "bleu": 0.644587185072888,
-          "rouge1_f": 0.18981415415725947,
-          "meteor": 0.08952887431550714
+          "bertscore_f1": 0.8117432594299316,
+          "bleu": 0.42577037518241956,
+          "rouge1_f": 0.17850688708338266,
+          "meteor": 0.09074041263004838
         },
         "feasibility_rate": null,
         "average_repair_iterations": null
       },
       {
-        "system_name": "cadence_full",
+        "system_name": "cadence_no_critique",
         "average_scores": {
-          "bertscore_f1": 0.8108271757761637,
-          "bleu": 0.7022174574653577,
-          "rouge1_f": 0.19486402799705535,
-          "meteor": 0.08605734331616229
+          "bertscore_f1": 0.7970594763755798,
+          "bleu": 0.4408776187612477,
+          "rouge1_f": 0.17370729880572178,
+          "meteor": 0.09187706794140034
         },
         "feasibility_rate": 0.0,
-        "average_repair_iterations": 1.0
+        "average_repair_iterations": 2.0
+      },
+      {
+        "system_name": "cadence_full",
+        "average_scores": {
+          "bertscore_f1": 0.8055506149927775,
+          "bleu": 1.0407794897529126,
+          "rouge1_f": 0.19848810183758933,
+          "meteor": 0.10032157809135739
+        },
+        "feasibility_rate": 0.0,
+        "average_repair_iterations": 2.0
       }
     ]
   },
@@ -54,10 +65,10 @@
       {
         "system_name": "zero_shot",
         "average_scores": {
-          "bertscore_f1": 0.8254404465357462,
-          "bleu": 3.213478323525287,
-          "rouge1_f": 0.27599009314596457,
-          "meteor": 0.21045208863132248
+          "bertscore_f1": 0.8243644038836161,
+          "bleu": 4.237533118030014,
+          "rouge1_f": 0.3002850882686441,
+          "meteor": 0.25191051591010954
         },
         "feasibility_rate": null,
         "average_repair_iterations": null
@@ -65,10 +76,10 @@
       {
         "system_name": "retrieval_only",
         "average_scores": {
-          "bertscore_f1": 0.8162766695022583,
-          "bleu": 3.0962299691783386,
-          "rouge1_f": 0.31667479889791456,
-          "meteor": 0.2261343102127997
+          "bertscore_f1": 0.8125784595807394,
+          "bleu": 3.759500168123401,
+          "rouge1_f": 0.31167656437379393,
+          "meteor": 0.2380152677591342
         },
         "feasibility_rate": null,
         "average_repair_iterations": null
@@ -76,24 +87,35 @@
       {
         "system_name": "multiagent_no_solver",
         "average_scores": {
-          "bertscore_f1": 0.8078292806943258,
-          "bleu": 0.644587185072888,
-          "rouge1_f": 0.18981415415725947,
-          "meteor": 0.08952887431550714
+          "bertscore_f1": 0.8117432594299316,
+          "bleu": 0.42577037518241956,
+          "rouge1_f": 0.17850688708338266,
+          "meteor": 0.09074041263004838
         },
         "feasibility_rate": null,
         "average_repair_iterations": null
       },
       {
-        "system_name": "cadence_full",
+        "system_name": "cadence_no_critique",
         "average_scores": {
-          "bertscore_f1": 0.811853845914205,
-          "bleu": 1.3033153303642082,
-          "rouge1_f": 0.2022125242973989,
-          "meteor": 0.10015085199586271
+          "bertscore_f1": 0.8045611182848612,
+          "bleu": 0.43038317559449163,
+          "rouge1_f": 0.17360010670210121,
+          "meteor": 0.08664666107870683
         },
         "feasibility_rate": 0.0,
-        "average_repair_iterations": 1.0
+        "average_repair_iterations": 2.0
+      },
+      {
+        "system_name": "cadence_full",
+        "average_scores": {
+          "bertscore_f1": 0.8017288247744242,
+          "bleu": 1.566985321558574,
+          "rouge1_f": 0.18600777487613449,
+          "meteor": 0.10418857985808948
+        },
+        "feasibility_rate": 0.0,
+        "average_repair_iterations": 2.0
       }
     ]
   }
