@@ -4,6 +4,7 @@
 \usepackage{algorithm}
 \usepackage{array}
 \usepackage{booktabs}
+\usepackage{multirow}
 \usepackage[caption=false,font=normalsize,labelfont=sf,textfont=sf]{subfig}
 \usepackage{textcomp}
 \usepackage{stfloats}
@@ -11,7 +12,9 @@
 \usepackage{graphicx}
 \usepackage{cite}
 \usepackage{tikz}
-\usetikzlibrary{arrows.meta, positioning}
+\usetikzlibrary{arrows.meta, positioning, shapes.geometric}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
 \hyphenation{op-tical net-works semi-conduc-tor IEEE-Xplore}
 
 \begin{document}
@@ -163,7 +166,88 @@ Stage 1 embeds the decision context $c$ with a sentence-embedding model and retr
 
 \subsection{Stage 2: Knowledge-Graph-Grounded Multi-Agent Deliberation}
 
-Stage 2 instantiates one \texttt{QualityAttributeAgent} per required quality attribute in $Q$. Each agent is grounded in a knowledge graph $G$ built from a hand-curated catalog of 26 architectural tactics spanning the five quality attributes (5 or 6 tactics per attribute), where each tactic node has a directed \emph{supports} edge to the quality attribute it primarily serves and directed \emph{trade-off} edges, annotated with a natural-language explanation, to every other quality attribute it is known to burden --- for instance, \emph{caching} supports \emph{performance} but trades off against \emph{maintainability} via cache-invalidation complexity, and \emph{authentication} supports \emph{security} but trades off against both \emph{performance} (per-request verification latency) and \emph{cost\_operability} (identity-infrastructure upkeep). Given the decision context and Stage~1's retrieved precedents, each agent proposes a candidate decision serving its own attribute using $G$'s \emph{supports} edges to select from its attribute's own tactic vocabulary, and may critique the candidates proposed by other agents; $G$'s \emph{trade-off} edges are consumed downstream, by Stage~3's feasibility optimization and Stage~4's structural utility score, rather than injected directly into Stage~2's agent prompts. Deliberation proceeds for a bounded number of rounds (\texttt{max\_rounds}, an algorithm parameter) after which an orchestrator synthesizes the debate into a single converged candidate decision and rationale.
+Stage 2 instantiates one \texttt{QualityAttributeAgent} per required quality attribute in $Q$. Each agent is grounded in a knowledge graph $G$ built from a hand-curated catalog of 26 architectural tactics spanning the five quality attributes (5 or 6 tactics per attribute; Table~\ref{tab:tactics} lists the full catalog), where each tactic node has a directed \emph{supports} edge to the quality attribute it primarily serves and directed \emph{trade-off} edges, annotated with a natural-language explanation, to every other quality attribute it is known to burden --- for instance, \emph{caching} supports \emph{performance} but trades off against \emph{maintainability} via cache-invalidation complexity, and \emph{authentication} supports \emph{security} but trades off against both \emph{performance} (per-request verification latency) and \emph{cost\_operability} (identity-infrastructure upkeep), as Figure~\ref{fig:kg-excerpt} depicts. Given the decision context and Stage~1's retrieved precedents, each agent proposes a candidate decision serving its own attribute using $G$'s \emph{supports} edges to select from its attribute's own tactic vocabulary, and may critique the candidates proposed by other agents; $G$'s \emph{trade-off} edges are consumed downstream, by Stage~3's feasibility optimization and Stage~4's structural utility score, rather than injected directly into Stage~2's agent prompts. Deliberation proceeds for a bounded number of rounds (\texttt{max\_rounds}, an algorithm parameter) after which an orchestrator synthesizes the debate into a single converged candidate decision and rationale.
+
+\begin{figure}[t]
+\centering
+\begin{tikzpicture}[
+  qa/.style={draw, ellipse, minimum width=1.55cm, minimum height=0.7cm, align=center, font=\small},
+  tac/.style={draw, rounded corners, minimum width=1.6cm, minimum height=0.6cm, align=center, font=\scriptsize},
+  supp/.style={-{Stealth[length=1.8mm]}, thick},
+  trad/.style={-{Stealth[length=1.8mm]}, dashed, thick, gray},
+  node distance=0.55cm and 1.15cm
+]
+\node[qa] (perf) {performance};
+\node[qa, below=1.5cm of perf] (sec) {security};
+\node[qa, right=2.6cm of perf, yshift=-0.75cm] (maint) {maintainability};
+\node[qa, below=0.55cm of maint] (cost) {cost\_\allowbreak operability};
+\node[tac, left=1.1cm of perf, yshift=0.05cm] (caching) {Caching};
+\node[tac, left=1.1cm of sec, yshift=-0.05cm] (auth) {Authentication};
+
+\draw[supp] (caching) -- (perf);
+\draw[trad] (caching) to[bend left=8] (maint);
+\draw[supp] (auth) -- (sec);
+\draw[trad] (auth) to[bend right=10] (perf);
+\draw[trad] (auth) to[bend left=8] (cost);
+\end{tikzpicture}
+\caption{Excerpt of knowledge graph $G$: solid arrows are \emph{supports} edges, dashed gray arrows are \emph{trade-off} edges. Only 2 of the catalog's 26 tactics and 4 of its 5 quality attributes are shown for legibility.\label{fig:kg-excerpt}}
+\end{figure}
+
+\begin{table*}[t]
+\caption{The 26-Tactic Catalog Grounding Stage 2's Knowledge Graph $G$\label{tab:tactics}}
+\centering
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}
+  >{\raggedright\arraybackslash}p{0.42in}
+  >{\raggedright\arraybackslash}p{1.7in}
+  >{\raggedright\arraybackslash}p{2.55in}
+  >{\centering\arraybackslash}p{0.45in}
+@{}}
+\toprule
+QA & Tactic & Primary Effect & \#TOs \\
+\midrule
+\multirow{5}{*}{Perf.}
+ & Caching & Store frequently-accessed results to avoid recomputation or I/O & 1 \\
+ & Connection pooling & Reuse expensive connections instead of opening one per request & 1 \\
+ & Async.\ processing via message queues & Decouple slow work from the request path via a queue & 2 \\
+ & Data denormalization & Duplicate data to avoid expensive joins/cross-service calls & 1 \\
+ & Read-through/write-behind access & Batch or defer writes, prefetch reads & 1 \\
+\midrule
+\multirow{6}{*}{Sec.}
+ & Authentication & Verify caller identity before granting access & 2 \\
+ & Fine-grained authorization & Restrict operations to callers' specific permissions & 1 \\
+ & Encryption in transit/at rest & Protect data from interception or disk-level access & 2 \\
+ & Rate limiting / throttling & Cap load a single caller can place on the system & 1 \\
+ & Least-privilege service boundaries & Give services only needed access, isolate blast radius & 1 \\
+ & Input validation at trust boundaries & Reject malformed/malicious input as early as possible & 1 \\
+\midrule
+\multirow{5}{*}{Maint.}
+ & Modular decomposition by capability & Split system along business boundaries & 2 \\
+ & Versioned API contracts & Evolve boundaries without breaking consumers & 1 \\
+ & Automated regression test suite & Catch behavioral regressions before production & 1 \\
+ & Centralized structured logging & Make system behavior inspectable for debugging & 2 \\
+ & Dependency injection / IoC & Decouple components from concrete dependency impls & 1 \\
+\midrule
+\multirow{5}{*}{Scal.}
+ & Horizontal scaling, stateless instances & Add identical instances instead of growing one & 2 \\
+ & Database sharding & Partition data across DB instances by shard key & 2 \\
+ & Event-driven architecture & Components communicate via events, not sync calls & 2 \\
+ & Auto-scaling infrastructure & Add/remove capacity per observed load automatically & 1 \\
+ & Read replicas & Serve read traffic from replicated data copies & 1 \\
+\midrule
+\multirow{5}{*}{Cost}
+ & Managed cloud services & Use a vendor-operated service instead of self-hosting & 2 \\
+ & Infrastructure as code & Define infrastructure declaratively for reproducibility & 0 \\
+ & Multi-tenancy & Share infrastructure across tenants, not per-tenant & 2 \\
+ & Serverless / FaaS deployment & Pay only for actual invocation time & 2 \\
+ & Circuit breaker for dependencies & Stop calling a failing dependency instead of retrying & 1 \\
+\bottomrule
+\end{tabular}
+
+\vspace{2pt}
+\footnotesize \#TOs: number of \emph{trade-off} edges the tactic carries to other quality attributes in $G$ (0--2 in this catalog); QA: the quality attribute the tactic's \emph{supports} edge targets. Full trade-off targets and natural-language rationale for each edge are in \texttt{src/deliberation/knowledge\_graph.py} (see Data and Code Availability).
+\end{table*}
 
 Synthesis is the stage's most format-fragile step: it asks the underlying LLM to emit a structured \texttt{CANDIDATE}/\texttt{RATIONALE} response that Stage~3 can parse deterministically. In practice, real small-model output deviates from any single expected format in ways a fixed parser cannot fully anticipate in advance (Section~\ref{sec:method-robustness}); the orchestrator therefore retries the same synthesis prompt up to three times on a parse failure before surfacing an error, since generation is stochastic and a differently-sampled retry frequently self-corrects a formatting slip that a hand-written regex extension would not have anticipated.
 
@@ -186,14 +270,59 @@ Stage 4 combines two independently-computed signals into each quality attribute'
 \subsection{Implementation Robustness: Parsing Real, Stochastic LLM Output}
 \label{sec:method-robustness}
 
-A structured-output prompt's hand-written happy-path parser reliably breaks against a real, deployed small language model, and our development process surfaced this repeatedly and concretely rather than as a theoretical concern. Running the full pipeline end-to-end against Qwen2.5-1.5B-Instruct, the reproducible local backbone used throughout this work's experiments, produced six distinct real formatting deviations across Stages~2--4: an extra descriptor word inserted into an otherwise-correct label (``Candidate Decision:'' rather than ``Candidate:''), a non-literal way of saying no weakness was found (``None identified'' rather than the literal string ``none''), a fraction-style score (``8/10'') that turned out to be this particular model's \emph{default} way of answering a stated 0--10 scale rather than an edge case, a prose preamble a loosely-tolerant regex could lock onto in place of the real scored line appearing later in the same response, a genuine word substitution (``Candidacy:'' for ``Candidate:'') that no plausible amount of regex tolerance would have anticipated, and, discovered later during the real scaled evaluation run reported in Section~\ref{sec:evaluation}, an attribute-as-heading response style that states each attribute on its own markdown heading line and the field on a separate, unlabeled line further down (e.g. \texttt{**Performance**} followed, several lines later, by \texttt{**Score:** 9/10} with no attribute name on that line at all). The first four are addressable by a sufficiently tolerant same-line parser; the fifth is not, and its discovery is what motivated this work's general strategy of pairing every structured-output prompt with a bounded retry (two to three attempts) of the identical prompt on a parse failure, rather than continuing to special-case wording variants indefinitely. The sixth shows that strategy's limit: it exhausted all three retry attempts, because it was not a stochastic one-off a differently-sampled retry could route around, but a genuinely different \emph{structure} no same-line pattern, however tolerant, could ever match --- fixing it required a third parser tier (Section~\ref{sec:method-stage4}) that locates an attribute's heading line and then searches only the bounded section up to the next attribute's heading for an unlabeled field. Because generation is stochastic, a differently-sampled retry of the same prompt frequently self-corrects a formatting slip the parser did not anticipate; Stages~2, 3, and 4 all apply this pattern, and it is specifically what resolves the fifth deviation --- tolerant same-line parsing accounts for the first four, and the third parser tier accounts for the sixth. We report this not as a footnote but as a methodological finding in its own right: any system that asks an LLM for structured intermediate output that a downstream deterministic component must consume --- as any solver-verified pipeline necessarily does --- should validate its parser against real, repeated model output before trusting it in an unattended run, should treat bounded retry as the general-purpose fix for wording variation, and should expect that retry alone is not sufficient: a genuinely new structural format, not just a wording variant, will eventually require a genuinely new parser tier, and finding out which one occurred requires actually running the real pipeline, not reasoning about the prompt in advance.
+A structured-output prompt's hand-written happy-path parser reliably breaks against a real, deployed small language model, and our development process surfaced this repeatedly and concretely rather than as a theoretical concern. Running the full pipeline end-to-end against Qwen2.5-1.5B-Instruct, the reproducible local backbone used throughout this work's experiments, produced six distinct real formatting deviations across Stages~2--4, summarized in Table~\ref{tab:deviations}.
+
+\begin{table}[t]
+\caption{Six Real LLM Output-Format Deviations Encountered\label{tab:deviations}}
+\centering
+\footnotesize
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{@{}
+  >{\centering\arraybackslash}p{0.15in}
+  >{\raggedright\arraybackslash}p{1.55in}
+  >{\raggedright\arraybackslash}p{1.65in}
+@{}}
+\toprule
+\# & Deviation & Resolved by \\
+\midrule
+1 & Extra descriptor word (``Candidate Decision:'' for ``Candidate:'') & Tolerant same-line parser \\
+2 & Non-literal ``no weakness'' (``None identified'' for literal ``none'') & Tolerant same-line parser \\
+3 & Fraction-style score (``8/10''), this model's \emph{default} 0--10 answer & Tolerant same-line parser \\
+4 & Prose preamble a loose regex could lock onto instead of the real line & Tolerant same-line parser \\
+5 & Genuine word substitution (``Candidacy:'' for ``Candidate:''), unanticipatable by regex tolerance & Bounded retry (2--3 attempts) \\
+6 & Attribute-as-heading structure: attribute on its own heading line, field unlabeled on a later line & Third parser tier (heading-section fallback) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The first four are addressable by a sufficiently tolerant same-line parser. The fifth is not, and its discovery is what motivated this work's general strategy of pairing every structured-output prompt with a bounded retry (two to three attempts) of the identical prompt on a parse failure, rather than continuing to special-case wording variants indefinitely; because generation is stochastic, a differently-sampled retry frequently self-corrects a formatting slip the parser did not anticipate, and Stages~2, 3, and 4 all apply this pattern. The sixth, discovered later during the real scaled evaluation run reported in Section~\ref{sec:evaluation} (e.g.\ \texttt{**Performance**} followed, several lines later, by \texttt{**Score:** 9/10} with no attribute name on that line at all), shows retry's limit: it exhausted all three attempts, because it was not a stochastic one-off a differently-sampled retry could route around, but a genuinely different \emph{structure} no same-line pattern, however tolerant, could ever match --- fixing it required a third parser tier (Section~\ref{sec:method-stage4}) that locates an attribute's heading line and then searches only the bounded section up to the next attribute's heading for an unlabeled field. We report this not as a footnote but as a methodological finding in its own right: any system that asks an LLM for structured intermediate output that a downstream deterministic component must consume --- as any solver-verified pipeline necessarily does --- should validate its parser against real, repeated model output before trusting it in an unattended run, should treat bounded retry as the general-purpose fix for wording variation, and should expect that retry alone is not sufficient: a genuinely new structural format, not just a wording variant, will eventually require a genuinely new parser tier, and finding out which one occurred requires actually running the real pipeline, not reasoning about the prompt in advance.
 
 \section{Evaluation}
 \label{sec:evaluation}
 
 \subsection{Corpus and Experimental Setup}
 
-We evaluate against the ``Context Matters'' replication package~\cite{contextmatters-zenodo} (Zenodo, DOI:~10.5281/zenodo.18370195), derived from the same mining study that provides Stage~1's retrieval corpus~\cite{buchgeher2023adr}. After parsing, the corpus yields 6{,}173 individual ADR files across 882 repository folders (median 4, mean 7.00, maximum 129 files per repository, confirming the corpus's documented per-repository sparsity). Each folder carries an extraction-confidence status from the package's own \texttt{dataset\_index.json}; we restrict our held-out evaluation set to the 750 folders marked \texttt{Verified}, so that ground-truth quality is not itself a confound. Following this corpus's own upstream precedent --- its companion sub-study is explicitly titled ``ADR Generation from Titles'' --- we construct each held-out query as the record's title (standing in for a stated decision context) and treat the record's full body as ground truth, matching the task formulation the retrieval-only baseline below is itself drawn from.
+We evaluate against the ``Context Matters'' replication package~\cite{contextmatters-zenodo} (Zenodo, DOI:~10.5281/zenodo.18370195), derived from the same mining study that provides Stage~1's retrieval corpus~\cite{buchgeher2023adr}. The package's own \texttt{dataset\_index.json} catalogs 954 repository folders with an extraction-confidence status each (Table~\ref{tab:corpus-status}); after parsing, the 882 folders that contain at least one accessible Markdown file yield 6{,}173 individual ADR files (median 4, mean 7.00, maximum 129 per repository, confirming the corpus's documented per-repository sparsity) --- the remaining 72 catalogued folders have no accessible file at all (\texttt{Repo Inaccessible} or \texttt{Doubt (no repo dir)}) and contribute nothing to either count. We restrict our held-out evaluation set to the 750 folders marked \texttt{Verified}, so that ground-truth quality is not itself a confound.
+
+\begin{table}[t]
+\caption{Corpus Extraction-Confidence Breakdown (\texttt{dataset\_index.json}, 954 catalogued folders)\label{tab:corpus-status}}
+\centering
+\footnotesize
+\begin{tabular}{@{}lc@{}}
+\toprule
+Status & Folders \\
+\midrule
+Verified & 750 \\
+Doubt (name sequence) & 96 \\
+Repo Inaccessible & 40 \\
+Doubt (no repo dir) & 33 \\
+Doubt (missing file) & 30 \\
+Doubt (file contents) & 5 \\
+\midrule
+Total & 954 \\
+\bottomrule
+\end{tabular}
+\end{table} Following this corpus's own upstream precedent --- its companion sub-study is explicitly titled ``ADR Generation from Titles'' --- we construct each held-out query as the record's title (standing in for a stated decision context) and treat the record's full body as ground truth, matching the task formulation the retrieval-only baseline below is itself drawn from.
 
 The retrieval index embeds all 6{,}173 records with a sentence-embedding model (\texttt{all-MiniLM-L6-v2}) into a cosine-similarity nearest-neighbor index; a held-out query record is always excluded from its own retrieval results. The local, reproducible LLM backbone used for deliberation, repair, and critique throughout is Qwen2.5-1.5B-Instruct, run via direct \texttt{AutoModelForCausalLM.generate()} calls under CUDA. We disclose deliberation's two run-time parameters explicitly because they materially affect how Table~\ref{tab:pilot} and Table~\ref{tab:scaled} should be read: the pilot run used $k=2$ retrieved precedents and \texttt{max\_rounds=1}, so every agent's propose round executed but no agent ever critiqued another's candidate; the scaled run used $k=3$ and \texttt{max\_rounds=2}, exercising one full critique round. Table~\ref{tab:pilot}'s \texttt{multiagent\_no\_solver} and \texttt{cadence\_full} columns therefore reflect propose-only deliberation, not adversarial debate between agents.
 
@@ -263,7 +392,34 @@ Table~\ref{tab:pilot} and Table~\ref{tab:scaled} draw on two genuinely disjoint 
 
 \subsection{The BERTScore-versus-Surface-Overlap Asymmetry}
 
-Stage~2's synthesis prompt deliberately asks for a terse, one-or-two-sentence decision plus a one-paragraph rationale, so that Stages~3 and 4 can parse it reliably as a structured intermediate representation --- not because a terse decision is a better decision, but because a downstream constraint solver cannot reason about open-ended prose. The \texttt{zero\_shot} and \texttt{retrieval\_only} baselines, by contrast, are prompted for open-ended ``write an ADR'' output, which is closer in length and register to the real, often substantially longer, reference ADR bodies that ROUGE-1 and METEOR reward via n-gram and word overlap. This is a length and register mismatch introduced by our own prompt design choices, not a difference in decision quality, and Table~\ref{tab:pilot}'s numbers show it plainly: BERTScore, a semantic-similarity metric computed over contextual embeddings rather than surface token overlap, is comparatively insensitive to this mismatch and remains within 0.02 across all four systems, while ROUGE-1 and METEOR diverge by as much as 0.08 and 0.14 respectively between the shortest and longest-output systems. We consider BERTScore the fairer metric for comparing CADENCE against baselines under this evaluation design, and we flag this explicitly rather than let a reader infer a quality gap from ROUGE/METEOR alone that the underlying decisions do not actually exhibit. We believe this asymmetry is not specific to CADENCE: any structured, multi-stage LLM pipeline whose intermediate representation is deliberately concise --- for parseability, for solver-compatibility, or for any reason other than matching a free-text reference's length --- will be penalized by surface n-gram metrics relative to a single-pass system prompted for open-ended prose, independent of whether the structured pipeline's underlying decision is better, worse, or equivalent. Evaluations of future solver-verified or otherwise structured-output LLM pipelines should report a semantic-similarity metric alongside, not instead of, surface overlap metrics for exactly this reason.
+Stage~2's synthesis prompt deliberately asks for a terse, one-or-two-sentence decision plus a one-paragraph rationale, so that Stages~3 and 4 can parse it reliably as a structured intermediate representation --- not because a terse decision is a better decision, but because a downstream constraint solver cannot reason about open-ended prose. The \texttt{zero\_shot} and \texttt{retrieval\_only} baselines, by contrast, are prompted for open-ended ``write an ADR'' output, which is closer in length and register to the real, often substantially longer, reference ADR bodies that ROUGE-1 and METEOR reward via n-gram and word overlap. This is a length and register mismatch introduced by our own prompt design choices, not a difference in decision quality, and Table~\ref{tab:pilot}'s numbers show it plainly (Figure~\ref{fig:metric-asymmetry} plots them): BERTScore, a semantic-similarity metric computed over contextual embeddings rather than surface token overlap, is comparatively insensitive to this mismatch and remains within 0.02 across all four systems, while ROUGE-1 and METEOR diverge by as much as 0.08 and 0.14 respectively between the shortest and longest-output systems. We consider BERTScore the fairer metric for comparing CADENCE against baselines under this evaluation design, and we flag this explicitly rather than let a reader infer a quality gap from ROUGE/METEOR alone that the underlying decisions do not actually exhibit.
+
+\begin{figure}[t]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+    ybar,
+    bar width=6pt,
+    width=\columnwidth,
+    height=4.3cm,
+    ylabel={Score},
+    symbolic x coords={zero-shot,retrieval-only,no-solver,cadence-full},
+    xtick=data,
+    x tick label style={font=\scriptsize},
+    ymin=0, ymax=0.95,
+    legend style={font=\scriptsize, at={(0.5,1.18)}, anchor=north, legend columns=-1, /tikz/every even column/.append style={column sep=6pt}},
+    enlarge x limits=0.22,
+    axis lines*=left,
+    tick label style={font=\scriptsize},
+]
+\addplot coordinates {(zero-shot,0.810) (retrieval-only,0.819) (no-solver,0.805) (cadence-full,0.801)};
+\addplot coordinates {(zero-shot,0.220) (retrieval-only,0.216) (no-solver,0.143) (cadence-full,0.138)};
+\addplot coordinates {(zero-shot,0.244) (retrieval-only,0.250) (no-solver,0.111) (cadence-full,0.102)};
+\legend{BERTScore F1, ROUGE-1 F1, METEOR}
+\end{axis}
+\end{tikzpicture}
+\caption{Pilot run (Table~\ref{tab:pilot}): BERTScore F1 stays flat across all four systems while ROUGE-1 and METEOR drop sharply for the two deliberation-based systems (\texttt{no-solver} = \texttt{multiagent\_no\_solver}) --- the length/register mismatch this section discusses, not a quality gap.\label{fig:metric-asymmetry}}
+\end{figure} We believe this asymmetry is not specific to CADENCE: any structured, multi-stage LLM pipeline whose intermediate representation is deliberately concise --- for parseability, for solver-compatibility, or for any reason other than matching a free-text reference's length --- will be penalized by surface n-gram metrics relative to a single-pass system prompted for open-ended prose, independent of whether the structured pipeline's underlying decision is better, worse, or equivalent. Evaluations of future solver-verified or otherwise structured-output LLM pipelines should report a semantic-similarity metric alongside, not instead of, surface overlap metrics for exactly this reason.
 
 \subsection{Threats to Validity}
 
