@@ -1,15 +1,19 @@
-"""Verification run: does giving Stage 3's repair loop its full design
-budget (max_repair_iterations=2) change the scaled evaluation's 0%
-constraint-satisfaction finding, holding everything else constant?
+"""Extended scaled evaluation run, two deliberate additions over the
+committed `data/processed/evaluation_results_scaled.json` (Table III):
 
-This deliberately changes exactly one parameter relative to the committed
-`data/processed/evaluation_results_scaled.json` (Table III): the same
+1. max_repair_iterations=2 (the design default) instead of 1, to test
+   whether giving Stage 3's repair loop its full budget changes the 0%
+   constraint-satisfaction finding.
+2. `cadence_no_critique` (Stages 1-3 only, no Stage 4) now participates
+   per budget alongside `cadence_full`, properly isolating Stage 4's
+   (self-critique) marginal contribution -- something no baseline in
+   Table III's system set did (`multiagent_no_solver` removes Stage 3
+   *and* 4 together).
+
+Both additions are independent of each other (neither confounds the
+other's interpretation) and everything else is held constant: the same
 seed=43 held-out sample, the same k=3/max_rounds=2, the same two
-tactic_budget conditions (5, 2) -- only max_repair_iterations goes from 1
-to 2 (the design default). Isolating one variable at a time is what lets
-any change in the result be attributed to the repair budget specifically,
-rather than confounded with a different sample or a different
-deliberation configuration.
+tactic_budget conditions (5, 2).
 
 Writes to a SEPARATE results file (not overwriting evaluation_results_scaled.json,
 which Table III is built from) and checkpoints after each tactic_budget

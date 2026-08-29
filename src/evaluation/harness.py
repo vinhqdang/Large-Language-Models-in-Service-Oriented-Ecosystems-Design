@@ -6,7 +6,7 @@ from typing import Callable
 
 from src.evaluation.metrics import MetricScores, average_scores, compute_corpus_metrics, load_bertscorer
 from src.evaluation.systems import (
-    run_cadence_full, run_multiagent_no_solver, run_retrieval_only, run_zero_shot,
+    run_cadence_full, run_cadence_no_critique, run_multiagent_no_solver, run_retrieval_only, run_zero_shot,
 )
 from src.retrieval.records import ADRRecord
 from src.retrieval.retriever import Retriever
@@ -68,6 +68,23 @@ def _run_cadence_system(
     for record in test_records:
         outputs.append(
             run_cadence_full(
+                record.title, retriever, record.record_id, client, graph, tactics, quality_attributes,
+                k=k, max_rounds=max_rounds, tactic_budget=tactic_budget,
+                max_repair_iterations=max_repair_iterations,
+            )
+        )
+    return outputs
+
+
+def _run_cadence_no_critique_system(
+    test_records: list[ADRRecord], retriever: Retriever, client, graph, tactics,
+    quality_attributes: tuple[str, ...], k: int, max_rounds: int, tactic_budget: int,
+    max_repair_iterations: int,
+) -> list:
+    outputs = []
+    for record in test_records:
+        outputs.append(
+            run_cadence_no_critique(
                 record.title, retriever, record.record_id, client, graph, tactics, quality_attributes,
                 k=k, max_rounds=max_rounds, tactic_budget=tactic_budget,
                 max_repair_iterations=max_repair_iterations,
@@ -139,13 +156,21 @@ def run_multi_budget_evaluation(
 
     reports_by_budget: dict[int, EvaluationReport] = {}
     for budget in tactic_budgets:
+        # Both cadence_no_critique and cadence_full include Stage 3
+        # (solver+repair), so -- unlike the three budget-independent
+        # baselines above -- both must be re-run per budget, not shared.
+        no_critique_outputs = _run_cadence_no_critique_system(
+            test_records, retriever, client, graph, tactics, quality_attributes,
+            k, max_rounds, budget, max_repair_iterations,
+        )
+        no_critique_report = _build_system_report("cadence_no_critique", no_critique_outputs, references, scorer)
         cadence_outputs = _run_cadence_system(
             test_records, retriever, client, graph, tactics, quality_attributes,
             k, max_rounds, budget, max_repair_iterations,
         )
         cadence_report = _build_system_report("cadence_full", cadence_outputs, references, scorer)
         report = EvaluationReport(
-            system_reports=baseline_reports + [cadence_report], n_items=len(test_records)
+            system_reports=baseline_reports + [no_critique_report, cadence_report], n_items=len(test_records)
         )
         reports_by_budget[budget] = report
         if on_budget_complete is not None:

@@ -105,7 +105,7 @@ def test_run_evaluation_scaled_script_requires_seed_and_produces_a_disjoint_samp
     )
 
     assert reports_by_budget[5].n_items == 3
-    assert len(reports_by_budget[5].system_reports) == 4
+    assert len(reports_by_budget[5].system_reports) == 5
 
 
 def test_run_evaluation_scaled_script_passes_through_on_budget_complete(tmp_path, monkeypatch):
@@ -188,5 +188,5 @@ def test_reports_to_json_round_trips_via_dataclasses_asdict(tmp_path, monkeypatc
     assert set(serialized.keys()) == {"3"}
     assert serialized["3"]["n_items"] == 1
     assert {sr["system_name"] for sr in serialized["3"]["system_reports"]} == {
-        "zero_shot", "retrieval_only", "multiagent_no_solver", "cadence_full",
+        "zero_shot", "retrieval_only", "multiagent_no_solver", "cadence_no_critique", "cadence_full",
     }

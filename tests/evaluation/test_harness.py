@@ -80,16 +80,17 @@ def test_run_multi_budget_evaluation_runs_baselines_once_across_budgets(monkeypa
     for budget, report in reports.items():
         assert report.n_items == 1
         assert {r.system_name for r in report.system_reports} == {
-            "zero_shot", "retrieval_only", "multiagent_no_solver", "cadence_full",
+            "zero_shot", "retrieval_only", "multiagent_no_solver", "cadence_no_critique", "cadence_full",
         }
         cadence_report = next(r for r in report.system_reports if r.system_name == "cadence_full")
         assert cadence_report.feasibility_rate is not None
 
+    per_budget_systems = {"cadence_no_critique", "cadence_full"}
     baselines_at_budget_2 = {
-        r.system_name: r for r in reports[2].system_reports if r.system_name != "cadence_full"
+        r.system_name: r for r in reports[2].system_reports if r.system_name not in per_budget_systems
     }
     baselines_at_budget_5 = {
-        r.system_name: r for r in reports[5].system_reports if r.system_name != "cadence_full"
+        r.system_name: r for r in reports[5].system_reports if r.system_name not in per_budget_systems
     }
     assert baselines_at_budget_2 == baselines_at_budget_5
 
@@ -118,6 +119,58 @@ def test_run_multi_budget_evaluation_invokes_on_budget_complete_callback_increme
     # so a caller can persist partial results without waiting for every budget to finish.
     assert completed == [(2, 1), (5, 1)]
     assert set(reports.keys()) == {2, 5}
+
+
+def test_run_multi_budget_evaluation_includes_cadence_no_critique_ablation():
+    test_records = [_record("t1", "Use caching for performance and low latency.")]
+    all_records = test_records + [_record("other", "Some other precedent.")]
+    embeddings = np.array([[1.0, 0.0] for _ in all_records])
+    retriever = Retriever(all_records, embeddings, _FakeEmbeddingModel())
+    graph = build_knowledge_graph(TACTICS)
+    client = _AllPurposeClient()
+
+    reports = run_multi_budget_evaluation(
+        test_records=test_records, retriever=retriever, client=client, graph=graph,
+        tactics=TACTICS, quality_attributes=QUALITY_ATTRIBUTES,
+        tactic_budgets=(2, 5), k=1, max_rounds=1, max_repair_iterations=1,
+    )
+
+    for budget, report in reports.items():
+        assert {r.system_name for r in report.system_reports} == {
+            "zero_shot", "retrieval_only", "multiagent_no_solver", "cadence_no_critique", "cadence_full",
+        }
+        no_critique_report = next(r for r in report.system_reports if r.system_name == "cadence_no_critique")
+        # cadence_no_critique includes Stage 3 (solver+repair), so -- like
+        # cadence_full, and unlike the 3 budget-independent baselines --
+        # it must be re-run per budget, not shared across budgets.
+        assert no_critique_report.feasibility_rate is not None
+        assert no_critique_report.average_repair_iterations is not None
+
+
+def test_run_multi_budget_evaluation_reruns_no_critique_per_budget_not_shared(monkeypatch):
+    test_records = [_record("t1", "Use caching for performance and low latency.")]
+    all_records = test_records + [_record("other", "Some other precedent.")]
+    embeddings = np.array([[1.0, 0.0] for _ in all_records])
+    retriever = Retriever(all_records, embeddings, _FakeEmbeddingModel())
+    graph = build_knowledge_graph(TACTICS)
+    client = _AllPurposeClient()
+
+    no_critique_calls = []
+    original = harness_module.run_cadence_no_critique
+
+    def _counting_no_critique(*args, **kwargs):
+        no_critique_calls.append(kwargs.get("tactic_budget"))
+        return original(*args, **kwargs)
+
+    monkeypatch.setattr(harness_module, "run_cadence_no_critique", _counting_no_critique)
+
+    run_multi_budget_evaluation(
+        test_records=test_records, retriever=retriever, client=client, graph=graph,
+        tactics=TACTICS, quality_attributes=QUALITY_ATTRIBUTES,
+        tactic_budgets=(2, 5), k=1, max_rounds=1, max_repair_iterations=1,
+    )
+
+    assert no_critique_calls == [2, 5]  # once per budget, unlike the shared baselines
 
 
 def test_run_multi_budget_evaluation_works_without_a_callback():
