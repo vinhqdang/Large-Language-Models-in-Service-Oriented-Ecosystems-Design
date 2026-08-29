@@ -12,6 +12,7 @@ import json
 import sys
 from dataclasses import asdict
 from pathlib import Path
+from typing import Callable
 
 _PROJECT_ROOT = Path(__file__).resolve().parent.parent
 if str(_PROJECT_ROOT) not in sys.path:
@@ -43,6 +44,7 @@ def run_evaluation_scaled_script(
     max_rounds: int = 2,
     tactic_budgets: tuple[int, ...] = (5, 2),
     max_repair_iterations: int = 2,
+    on_budget_complete: Callable[[int, EvaluationReport], None] | None = None,
 ) -> dict[int, EvaluationReport]:
     # `seed` is required, not defaulted -- scripts/run_evaluation.py's pilot
     # run relies on sample_test_set's own default (42) over this same
@@ -72,6 +74,7 @@ def run_evaluation_scaled_script(
         tactics=TACTICS, quality_attributes=QUALITY_ATTRIBUTES,
         tactic_budgets=tactic_budgets, k=k, max_rounds=max_rounds,
         max_repair_iterations=max_repair_iterations,
+        on_budget_complete=on_budget_complete,
     )
 
 

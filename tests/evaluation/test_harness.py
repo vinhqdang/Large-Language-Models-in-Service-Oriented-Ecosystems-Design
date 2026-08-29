@@ -92,3 +92,46 @@ def test_run_multi_budget_evaluation_runs_baselines_once_across_budgets(monkeypa
         r.system_name: r for r in reports[5].system_reports if r.system_name != "cadence_full"
     }
     assert baselines_at_budget_2 == baselines_at_budget_5
+
+
+def test_run_multi_budget_evaluation_invokes_on_budget_complete_callback_incrementally():
+    test_records = [_record("t1", "Use caching for performance and low latency.")]
+    all_records = test_records + [_record("other", "Some other precedent.")]
+    embeddings = np.array([[1.0, 0.0] for _ in all_records])
+    retriever = Retriever(all_records, embeddings, _FakeEmbeddingModel())
+    graph = build_knowledge_graph(TACTICS)
+    client = _AllPurposeClient()
+
+    completed: list[tuple[int, int]] = []
+
+    def _on_budget_complete(budget, report):
+        completed.append((budget, report.n_items))
+
+    reports = run_multi_budget_evaluation(
+        test_records=test_records, retriever=retriever, client=client, graph=graph,
+        tactics=TACTICS, quality_attributes=QUALITY_ATTRIBUTES,
+        tactic_budgets=(2, 5), k=1, max_rounds=1, max_repair_iterations=1,
+        on_budget_complete=_on_budget_complete,
+    )
+
+    # Called once per budget, in order, immediately after that budget's report is ready --
+    # so a caller can persist partial results without waiting for every budget to finish.
+    assert completed == [(2, 1), (5, 1)]
+    assert set(reports.keys()) == {2, 5}
+
+
+def test_run_multi_budget_evaluation_works_without_a_callback():
+    test_records = [_record("t1", "Use caching for performance and low latency.")]
+    all_records = test_records + [_record("other", "Some other precedent.")]
+    embeddings = np.array([[1.0, 0.0] for _ in all_records])
+    retriever = Retriever(all_records, embeddings, _FakeEmbeddingModel())
+    graph = build_knowledge_graph(TACTICS)
+    client = _AllPurposeClient()
+
+    reports = run_multi_budget_evaluation(
+        test_records=test_records, retriever=retriever, client=client, graph=graph,
+        tactics=TACTICS, quality_attributes=QUALITY_ATTRIBUTES,
+        tactic_budgets=(2,), k=1, max_rounds=1, max_repair_iterations=1,
+    )
+
+    assert set(reports.keys()) == {2}

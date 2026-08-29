@@ -2,6 +2,7 @@
 score against ground truth, produce a comparison report.
 """
 from dataclasses import dataclass
+from typing import Callable
 
 from src.evaluation.metrics import MetricScores, average_scores, compute_corpus_metrics, load_bertscorer
 from src.evaluation.systems import (
@@ -114,6 +115,7 @@ def run_multi_budget_evaluation(
     k: int = 3,
     max_rounds: int = 2,
     max_repair_iterations: int = 2,
+    on_budget_complete: Callable[[int, EvaluationReport], None] | None = None,
 ) -> dict[int, EvaluationReport]:
     """Compare several `tactic_budget` conditions for `cadence_full` (e.g. an
     achievable budget vs. a deliberately tight one) without paying for the
@@ -121,6 +123,11 @@ def run_multi_budget_evaluation(
     `multiagent_no_solver`) more than once -- they don't take a
     `tactic_budget` argument, so re-running them per budget would just be
     redundant LLM calls, not a fairer comparison.
+
+    `on_budget_complete`, if given, is called with `(budget, report)`
+    immediately after each budget's report is ready, before moving on to the
+    next budget -- letting a caller persist partial results as they land,
+    since this function itself only returns once every budget is done.
     """
     references = [r.raw_text for r in test_records]
     scorer = load_bertscorer()  # load once, reuse across every system report below
@@ -137,8 +144,11 @@ def run_multi_budget_evaluation(
             k, max_rounds, budget, max_repair_iterations,
         )
         cadence_report = _build_system_report("cadence_full", cadence_outputs, references, scorer)
-        reports_by_budget[budget] = EvaluationReport(
+        report = EvaluationReport(
             system_reports=baseline_reports + [cadence_report], n_items=len(test_records)
         )
+        reports_by_budget[budget] = report
+        if on_budget_complete is not None:
+            on_budget_complete(budget, report)
 
     return reports_by_budget
