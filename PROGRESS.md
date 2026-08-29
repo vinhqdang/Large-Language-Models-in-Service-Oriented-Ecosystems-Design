@@ -244,6 +244,7 @@ normal work should not need to):**
 
 ## Environment notes (apply on every machine)
 
+- **On a fresh machine (or a `py313` env shared with other projects), don't assume `requirements.txt` is satisfied — check it.** This project's conda env is shared across projects per the user's global convention, so a machine that has never run *this* project's code can be missing packages entirely (`z3-solver`, `bert-score`, `rouge-score`, `nltk`, `sacrebleu`, `google-genai` were all absent on a second machine encountered mid-project) or have versions below this project's floor (`transformers`, `sentence-transformers`, `accelerate` were present but too old, left over from other work). Fix with `conda run -n py313 pip install -U <pkg>>=<floor>` for just the packages actually below floor — this leaves the existing CUDA-enabled `torch` build untouched (pip only touches a dependency if the installed version fails the constraint). Verify with `conda run -n py313 pip list | grep -iE "z3|torch|transformers|bert-score|..."` before assuming, then confirm with a full `pytest -q` run and the actual summary line (see the next bullet).
 - Python 3.13 via conda env `py313`, GPU available (`torch` CUDA confirmed working — NVIDIA RTX 5000 Ada Generation Laptop GPU on the dev machine).
 - **Import order matters:** `import sentence_transformers` before `import torch` in any module that uses both — the reverse order segfaults (exit 139) on Windows in this env. `src/retrieval/embeddings.py` already enforces this; preserve it in any new module that imports both.
 - `z3-solver` is installed and verified reliable (no flakiness observed, unlike the torch/transformers native-import issues below). Two API details worth remembering: `z3.PbLe([], n)` raises `ValueError` (guard for empty variable lists), and multi-objective `Optimize` needs `opt.set(priority="lex")` + distinct `add_soft(..., id=...)` groups to get true lexicographic priority — a single weighted-sum objective lets large weights in one group silently outvote another regardless of intent (see `src/solver/feasibility.py`'s docstring for the concrete bug this caused).
@@ -268,23 +269,88 @@ derived from Buchgeher et al.'s MSR study (IEEE Access, DOI [10.1109/ACCESS.2023
 - ADR body format is usually Nygard/MADR (`# Title`, `Date:`, `## Status`, `## Context`, `## Decision`, `## Consequences`) but not universally, so `ADRRecord` deliberately only extracts `title` + full `raw_text`, no general section-splitter — see the retrieval-indexing plan's self-review notes for why, and regex out a specific section from `raw_text` only if/when a future stage actually needs it.
 - **Not yet used, worth remembering for the evaluation-harness plan:** `Experiments/` and `Results/` in the same package are the Context Matters paper's *own* generation+evaluation pipeline — `Results/{Baseline,All_N,First_K,Last_K,RAG_Based}/{Model}/Dataset/{repo}.json` (candidate ADRs) and `.../Evaluations/{repo}.json` (`rouge1_f`, `rouge2_f`, `rougeL_f`, `bleu_avg`, `meteor`, `bert_f1/precision/recall` — exactly spec §5's metric set) for 4 models × 5 strategies. **Check whether the "Context-Matters-style retrieval-only" baseline (spec §5(b)) can reuse these existing generations/scores directly instead of re-running that pipeline** — this data no longer exists on disk (it was in the now-deleted `data/extracted/`), so re-fetch the corpus first if this is pursued.
 
+## Status: second manuscript review-and-fix cycle complete (2026-08-29/30)
+
+A fresh pull onto a second machine surfaced a dependency-sync gap first:
+this machine's shared `py313` conda env was missing `z3-solver`,
+`bert-score`, `rouge-score`, `nltk`, `sacrebleu`, `google-genai` entirely
+and had below-`requirements.txt`-floor `transformers`/`sentence-transformers`/
+`accelerate` (left over from other projects sharing the same env, per the
+project's "one shared conda env" convention) — fixed with
+`pip install -U` against the exact floors in `requirements.txt`; torch's
+existing CUDA build was untouched. **140 passed** confirmed afterward via
+the actual pytest summary line, not the wrapper's exit code.
+
+With the environment fixed, ran a **second** review-and-fix cycle: two
+fresh review agents (technical-accuracy, academic-writing) re-read the
+already-once-fixed manuscript from scratch, assuming nothing. Both found
+real, new issues the first cycle missed:
+
+- **Technical review**: confirmed all 8 previously-fixed claims still
+  hold, then found 4 *new* factual errors — Stage 1 passes only precedent
+  *titles* to Stage 2's prompts, not bodies (the manuscript said "titles
+  and bodies"); Stage 3's tactic extraction matches tactic *name* only,
+  not "name and description"; the Abstract/Introduction/Fig.~1
+  caption/Conclusion all framed the solver's **unsatisfiable core** as
+  the repair loop's driver and said repair goes "back to the agents" —
+  the actual driver is the uncovered-quality-attributes signal, and
+  repair is a **standalone** LLM call that never re-enters Stage 2
+  (Section III-D's own prose already said this correctly; only the
+  front-matter/figure/conclusion had drifted from it). Also caught an
+  internal inconsistency (a closing sentence claimed retry "explains four
+  of the six" format deviations when the same paragraph's own preceding
+  logic assigns only one), and flagged that deliberation's `k`/`max_rounds`
+  parameters were never disclosed — the **pilot run used `max_rounds=1`,
+  meaning zero inter-agent critique ever happened** in Table II's
+  multi-agent columns, which materially changes how that table should be
+  read.
+- **Academic-writing review** (skeptical IEEE TSC reviewer, verdict: Major
+  Revision): found that `tactic_budget=2` is **mathematically infeasible
+  by construction** — same logic already used to explain the pilot's
+  `budget=4` — so of three budget conditions reported across both tables,
+  only `budget=5` is a genuine empirical test; the paper had been framing
+  "0% at both conditions" as two confirmations of the same finding. Also
+  found the Conclusion claimed the solver/critique differences are
+  "load-bearing" and that the three baselines "isolate each stage's
+  marginal contribution," neither of which the data supports (the
+  `multiagent_no_solver` vs `cadence_full` ablation shows no measurable
+  metric difference at $N=3$, and the ablation removes Stages 3 and 4
+  *together*, not separately). Most seriously: **the Abstract and
+  Conclusion — the two sections most readers actually read — omitted the
+  0% constraint-satisfaction / non-converging-repair result that the
+  paper's middle sections already reported honestly.** Also flagged a
+  missing code/data-availability statement despite heavy "reproducible"
+  emphasis and 4 unused pages, a dangling cross-reference, an unstated
+  BLEU scale, and a citation-attribution inconsistency.
+
+**All of the above are fixed and verified**, not just noted: Algorithm 1
+now tracks the best-coverage attempt across iterations (matching what the
+prose already claimed) and uses the uncovered-attribute signal, not the
+unsat core; Figure 1's back-arrow now shows the repair loop as *internal*
+to Stage 3 rather than looping back into Stage 2; the Results/Discussion
+now explicitly separate the metric-asymmetry finding (genuinely reproduces
+across two independent samples) from the constraint-satisfaction finding
+(one real data point at `B=5`, not yet corroborated); the Abstract and
+Conclusion now state the negative finding plainly; a "Data and Code
+Availability" section with the repo's real GitHub link was added (single-
+anonymous review confirmed, so this is safe). `manuscript/cadence.tex`
+recompiles clean, **11 pages** (14-page CFP limit). Also fixed a stale
+"883 repository folders" figure in `data/README.md` (882 actually contain
+`.md` files) found during the same pass.
+
 ## Next step
 
-The manuscript has been through one full review-and-fix cycle
-(technical-accuracy + academic-writing agents, see "Status" above) and
-all findings from that round are addressed and committed. What's
-genuinely still open:
+What's genuinely still open, in priority order:
 
 1. **Optional, if a future session has a longer execution window:**
    re-run `scripts/run_evaluation_scaled.py` with a larger N and/or the
-   design defaults (`k=3, max_rounds=2, max_repair_iterations=2`) —
-   both the technical and academic reviews independently flagged $N=3$
-   (six items total across both tables) as underpowered for the
-   "systematic pattern" and "empirically validated" claims, even though
-   those claims are now honestly hedged rather than overstated. A
-   larger sample and a `max_repair_iterations=2` run are the most
+   design defaults (`k=3, max_rounds=2, max_repair_iterations=2`). This is
+   now the single most valuable remaining action: the manuscript is
+   honest that `budget=5`'s 0% result is one data point, not yet
+   corroborated by an independent second run at an achievable budget —
+   a larger sample and a `max_repair_iterations=2` run are the most
    direct way to actually settle (not just diagnose) whether
-   `cadence_full` can reach `is_feasible=True` at an achievable budget.
+   `cadence_full` can reach `is_feasible=True` in practice.
    See the "background-task duration limit" Environment note below
    before attempting a much bigger run in this harness's background
    bash tool — a `k=1,max_rounds=1,max_repair_iterations=1` config
@@ -296,19 +362,22 @@ genuinely still open:
    `run_multi_budget_evaluation`'s system list** — available for a
    future evaluation run if the paper wants that specific extra
    comparison point; not included in the real scaled numbers above.
-3. **Another review pass, if time allows before the 31 Oct 2026
-   deadline**, ideally by a human co-author or a fresh review agent
-   given the now-updated draft — the two agents used so far reviewed
-   the pre-fix draft; nothing has re-checked the post-fix version for
-   new issues the fixes themselves might have introduced (e.g. read
-   through Sections II and III once more for flow now that a table,
-   figure, and algorithm block have been inserted).
-~~4. One LOW-confidence item from the technical review: confirm MAAD's
+3. **Minor, low-priority code-hygiene item**: `scripts/run_evaluation_scaled.py`'s
+   `__main__` defaults (`n_test_items=15, max_repair_iterations=2`) don't
+   reproduce Table III's actual run (`N=3, max_repair_iterations=1,
+   seed=43`) — the manuscript itself discloses this discrepancy honestly
+   (Table III's own footnote), so this isn't a paper-correctness issue,
+   just a reproducibility nicety: consider documenting the exact
+   invocation used for Table III somewhere in the script or a comment.
+4. **A third review pass, if time allows before the 31 Oct 2026
+   deadline** — ideally by a human co-author, since two independent
+   automated review cycles have now each found real issues the prior
+   cycle missed; diminishing returns are likely but not guaranteed.
+~~5. One LOW-confidence item from the first review cycle: confirm MAAD's
    exact agent role names against the paper's actual text.~~ **Done** —
    fetched arxiv.org/abs/2507.21382 directly: confirms MAAD's four
    agents are exactly Analyst, Modeler, Designer, Evaluator, each doing
-   what the manuscript's Table I and Section II-A describe. Nothing
-   left open from the review round except items 1-3 above.
+   what the manuscript's Table I and Section II-A describe.
 
 Note on tooling: `academic-pipeline`'s full 10-stage orchestrator
 (`/ars-full`) was evaluated for this manuscript and deliberately **not**
