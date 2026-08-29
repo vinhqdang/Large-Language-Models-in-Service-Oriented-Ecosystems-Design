@@ -23,8 +23,10 @@ succeeds. `extracted/` (~11 GB) has now been fully consumed by
 
 ## `processed/adr_records.jsonl`
 
-One JSON object per line, one line per ADR file across the 883 repository
-folders under `Data/ADRs/` in the "Context Matters" package (see
+One JSON object per line, one line per ADR file across 882 of the 883
+repository folders under `Data/ADRs/` in the "Context Matters" package (one
+folder, `csc_swr_architecture_source_decisions_adrs`, is empty and
+contributes no records) (see
 `docs/superpowers/plans/2026-08-26-adr-retrieval-indexing.md` for the full
 schema inspection this was built against). Fields: `record_id`,
 `repo_folder`, `repository_url`, `relative_path`, `sequence_number`
