@@ -338,42 +338,75 @@ recompiles clean, **11 pages** (14-page CFP limit). Also fixed a stale
 "883 repository folders" figure in `data/README.md` (882 actually contain
 `.md` files) found during the same pass.
 
+## Status: codebase cleanup, manuscript density expansion, expanded scaled evaluation (2026-08-30)
+
+User feedback: an 11/14-page manuscript with dense prose and thin
+experiments was rejected as unacceptable ("too much text, too little
+table, charts, graphs" — see `feedback_manuscript_density` in the
+project's Claude memory). Responded with three things, all committed:
+
+1. **Codebase cleanup**: removed the root `Computer_Society_LaTeX_template.zip`
+   (already fully extracted into `manuscript/` long ago) and the unused
+   IEEE template reference files it left behind (`New_IEEEtran_how-to.*`,
+   `bare_jrnl_new_sample4.*`, an unused `fig1.png`) — none were referenced
+   by `cadence.tex`.
+2. **Manuscript density**: converted prose-only content into tables/figures
+   and added previously-omitted real detail (verified against source, not
+   assumed) — the full 26-tactic catalog as a table, a small knowledge-graph
+   diagram, the six LLM output-format deviations as a table, the corpus's
+   full 954-folder extraction-confidence breakdown as a table (caught a
+   real scoping bug in a first attempt to recompute this — see the
+   commit), and a bar chart of the metric-asymmetry finding. 11 → 12 pages.
+3. **Expanded the scaled evaluation itself** (not just formatting): added
+   `on_budget_complete` incremental checkpointing to the harness first
+   (tested), wired `run_cadence_no_critique` into
+   `run_multi_budget_evaluation` (it existed but was never used — now
+   properly isolates Stage 4's marginal contribution, closing a gap two
+   review cycles had flagged), and re-ran the scaled evaluation with
+   `max_repair_iterations=2` (the full design default, up from the
+   earlier cost-cut 1). **Real results, now in the manuscript:**
+   - Giving the repair loop its full budget did **not** change the 0%
+     constraint-satisfaction finding at `B=5` — `average_repair_iterations=2.00`
+     confirms both attempts were exhausted, ruling out "not enough repair
+     attempts" and narrowing the diagnosis specifically to Stage 2's
+     tactic-naming behavior.
+   - `cadence_full` beats `cadence_no_critique` on all 4 generation-quality
+     metrics at `B=5` and 3 of 4 at `B=2` — the first ablation in this
+     whole project where the fuller pipeline wins consistently rather than
+     being flat, a modest real positive signal for self-critique.
+   - This run **supersedes** the earlier 4-system/`max_repair_iterations=1`
+     run as the canonical Table VI. `data/processed/evaluation_results_scaled.json`
+     now holds the new 5-system/repair=2 data; the superseded run is
+     archived at `evaluation_results_scaled_repair1.json`.
+
 ## Next step
 
 What's genuinely still open, in priority order:
 
-1. **Optional, if a future session has a longer execution window:**
-   re-run `scripts/run_evaluation_scaled.py` with a larger N and/or the
-   design defaults (`k=3, max_rounds=2, max_repair_iterations=2`). This is
-   now the single most valuable remaining action: the manuscript is
-   honest that `budget=5`'s 0% result is one data point, not yet
-   corroborated by an independent second run at an achievable budget —
-   a larger sample and a `max_repair_iterations=2` run are the most
-   direct way to actually settle (not just diagnose) whether
-   `cadence_full` can reach `is_feasible=True` in practice.
-   See the "background-task duration limit" Environment note below
-   before attempting a much bigger run in this harness's background
-   bash tool — a `k=1,max_rounds=1,max_repair_iterations=1` config
-   took ~46-48 min for N=3 at two budgets each of the two times it
-   completed; call `run_evaluation_scaled_script(..., seed=<something
-   not 42 or 43>)` for a third independent sample if replicating again.
-2. **`run_cadence_no_critique` (the "no self-critique but has solver"
-   ablation, spec §5) is implemented and tested but not wired into
-   `run_multi_budget_evaluation`'s system list** — available for a
-   future evaluation run if the paper wants that specific extra
-   comparison point; not included in the real scaled numbers above.
-3. **Minor, low-priority code-hygiene item**: `scripts/run_evaluation_scaled.py`'s
-   `__main__` defaults (`n_test_items=15, max_repair_iterations=2`) don't
-   reproduce Table III's actual run (`N=3, max_repair_iterations=1,
-   seed=43`) — the manuscript itself discloses this discrepancy honestly
-   (Table III's own footnote), so this isn't a paper-correctness issue,
-   just a reproducibility nicety: consider documenting the exact
-   invocation used for Table III somewhere in the script or a comment.
-4. **A third review pass, if time allows before the 31 Oct 2026
+1. **Larger $N$** is still the single most valuable remaining action —
+   giving repair its full budget ruled out one candidate explanation but
+   did not add sample size; `B=5`'s 0% result is still one data point at
+   $N=3$. Use `scripts/run_evaluation_repair2_verification.py` as the
+   template (it already includes `cadence_no_critique` and
+   `max_repair_iterations=2`) but with a larger `n_test_items` and a fresh
+   seed (not 42 or 43). See the "background-task duration limit"
+   Environment note below before attempting this in a background bash
+   tool — the 5-system/repair=2 config that produced the current Table VI
+   took noticeably longer than the earlier 4-system/repair=1 runs (exact
+   duration not captured; budget real wall-clock time generously).
+2. **Minor, low-priority code-hygiene item**: `scripts/run_evaluation_scaled.py`'s
+   own `__main__` defaults still don't reproduce any of the committed
+   tables (that script is now superseded for the canonical Table VI by
+   `run_evaluation_repair2_verification.py`, which *does* hardcode exactly
+   what it ran) — not a paper-correctness issue, just worth cleaning up or
+   removing the stale script eventually.
+3. **A third review pass, if time allows before the 31 Oct 2026
    deadline** — ideally by a human co-author, since two independent
    automated review cycles have now each found real issues the prior
-   cycle missed; diminishing returns are likely but not guaranteed.
-~~5. One LOW-confidence item from the first review cycle: confirm MAAD's
+   cycle missed, and the manuscript has changed substantially since the
+   last review (new tables/figures, new evaluation data); diminishing
+   returns are likely but not guaranteed.
+~~4. One LOW-confidence item from the first review cycle: confirm MAAD's
    exact agent role names against the paper's actual text.~~ **Done** —
    fetched arxiv.org/abs/2507.21382 directly: confirms MAAD's four
    agents are exactly Analyst, Modeler, Designer, Evaluator, each doing
