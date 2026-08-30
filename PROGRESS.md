@@ -429,6 +429,22 @@ Three more rounds of direct user feedback, each addressed for real, not cosmetic
 
 Manuscript is now **13 pages** (14-page CFP limit), **153 tests passing**.
 
+## Status: fixed missing citations in the published-baseline comparison (2026-08-30, later still)
+
+User caught it: Section IV-E named Gemini-2.5-Pro, GLM-4.6, Qwen3-235B,
+Gemma3-4B, and the "Context Matters" package with zero `\cite`s. Researched
+(fetched each arXiv abstract page directly, no assumed IDs) and added real
+citations: Gemini 2.5 (arXiv:2507.06261), Qwen3 (arXiv:2505.09388), Gemma 3
+(arXiv:2503.19786). **GLM-4.6 itself has no dedicated technical report** —
+it's a blog-style incremental update over GLM-4.5 with no new architecture
+paper — cited GLM-4.5's report (arXiv:2508.06471) instead and said so
+explicitly in the manuscript text rather than pretending a GLM-4.6-specific
+paper exists. Bibliography: 27 → 31 entries.
+
+**Manuscript is now exactly 14 pages — the CFP's stated limit.** Any future
+addition needs to trim something else first; there is no headroom left.
+153 tests passing.
+
 ## Next step
 
 What's genuinely still open, in priority order:
