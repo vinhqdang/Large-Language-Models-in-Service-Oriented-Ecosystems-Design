@@ -297,6 +297,38 @@ A structured-output prompt's hand-written happy-path parser reliably breaks agai
 
 The first four are addressable by a sufficiently tolerant same-line parser. The fifth is not, and its discovery is what motivated this work's general strategy of pairing every structured-output prompt with a bounded retry (two to three attempts) of the identical prompt on a parse failure, rather than continuing to special-case wording variants indefinitely; because generation is stochastic, a differently-sampled retry frequently self-corrects a formatting slip the parser did not anticipate, and Stages~2, 3, and 4 all apply this pattern. The sixth, discovered later during the real scaled evaluation run reported in Section~\ref{sec:evaluation} (e.g.\ \texttt{**Performance**} followed, several lines later, by \texttt{**Score:** 9/10} with no attribute name on that line at all), shows retry's limit: it exhausted all three attempts, because it was not a stochastic one-off a differently-sampled retry could route around, but a genuinely different \emph{structure} no same-line pattern, however tolerant, could ever match --- fixing it required a third parser tier (Section~\ref{sec:method-stage4}) that locates an attribute's heading line and then searches only the bounded section up to the next attribute's heading for an unlabeled field. We report this not as a footnote but as a methodological finding in its own right: any system that asks an LLM for structured intermediate output that a downstream deterministic component must consume --- as any solver-verified pipeline necessarily does --- should validate its parser against real, repeated model output before trusting it in an unattended run, should treat bounded retry as the general-purpose fix for wording variation, and should expect that retry alone is not sufficient: a genuinely new structural format, not just a wording variant, will eventually require a genuinely new parser tier, and finding out which one occurred requires actually running the real pipeline, not reasoning about the prompt in advance.
 
+\subsection{Worked Example}
+\label{sec:worked-example}
+
+To make the four stages concrete rather than only described in the abstract, this section walks through one real, complete run of the pipeline reported verbatim from the actual implementation (\texttt{scripts/run\_worked\_example.py} in the released artifact) --- illustrative, not an evaluation data point; the quantitative claims of this paper come from Section~\ref{sec:evaluation}'s held-out runs, not from this single example.
+
+\textbf{Context:} ``Our service-oriented system's order-processing service is experiencing 10x read traffic growth from a new mobile client. Requirements: keep p99 read latency low, keep the change operable by a small team, and avoid introducing new categories of security risk.''
+
+\textbf{Stage 1} retrieves three real precedents from the corpus: \emph{``Use message broker for asynchronous messaging,''} \emph{``[0001] Server Architecture,''} and \emph{``Use JSON Web Token (`JWT') for authenticating inter-service API requests.''}
+
+\textbf{Stage 2} runs two rounds across the five agents (propose, then critique), ten positions in total. The \emph{performance} agent's propose-round position opens: ``it is crucial to leverage proven strategies that minimize impact on the architecture... By using a message queue (e.g., RabbitMQ), we decouple the read operations from the main application server,'' while the \emph{security} agent's propose-round position independently argues for JWT authentication, encryption in transit and at rest, and rate limiting. In round 2, the \emph{cost\_operability} agent's critique flags a real cross-attribute tension the others' proposals introduced: ``Adding a message broker for asynchronous messaging increases network overhead and introduces latency. This could affect real-time interactions.'' The orchestrator synthesizes these into one converged candidate naming (among others) asynchronous message-queue processing, event-driven architecture, and serverless deployment.
+
+\textbf{Stage 3} extracts three catalog tactics from that candidate --- \emph{asynchronous processing via message queues}, \emph{event-driven architecture}, and \emph{serverless/FaaS deployment} --- covering \emph{performance}, \emph{scalability}, and \emph{cost\_operability}, but not \emph{maintainability} or \emph{security}. Under $B=4$ this is a concrete, real instance of exactly the mechanism Section~\ref{sec:evaluation} diagnoses in aggregate: one tactic slot remained within budget, but the deliberated candidate's text never named a fourth, security- or maintainability-covering tactic for the extractor to find. Both repair attempts fail to close the gap, and Stage~3 returns the best-effort selection with an explicit caveat: ``Could not find a decision covering all required quality attributes within a budget of 4 tactics after 2 repair attempt(s). Best effort covers [`cost\_operability', `performance', `scalability'] but leaves [`maintainability', `security'] unaddressed.''
+
+\textbf{Stage 4} finalizes the decision --- ``Implement a microservices-based architecture using a message queue for communication between services, an event sourcing database for persistent data storage, and serverless cloud functions for real-time processing and analytics'' --- and scores it per attribute (Table~\ref{tab:worked-example}), flagging a concrete, specific weakness for each rather than a generic caveat (e.g., for \emph{security}: ``serverless functions... still have inherent risks like function timeout limits and lack of direct control over execution environment''). The two uncovered attributes' structural components are correctly $0.0$, dragging their combined scores down even where the qualitative pass alone would have scored the prose favorably --- exactly the blending Section~\ref{sec:method-stage4} argues for: an uncovered attribute cannot be masked by confident-sounding text.
+
+\begin{table}[t]
+\caption{Worked Example: Per-Attribute Utility Scores (Overall: 6.6/10)\label{tab:worked-example}}
+\centering
+\footnotesize
+\begin{tabular}{@{}lccc@{}}
+\toprule
+Quality Attribute & Structural & Qualitative & Combined \\
+\midrule
+Performance       & 0.8 & 8.0 & 8.0 \\
+Security          & 0.0 & 9.0 & 4.5 \\
+Maintainability   & 0.0 & 7.0 & 3.5 \\
+Scalability       & 1.0 & 8.0 & 9.0 \\
+Cost/Operability  & 1.0 & 6.0 & 8.0 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
 \section{Evaluation}
 \label{sec:evaluation}
 
