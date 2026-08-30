@@ -1,6 +1,6 @@
 import json
 
-from src.evaluation.published_baselines import find_dataset_index, load_eval_entry, mean_scores
+from src.evaluation.published_baselines import find_dataset_index, load_generation_pair, mean_scores
 
 
 def test_find_dataset_index_matches_by_title(tmp_path):
@@ -21,19 +21,22 @@ def test_find_dataset_index_returns_none_for_missing_file(tmp_path):
     assert find_dataset_index(tmp_path / "missing.json", "Anything") is None
 
 
-def test_load_eval_entry_returns_entry_at_index(tmp_path):
-    eval_path = tmp_path / "repo.json"
-    eval_path.write_text(
-        json.dumps([{"bert_f1": 0.1}, {"bert_f1": 0.9}]),
+def test_load_generation_pair_returns_generation_and_ground_truth_at_index(tmp_path):
+    path = tmp_path / "repo.json"
+    path.write_text(
+        json.dumps([
+            {"title": "First", "generation": "gen A", "ground-truth": "ref A"},
+            {"title": "Second", "generation": "gen B", "ground-truth": "ref B"},
+        ]),
         encoding="utf-8",
     )
 
-    assert load_eval_entry(eval_path, 1) == {"bert_f1": 0.9}
-    assert load_eval_entry(eval_path, 5) is None  # index out of range, not an error
+    assert load_generation_pair(path, 1) == ("gen B", "ref B")
+    assert load_generation_pair(path, 5) is None  # index out of range, not an error
 
 
-def test_load_eval_entry_returns_none_for_missing_file(tmp_path):
-    assert load_eval_entry(tmp_path / "missing.json", 0) is None
+def test_load_generation_pair_returns_none_for_missing_file(tmp_path):
+    assert load_generation_pair(tmp_path / "missing.json", 0) is None
 
 
 def test_mean_scores_averages_across_matched_items_only():

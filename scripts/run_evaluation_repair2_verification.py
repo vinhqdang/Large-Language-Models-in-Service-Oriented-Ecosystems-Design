@@ -1,5 +1,19 @@
-"""Extended scaled evaluation run, two deliberate additions over the
-committed `data/processed/evaluation_results_scaled.json` (Table III):
+"""Extended scaled evaluation run, two deliberate additions over what was,
+at the time this script was written, the committed
+`data/processed/evaluation_results_scaled.json` (Table III) using
+max_repair_iterations=1.
+
+NOTE (post-verification): this script's own separate results file
+(evaluation_results_scaled_repair2.json) was never committed, because once
+its max_repair_iterations=2 finding was confirmed, `run_evaluation_scaled.py`
+was re-run directly with that setting as its own new default, and the
+resulting `data/processed/evaluation_results_scaled.json` -- the file this
+docstring above still describes as the repair=1 baseline -- is itself now
+the repair=2 canonical run this manuscript's Table VII reports. This script
+is retained for its verification methodology, not as the current source of
+the committed results file.
+
+Original docstring, describing the two additions this script tested:
 
 1. max_repair_iterations=2 (the design default) instead of 1, to test
    whether giving Stage 3's repair loop its full budget changes the 0%

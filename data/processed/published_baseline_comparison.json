@@ -16,6 +16,7 @@
       "title": "38. Yarn Workspaces for package management and resolution across services"
     }
   ],
+  "metric_note": "All scores recomputed from the package's raw generation/ground-truth text pairs (Generated_ADRs/) using this project's own compute_corpus_metrics, NOT the package's own precomputed Evaluations/*.json scores -- those use a reversed prediction/reference orientation for BLEU/METEOR and no ROUGE stemmer, making them non-comparable to this work's own metric numbers.",
   "results": {
     "Baseline": {
       "Gemini-2.5-Pro": [
@@ -25,17 +26,10 @@
           "title": "5. Provide Test Builders",
           "dataset_index": 4,
           "scores": {
-            "rouge1_f": 0.16542750929368027,
-            "rouge2_f": 0.035381750465549346,
-            "rougeL_f": 0.09665427509293681,
-            "bleu_avg": 0.0055288033695206065,
-            "meteor": 0.09145161061584797,
-            "bert_f1": 0.8053386807441711,
-            "bert_precision": 0.8052722811698914,
-            "bert_recall": 0.8054051399230957,
-            "reference_length": 865,
-            "hypothesis_length": 207,
-            "length_ratio": 0.23930635838150288
+            "bertscore_f1": 0.8160160183906555,
+            "bleu": 2.1221862700340464,
+            "rouge1_f": 0.17286245353159851,
+            "meteor": 0.2481172520661157
           }
         },
         {
@@ -44,17 +38,10 @@
           "title": "Use `--input` Flag Consistently for Reading Input Files",
           "dataset_index": 45,
           "scores": {
-            "rouge1_f": 0.2533215234720992,
-            "rouge2_f": 0.0585625554569654,
-            "rougeL_f": 0.11868910540301152,
-            "bleu_avg": 0.027555215160144815,
-            "meteor": 0.15187632743995466,
-            "bert_f1": 0.8195598721504211,
-            "bert_precision": 0.8162428140640259,
-            "bert_recall": 0.8229039907455444,
-            "reference_length": 797,
-            "hypothesis_length": 296,
-            "length_ratio": 0.3713927227101631
+            "bertscore_f1": 0.8298231959342957,
+            "bleu": 4.604194768017303,
+            "rouge1_f": 0.2887511071744907,
+            "meteor": 0.3257626626152556
           }
         },
         {
@@ -63,17 +50,10 @@
           "title": "38. Yarn Workspaces for package management and resolution across services",
           "dataset_index": 37,
           "scores": {
-            "rouge1_f": 0.25760649087221094,
-            "rouge2_f": 0.05894308943089431,
-            "rougeL_f": 0.11967545638945233,
-            "bleu_avg": 0.0032390948241909864,
-            "meteor": 0.09806308454768917,
-            "bert_f1": 0.8315889835357666,
-            "bert_precision": 0.8517625331878662,
-            "bert_recall": 0.8123490214347839,
-            "reference_length": 768,
-            "hypothesis_length": 191,
-            "length_ratio": 0.24869791666666666
+            "bertscore_f1": 0.8317968249320984,
+            "bleu": 3.093216067918706,
+            "rouge1_f": 0.29006085192697767,
+            "meteor": 0.3015811924551597
           }
         }
       ],
@@ -84,17 +64,10 @@
           "title": "5. Provide Test Builders",
           "dataset_index": 4,
           "scores": {
-            "rouge1_f": 0.15759312320916904,
-            "rouge2_f": 0.028735632183908053,
-            "rougeL_f": 0.1002865329512894,
-            "bleu_avg": 0.014206383139455972,
-            "meteor": 0.09881101402042784,
-            "bert_f1": 0.8001640439033508,
-            "bert_precision": 0.7957034111022949,
-            "bert_recall": 0.8046749830245972,
-            "reference_length": 491,
-            "hypothesis_length": 207,
-            "length_ratio": 0.4215885947046843
+            "bertscore_f1": 0.8103439807891846,
+            "bleu": 1.623249937591853,
+            "rouge1_f": 0.18051575931232092,
+            "meteor": 0.17671785643173815
           }
         },
         {
@@ -103,17 +76,10 @@
           "title": "Use `--input` Flag Consistently for Reading Input Files",
           "dataset_index": 45,
           "scores": {
-            "rouge1_f": 0.3286978508217446,
-            "rouge2_f": 0.08365019011406845,
-            "rougeL_f": 0.1618204804045512,
-            "bleu_avg": 0.05738360482137297,
-            "meteor": 0.18414193618954525,
-            "bert_f1": 0.8286817669868469,
-            "bert_precision": 0.8191962242126465,
-            "bert_recall": 0.8383896350860596,
-            "reference_length": 471,
-            "hypothesis_length": 296,
-            "length_ratio": 0.6284501061571125
+            "bertscore_f1": 0.8302351832389832,
+            "bleu": 5.4338006792146585,
+            "rouge1_f": 0.35651074589127685,
+            "meteor": 0.267085574980188
           }
         },
         {
@@ -122,17 +88,10 @@
           "title": "38. Yarn Workspaces for package management and resolution across services",
           "dataset_index": 37,
           "scores": {
-            "rouge1_f": 0.27006369426751586,
-            "rouge2_f": 0.07662835249042146,
-            "rougeL_f": 0.14267515923566879,
-            "bleu_avg": 0.01265612707118162,
-            "meteor": 0.12556272394967002,
-            "bert_f1": 0.8294179439544678,
-            "bert_precision": 0.841596245765686,
-            "bert_recall": 0.8175870180130005,
-            "reference_length": 585,
-            "hypothesis_length": 191,
-            "length_ratio": 0.3264957264957265
+            "bertscore_f1": 0.8240913152694702,
+            "bleu": 3.467415472434204,
+            "rouge1_f": 0.2929936305732484,
+            "meteor": 0.30229856524455556
           }
         }
       ],
@@ -143,17 +102,10 @@
           "title": "5. Provide Test Builders",
           "dataset_index": 4,
           "scores": {
-            "rouge1_f": 0.23312883435582823,
-            "rouge2_f": 0.03696098562628337,
-            "rougeL_f": 0.12678936605316973,
-            "bleu_avg": 0.041621592000920755,
-            "meteor": 0.18477878221974567,
-            "bert_f1": 0.8162813186645508,
-            "bert_precision": 0.8166911602020264,
-            "bert_recall": 0.8158718943595886,
-            "reference_length": 290,
-            "hypothesis_length": 207,
-            "length_ratio": 0.7137931034482758
+            "bertscore_f1": 0.8149415254592896,
+            "bleu": 4.14515647429812,
+            "rouge1_f": 0.24948875255623726,
+            "meteor": 0.2368374275241586
           }
         },
         {
@@ -162,17 +114,10 @@
           "title": "Use `--input` Flag Consistently for Reading Input Files",
           "dataset_index": 45,
           "scores": {
-            "rouge1_f": 0.31407407407407406,
-            "rouge2_f": 0.07429420505200594,
-            "rougeL_f": 0.15407407407407406,
-            "bleu_avg": 0.09548236347244529,
-            "meteor": 0.227176947977584,
-            "bert_f1": 0.8270862698554993,
-            "bert_precision": 0.819210410118103,
-            "bert_recall": 0.8351148962974548,
-            "reference_length": 358,
-            "hypothesis_length": 296,
-            "length_ratio": 0.8268156424581006
+            "bertscore_f1": 0.8342326283454895,
+            "bleu": 8.756566831279194,
+            "rouge1_f": 0.3437037037037036,
+            "meteor": 0.27322588616408816
           }
         },
         {
@@ -181,17 +126,10 @@
           "title": "38. Yarn Workspaces for package management and resolution across services",
           "dataset_index": 37,
           "scores": {
-            "rouge1_f": 0.2571103526734926,
-            "rouge2_f": 0.05473204104903079,
-            "rougeL_f": 0.12969283276450513,
-            "bleu_avg": 0.008414091623404443,
-            "meteor": 0.11232671358458163,
-            "bert_f1": 0.8343310356140137,
-            "bert_precision": 0.8523056507110596,
-            "bert_recall": 0.81709885597229,
-            "reference_length": 669,
-            "hypothesis_length": 191,
-            "length_ratio": 0.28550074738415543
+            "bertscore_f1": 0.8346531987190247,
+            "bleu": 3.872643783594311,
+            "rouge1_f": 0.27986348122866894,
+            "meteor": 0.2930646758489747
           }
         }
       ],
@@ -202,17 +140,10 @@
           "title": "5. Provide Test Builders",
           "dataset_index": 4,
           "scores": {
-            "rouge1_f": 0.21088435374149658,
-            "rouge2_f": 0.030716723549488057,
-            "rougeL_f": 0.11564625850340136,
-            "bleu_avg": 0.04414006035946787,
-            "meteor": 0.14097779148673661,
-            "bert_f1": 0.8214314579963684,
-            "bert_precision": 0.8280777931213379,
-            "bert_recall": 0.8148910403251648,
-            "reference_length": 408,
-            "hypothesis_length": 207,
-            "length_ratio": 0.5073529411764706
+            "bertscore_f1": 0.8323165774345398,
+            "bleu": 5.00659687848435,
+            "rouge1_f": 0.21768707482993196,
+            "meteor": 0.22353673895606752
           }
         },
         {
@@ -221,17 +152,10 @@
           "title": "Use `--input` Flag Consistently for Reading Input Files",
           "dataset_index": 45,
           "scores": {
-            "rouge1_f": 0.3536404160475483,
-            "rouge2_f": 0.0894187779433681,
-            "rougeL_f": 0.16344725111441308,
-            "bleu_avg": 0.10514311398079224,
-            "meteor": 0.27227546711894185,
-            "bert_f1": 0.8325592279434204,
-            "bert_precision": 0.8290095329284668,
-            "bert_recall": 0.8361396193504333,
-            "reference_length": 383,
-            "hypothesis_length": 296,
-            "length_ratio": 0.7728459530026109
+            "bertscore_f1": 0.8464829921722412,
+            "bleu": 10.639930245006298,
+            "rouge1_f": 0.3952451708766716,
+            "meteor": 0.3324279505278091
           }
         },
         {
@@ -240,17 +164,10 @@
           "title": "38. Yarn Workspaces for package management and resolution across services",
           "dataset_index": 37,
           "scores": {
-            "rouge1_f": 0.2961876832844575,
-            "rouge2_f": 0.061764705882352944,
-            "rougeL_f": 0.1466275659824047,
-            "bleu_avg": 0.017055528216734003,
-            "meteor": 0.13252754861753413,
-            "bert_f1": 0.8304172158241272,
-            "bert_precision": 0.846764087677002,
-            "bert_recall": 0.8146895170211792,
-            "reference_length": 482,
-            "hypothesis_length": 191,
-            "length_ratio": 0.3962655601659751
+            "bertscore_f1": 0.8320642709732056,
+            "bleu": 4.883983312255891,
+            "rouge1_f": 0.3372434017595308,
+            "meteor": 0.2997963218597629
           }
         }
       ]
@@ -263,17 +180,10 @@
           "title": "5. Provide Test Builders",
           "dataset_index": 1,
           "scores": {
-            "rouge1_f": 0.31818181818181823,
-            "rouge2_f": 0.06639004149377593,
-            "rougeL_f": 0.18181818181818185,
-            "bleu_avg": 0.09043522180374824,
-            "meteor": 0.2166673767968513,
-            "bert_f1": 0.8320887088775635,
-            "bert_precision": 0.8326899409294128,
-            "bert_recall": 0.8314882516860962,
-            "reference_length": 266,
-            "hypothesis_length": 207,
-            "length_ratio": 0.7781954887218046
+            "bertscore_f1": 0.8233653903007507,
+            "bleu": 9.502109509615945,
+            "rouge1_f": 0.3305785123966942,
+            "meteor": 0.25187870605099033
           }
         },
         {
@@ -282,17 +192,10 @@
           "title": "Use `--input` Flag Consistently for Reading Input Files",
           "dataset_index": 42,
           "scores": {
-            "rouge1_f": 0.40512223515715945,
-            "rouge2_f": 0.15402567094515754,
-            "rougeL_f": 0.23748544819557624,
-            "bleu_avg": 0.12283531807888791,
-            "meteor": 0.27160777719491125,
-            "bert_f1": 0.8482458591461182,
-            "bert_precision": 0.843949556350708,
-            "bert_recall": 0.8525860905647278,
-            "reference_length": 541,
-            "hypothesis_length": 296,
-            "length_ratio": 0.5471349353049908
+            "bertscore_f1": 0.8554713129997253,
+            "bleu": 15.114660392722511,
+            "rouge1_f": 0.42607683352735737,
+            "meteor": 0.4121553020456877
           }
         },
         {
@@ -301,17 +204,10 @@
           "title": "38. Yarn Workspaces for package management and resolution across services",
           "dataset_index": 34,
           "scores": {
-            "rouge1_f": 0.4092664092664092,
-            "rouge2_f": 0.11627906976744186,
-            "rougeL_f": 0.18532818532818535,
-            "bleu_avg": 0.08035258075088124,
-            "meteor": 0.26786175679545193,
-            "bert_f1": 0.8582149744033813,
-            "bert_precision": 0.8680187463760376,
-            "bert_recall": 0.8486302495002747,
-            "reference_length": 311,
-            "hypothesis_length": 191,
-            "length_ratio": 0.6141479099678456
+            "bertscore_f1": 0.8586564064025879,
+            "bleu": 10.150056815148366,
+            "rouge1_f": 0.44015444015444016,
+            "meteor": 0.3980868042342524
           }
         }
       ],
@@ -322,17 +218,10 @@
           "title": "5. Provide Test Builders",
           "dataset_index": 1,
           "scores": {
-            "rouge1_f": 0.1846153846153846,
-            "rouge2_f": 0.03430531732418525,
-            "rougeL_f": 0.10256410256410256,
-            "bleu_avg": 0.048109793654923336,
-            "meteor": 0.1309136400387773,
-            "bert_f1": 0.8010673522949219,
-            "bert_precision": 0.8004205226898193,
-            "bert_recall": 0.8017152547836304,
-            "reference_length": 379,
-            "hypothesis_length": 207,
-            "length_ratio": 0.5461741424802111
+            "bertscore_f1": 0.812468945980072,
+            "bleu": 5.045940205095659,
+            "rouge1_f": 0.20854700854700856,
+            "meteor": 0.19359404290826232
           }
         },
         {
@@ -341,17 +230,10 @@
           "title": "Use `--input` Flag Consistently for Reading Input Files",
           "dataset_index": 42,
           "scores": {
-            "rouge1_f": 0.4025974025974026,
-            "rouge2_f": 0.12760416666666666,
-            "rougeL_f": 0.22597402597402597,
-            "bleu_avg": 0.17277997989794536,
-            "meteor": 0.29908406369781515,
-            "bert_f1": 0.8464589715003967,
-            "bert_precision": 0.833592414855957,
-            "bert_recall": 0.8597288727760315,
-            "reference_length": 457,
-            "hypothesis_length": 296,
-            "length_ratio": 0.6477024070021882
+            "bertscore_f1": 0.8631787300109863,
+            "bleu": 20.188242095959414,
+            "rouge1_f": 0.42857142857142855,
+            "meteor": 0.40748083043531336
           }
         },
         {
@@ -360,17 +242,10 @@
           "title": "38. Yarn Workspaces for package management and resolution across services",
           "dataset_index": 34,
           "scores": {
-            "rouge1_f": 0.3656307129798903,
-            "rouge2_f": 0.12110091743119267,
-            "rougeL_f": 0.20109689213893966,
-            "bleu_avg": 0.07801888861479485,
-            "meteor": 0.21247643731595106,
-            "bert_f1": 0.851158618927002,
-            "bert_precision": 0.8607157468795776,
-            "bert_recall": 0.84181147813797,
-            "reference_length": 346,
-            "hypothesis_length": 191,
-            "length_ratio": 0.5520231213872833
+            "bertscore_f1": 0.8464775085449219,
+            "bleu": 9.732819619088477,
+            "rouge1_f": 0.376599634369287,
+            "meteor": 0.3539680953142491
           }
         }
       ],
@@ -381,17 +256,10 @@
           "title": "5. Provide Test Builders",
           "dataset_index": 1,
           "scores": {
-            "rouge1_f": 0.23316062176165803,
-            "rouge2_f": 0.036458333333333336,
-            "rougeL_f": 0.13471502590673576,
-            "bleu_avg": 0.062095837581056766,
-            "meteor": 0.2397832198493758,
-            "bert_f1": 0.826224148273468,
-            "bert_precision": 0.802698016166687,
-            "bert_recall": 0.8511710166931152,
-            "reference_length": 186,
-            "hypothesis_length": 207,
-            "length_ratio": 1.1129032258064515
+            "bertscore_f1": 0.8217411637306213,
+            "bleu": 6.137348098099568,
+            "rouge1_f": 0.29533678756476683,
+            "meteor": 0.1956398194293232
           }
         },
         {
@@ -400,17 +268,10 @@
           "title": "Use `--input` Flag Consistently for Reading Input Files",
           "dataset_index": 42,
           "scores": {
-            "rouge1_f": 0.4010088272383355,
-            "rouge2_f": 0.1441213653603034,
-            "rougeL_f": 0.2597730138713745,
-            "bleu_avg": 0.1787262088966021,
-            "meteor": 0.3142977138852478,
-            "bert_f1": 0.866157054901123,
-            "bert_precision": 0.8649660348892212,
-            "bert_recall": 0.8673513531684875,
-            "reference_length": 470,
-            "hypothesis_length": 296,
-            "length_ratio": 0.6297872340425532
+            "bertscore_f1": 0.886871874332428,
+            "bleu": 20.78610402855225,
+            "rouge1_f": 0.4388398486759142,
+            "meteor": 0.4532116599280425
           }
         },
         {
@@ -419,17 +280,10 @@
           "title": "38. Yarn Workspaces for package management and resolution across services",
           "dataset_index": 34,
           "scores": {
-            "rouge1_f": 0.38394415357766143,
-            "rouge2_f": 0.11908931698774078,
-            "rougeL_f": 0.1954624781849913,
-            "bleu_avg": 0.0687636915845992,
-            "meteor": 0.2560843324535319,
-            "bert_f1": 0.853958785533905,
-            "bert_precision": 0.8672270178794861,
-            "bert_recall": 0.8410903215408325,
-            "reference_length": 371,
-            "hypothesis_length": 191,
-            "length_ratio": 0.5148247978436657
+            "bertscore_f1": 0.8589403629302979,
+            "bleu": 9.799292025991127,
+            "rouge1_f": 0.4083769633507853,
+            "meteor": 0.4234105274638208
           }
         }
       ],
@@ -440,17 +294,10 @@
           "title": "5. Provide Test Builders",
           "dataset_index": 1,
           "scores": {
-            "rouge1_f": 0.23060796645702306,
-            "rouge2_f": 0.029473684210526315,
-            "rougeL_f": 0.14255765199161427,
-            "bleu_avg": 0.07306328835859711,
-            "meteor": 0.1816818508548907,
-            "bert_f1": 0.8264915347099304,
-            "bert_precision": 0.823885977268219,
-            "bert_recall": 0.8291136622428894,
-            "reference_length": 275,
-            "hypothesis_length": 207,
-            "length_ratio": 0.7527272727272727
+            "bertscore_f1": 0.818671464920044,
+            "bleu": 7.757575304223029,
+            "rouge1_f": 0.2641509433962264,
+            "meteor": 0.21247012020952522
           }
         },
         {
@@ -459,17 +306,10 @@
           "title": "Use `--input` Flag Consistently for Reading Input Files",
           "dataset_index": 42,
           "scores": {
-            "rouge1_f": 0.3579418344519016,
-            "rouge2_f": 0.11210762331838565,
-            "rougeL_f": 0.174496644295302,
-            "bleu_avg": 0.08769421804288645,
-            "meteor": 0.2284358037572717,
-            "bert_f1": 0.846691370010376,
-            "bert_precision": 0.8389776945114136,
-            "bert_recall": 0.8545482754707336,
-            "reference_length": 562,
-            "hypothesis_length": 296,
-            "length_ratio": 0.5266903914590747
+            "bertscore_f1": 0.868090808391571,
+            "bleu": 12.654106765346972,
+            "rouge1_f": 0.38255033557046975,
+            "meteor": 0.3986201162631158
           }
         },
         {
@@ -478,17 +318,10 @@
           "title": "38. Yarn Workspaces for package management and resolution across services",
           "dataset_index": 34,
           "scores": {
-            "rouge1_f": 0.3507109004739336,
-            "rouge2_f": 0.07923930269413629,
-            "rougeL_f": 0.17061611374407584,
-            "bleu_avg": 0.03643769110069098,
-            "meteor": 0.18390934141286713,
-            "bert_f1": 0.8438102602958679,
-            "bert_precision": 0.8609117269515991,
-            "bert_recall": 0.8273749351501465,
-            "reference_length": 430,
-            "hypothesis_length": 191,
-            "length_ratio": 0.4441860465116279
+            "bertscore_f1": 0.8523455262184143,
+            "bleu": 6.7517265667962425,
+            "rouge1_f": 0.3823064770932069,
+            "meteor": 0.37062187148443615
           }
         }
       ]
