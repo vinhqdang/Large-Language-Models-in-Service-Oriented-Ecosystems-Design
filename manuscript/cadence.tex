@@ -13,8 +13,6 @@
 \usepackage{cite}
 \usepackage{tikz}
 \usetikzlibrary{arrows.meta, positioning, shapes.geometric}
-\usepackage{pgfplots}
-\pgfplotsset{compat=1.18}
 \hyphenation{op-tical net-works semi-conduc-tor IEEE-Xplore}
 
 \begin{document}
@@ -170,6 +168,7 @@ Stage 2 instantiates one \texttt{QualityAttributeAgent} per required quality att
 
 \begin{figure}[t]
 \centering
+\resizebox{\columnwidth}{!}{%
 \begin{tikzpicture}[
   qa/.style={draw, ellipse, minimum width=1.55cm, minimum height=0.7cm, align=center, font=\small},
   tac/.style={draw, rounded corners, minimum width=1.6cm, minimum height=0.6cm, align=center, font=\scriptsize},
@@ -189,7 +188,8 @@ Stage 2 instantiates one \texttt{QualityAttributeAgent} per required quality att
 \draw[supp] (auth) -- (sec);
 \draw[trad] (auth) to[bend right=10] (perf);
 \draw[trad] (auth) to[bend left=8] (cost);
-\end{tikzpicture}
+\end{tikzpicture}%
+}
 \caption{Excerpt of knowledge graph $G$: solid arrows are \emph{supports} edges, dashed gray arrows are \emph{trade-off} edges. Only 2 of the catalog's 26 tactics and 4 of its 5 quality attributes are shown for legibility.\label{fig:kg-excerpt}}
 \end{figure}
 
@@ -397,34 +397,23 @@ Table~\ref{tab:pilot} and Table~\ref{tab:scaled} draw on two genuinely disjoint 
 
 \subsection{The BERTScore-versus-Surface-Overlap Asymmetry}
 
-Stage~2's synthesis prompt deliberately asks for a terse, one-or-two-sentence decision plus a one-paragraph rationale, so that Stages~3 and 4 can parse it reliably as a structured intermediate representation --- not because a terse decision is a better decision, but because a downstream constraint solver cannot reason about open-ended prose. The \texttt{zero\_shot} and \texttt{retrieval\_only} baselines, by contrast, are prompted for open-ended ``write an ADR'' output, which is closer in length and register to the real, often substantially longer, reference ADR bodies that ROUGE-1 and METEOR reward via n-gram and word overlap. This is a length and register mismatch introduced by our own prompt design choices, not a difference in decision quality, and Table~\ref{tab:pilot}'s numbers show it plainly (Figure~\ref{fig:metric-asymmetry} plots them): BERTScore, a semantic-similarity metric computed over contextual embeddings rather than surface token overlap, is comparatively insensitive to this mismatch and remains within 0.02 across all four systems, while ROUGE-1 and METEOR diverge by as much as 0.08 and 0.14 respectively between the shortest and longest-output systems. We consider BERTScore the fairer metric for comparing CADENCE against baselines under this evaluation design, and we flag this explicitly rather than let a reader infer a quality gap from ROUGE/METEOR alone that the underlying decisions do not actually exhibit.
+Stage~2's synthesis prompt deliberately asks for a terse, one-or-two-sentence decision plus a one-paragraph rationale, so that Stages~3 and 4 can parse it reliably as a structured intermediate representation --- not because a terse decision is a better decision, but because a downstream constraint solver cannot reason about open-ended prose. The \texttt{zero\_shot} and \texttt{retrieval\_only} baselines, by contrast, are prompted for open-ended ``write an ADR'' output, which is closer in length and register to the real, often substantially longer, reference ADR bodies that ROUGE-1 and METEOR reward via n-gram and word overlap. This is a length and register mismatch introduced by our own prompt design choices, not a difference in decision quality, and Table~\ref{tab:pilot}'s numbers show it plainly: BERTScore, a semantic-similarity metric computed over contextual embeddings rather than surface token overlap, is comparatively insensitive to this mismatch and remains within 0.02 across all four systems, while ROUGE-1 and METEOR diverge by as much as 0.08 and 0.14 respectively between the shortest and longest-output systems. Table~\ref{tab:metric-range} makes this asymmetry explicit by reducing Table~\ref{tab:pilot} to one number per metric --- the spread between its lowest- and highest-scoring system --- rather than requiring a reader to compare four rows by eye: BERTScore's spread is an order of magnitude smaller than ROUGE-1's or METEOR's. We consider BERTScore the fairer metric for comparing CADENCE against baselines under this evaluation design, and we flag this explicitly rather than let a reader infer a quality gap from ROUGE/METEOR alone that the underlying decisions do not actually exhibit.
 
-\begin{figure}[t]
+\begin{table}[t]
+\caption{Metric Spread Across the Four Pilot-Run Systems (Table~\ref{tab:pilot}), Lowest to Highest Score\label{tab:metric-range}}
 \centering
-\begin{tikzpicture}
-\begin{axis}[
-    ybar,
-    bar width=6pt,
-    width=\columnwidth,
-    height=4.3cm,
-    ylabel={Score},
-    symbolic x coords={zero-shot,retrieval-only,no-solver,cadence-full},
-    xtick=data,
-    x tick label style={font=\scriptsize},
-    ymin=0, ymax=0.95,
-    legend style={font=\scriptsize, at={(0.5,1.18)}, anchor=north, legend columns=-1, /tikz/every even column/.append style={column sep=6pt}},
-    enlarge x limits=0.22,
-    axis lines*=left,
-    tick label style={font=\scriptsize},
-]
-\addplot coordinates {(zero-shot,0.810) (retrieval-only,0.819) (no-solver,0.805) (cadence-full,0.801)};
-\addplot coordinates {(zero-shot,0.220) (retrieval-only,0.216) (no-solver,0.143) (cadence-full,0.138)};
-\addplot coordinates {(zero-shot,0.244) (retrieval-only,0.250) (no-solver,0.111) (cadence-full,0.102)};
-\legend{BERTScore F1, ROUGE-1 F1, METEOR}
-\end{axis}
-\end{tikzpicture}
-\caption{Pilot run (Table~\ref{tab:pilot}): BERTScore F1 stays flat across all four systems while ROUGE-1 and METEOR drop sharply for the two deliberation-based systems (\texttt{no-solver} = \texttt{multiagent\_no\_solver}) --- the length/register mismatch this section discusses, not a quality gap.\label{fig:metric-asymmetry}}
-\end{figure} We believe this asymmetry is not specific to CADENCE: any structured, multi-stage LLM pipeline whose intermediate representation is deliberately concise --- for parseability, for solver-compatibility, or for any reason other than matching a free-text reference's length --- will be penalized by surface n-gram metrics relative to a single-pass system prompted for open-ended prose, independent of whether the structured pipeline's underlying decision is better, worse, or equivalent. Evaluations of future solver-verified or otherwise structured-output LLM pipelines should report a semantic-similarity metric alongside, not instead of, surface overlap metrics for exactly this reason.
+\begin{tabular}{@{}lccc@{}}
+\toprule
+Metric & Min & Max & Spread \\
+\midrule
+BERTScore F1 & 0.801 & 0.819 & 0.018 \\
+ROUGE-1 F1   & 0.138 & 0.220 & 0.082 \\
+METEOR       & 0.102 & 0.244 & 0.142 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+We believe this asymmetry is not specific to CADENCE: any structured, multi-stage LLM pipeline whose intermediate representation is deliberately concise --- for parseability, for solver-compatibility, or for any reason other than matching a free-text reference's length --- will be penalized by surface n-gram metrics relative to a single-pass system prompted for open-ended prose, independent of whether the structured pipeline's underlying decision is better, worse, or equivalent. Evaluations of future solver-verified or otherwise structured-output LLM pipelines should report a semantic-similarity metric alongside, not instead of, surface overlap metrics for exactly this reason.
 
 \subsection{Threats to Validity}
 
