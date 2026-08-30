@@ -1,0 +1,497 @@
+{
+  "held_out_items": [
+    {
+      "record_id": "architecture_nan/0005-provide-test-builders.md",
+      "repo_folder": "architecture_nan",
+      "title": "5. Provide Test Builders"
+    },
+    {
+      "record_id": "jabref_docs_adr/0045-use-input-flag-always-for-input-files.md",
+      "repo_folder": "jabref_docs_adr",
+      "title": "Use `--input` Flag Consistently for Reading Input Files"
+    },
+    {
+      "record_id": "datalab_architecture_decisions/0038-yarn-workspaces-for-monorepo.md",
+      "repo_folder": "datalab_architecture_decisions",
+      "title": "38. Yarn Workspaces for package management and resolution across services"
+    }
+  ],
+  "results": {
+    "Baseline": {
+      "Gemini-2.5-Pro": [
+        {
+          "record_id": "architecture_nan/0005-provide-test-builders.md",
+          "repo_folder": "architecture_nan",
+          "title": "5. Provide Test Builders",
+          "dataset_index": 4,
+          "scores": {
+            "rouge1_f": 0.16542750929368027,
+            "rouge2_f": 0.035381750465549346,
+            "rougeL_f": 0.09665427509293681,
+            "bleu_avg": 0.0055288033695206065,
+            "meteor": 0.09145161061584797,
+            "bert_f1": 0.8053386807441711,
+            "bert_precision": 0.8052722811698914,
+            "bert_recall": 0.8054051399230957,
+            "reference_length": 865,
+            "hypothesis_length": 207,
+            "length_ratio": 0.23930635838150288
+          }
+        },
+        {
+          "record_id": "jabref_docs_adr/0045-use-input-flag-always-for-input-files.md",
+          "repo_folder": "jabref_docs_adr",
+          "title": "Use `--input` Flag Consistently for Reading Input Files",
+          "dataset_index": 45,
+          "scores": {
+            "rouge1_f": 0.2533215234720992,
+            "rouge2_f": 0.0585625554569654,
+            "rougeL_f": 0.11868910540301152,
+            "bleu_avg": 0.027555215160144815,
+            "meteor": 0.15187632743995466,
+            "bert_f1": 0.8195598721504211,
+            "bert_precision": 0.8162428140640259,
+            "bert_recall": 0.8229039907455444,
+            "reference_length": 797,
+            "hypothesis_length": 296,
+            "length_ratio": 0.3713927227101631
+          }
+        },
+        {
+          "record_id": "datalab_architecture_decisions/0038-yarn-workspaces-for-monorepo.md",
+          "repo_folder": "datalab_architecture_decisions",
+          "title": "38. Yarn Workspaces for package management and resolution across services",
+          "dataset_index": 37,
+          "scores": {
+            "rouge1_f": 0.25760649087221094,
+            "rouge2_f": 0.05894308943089431,
+            "rougeL_f": 0.11967545638945233,
+            "bleu_avg": 0.0032390948241909864,
+            "meteor": 0.09806308454768917,
+            "bert_f1": 0.8315889835357666,
+            "bert_precision": 0.8517625331878662,
+            "bert_recall": 0.8123490214347839,
+            "reference_length": 768,
+            "hypothesis_length": 191,
+            "length_ratio": 0.24869791666666666
+          }
+        }
+      ],
+      "Gemma3-4b": [
+        {
+          "record_id": "architecture_nan/0005-provide-test-builders.md",
+          "repo_folder": "architecture_nan",
+          "title": "5. Provide Test Builders",
+          "dataset_index": 4,
+          "scores": {
+            "rouge1_f": 0.15759312320916904,
+            "rouge2_f": 0.028735632183908053,
+            "rougeL_f": 0.1002865329512894,
+            "bleu_avg": 0.014206383139455972,
+            "meteor": 0.09881101402042784,
+            "bert_f1": 0.8001640439033508,
+            "bert_precision": 0.7957034111022949,
+            "bert_recall": 0.8046749830245972,
+            "reference_length": 491,
+            "hypothesis_length": 207,
+            "length_ratio": 0.4215885947046843
+          }
+        },
+        {
+          "record_id": "jabref_docs_adr/0045-use-input-flag-always-for-input-files.md",
+          "repo_folder": "jabref_docs_adr",
+          "title": "Use `--input` Flag Consistently for Reading Input Files",
+          "dataset_index": 45,
+          "scores": {
+            "rouge1_f": 0.3286978508217446,
+            "rouge2_f": 0.08365019011406845,
+            "rougeL_f": 0.1618204804045512,
+            "bleu_avg": 0.05738360482137297,
+            "meteor": 0.18414193618954525,
+            "bert_f1": 0.8286817669868469,
+            "bert_precision": 0.8191962242126465,
+            "bert_recall": 0.8383896350860596,
+            "reference_length": 471,
+            "hypothesis_length": 296,
+            "length_ratio": 0.6284501061571125
+          }
+        },
+        {
+          "record_id": "datalab_architecture_decisions/0038-yarn-workspaces-for-monorepo.md",
+          "repo_folder": "datalab_architecture_decisions",
+          "title": "38. Yarn Workspaces for package management and resolution across services",
+          "dataset_index": 37,
+          "scores": {
+            "rouge1_f": 0.27006369426751586,
+            "rouge2_f": 0.07662835249042146,
+            "rougeL_f": 0.14267515923566879,
+            "bleu_avg": 0.01265612707118162,
+            "meteor": 0.12556272394967002,
+            "bert_f1": 0.8294179439544678,
+            "bert_precision": 0.841596245765686,
+            "bert_recall": 0.8175870180130005,
+            "reference_length": 585,
+            "hypothesis_length": 191,
+            "length_ratio": 0.3264957264957265
+          }
+        }
+      ],
+      "GLM-4.6": [
+        {
+          "record_id": "architecture_nan/0005-provide-test-builders.md",
+          "repo_folder": "architecture_nan",
+          "title": "5. Provide Test Builders",
+          "dataset_index": 4,
+          "scores": {
+            "rouge1_f": 0.23312883435582823,
+            "rouge2_f": 0.03696098562628337,
+            "rougeL_f": 0.12678936605316973,
+            "bleu_avg": 0.041621592000920755,
+            "meteor": 0.18477878221974567,
+            "bert_f1": 0.8162813186645508,
+            "bert_precision": 0.8166911602020264,
+            "bert_recall": 0.8158718943595886,
+            "reference_length": 290,
+            "hypothesis_length": 207,
+            "length_ratio": 0.7137931034482758
+          }
+        },
+        {
+          "record_id": "jabref_docs_adr/0045-use-input-flag-always-for-input-files.md",
+          "repo_folder": "jabref_docs_adr",
+          "title": "Use `--input` Flag Consistently for Reading Input Files",
+          "dataset_index": 45,
+          "scores": {
+            "rouge1_f": 0.31407407407407406,
+            "rouge2_f": 0.07429420505200594,
+            "rougeL_f": 0.15407407407407406,
+            "bleu_avg": 0.09548236347244529,
+            "meteor": 0.227176947977584,
+            "bert_f1": 0.8270862698554993,
+            "bert_precision": 0.819210410118103,
+            "bert_recall": 0.8351148962974548,
+            "reference_length": 358,
+            "hypothesis_length": 296,
+            "length_ratio": 0.8268156424581006
+          }
+        },
+        {
+          "record_id": "datalab_architecture_decisions/0038-yarn-workspaces-for-monorepo.md",
+          "repo_folder": "datalab_architecture_decisions",
+          "title": "38. Yarn Workspaces for package management and resolution across services",
+          "dataset_index": 37,
+          "scores": {
+            "rouge1_f": 0.2571103526734926,
+            "rouge2_f": 0.05473204104903079,
+            "rougeL_f": 0.12969283276450513,
+            "bleu_avg": 0.008414091623404443,
+            "meteor": 0.11232671358458163,
+            "bert_f1": 0.8343310356140137,
+            "bert_precision": 0.8523056507110596,
+            "bert_recall": 0.81709885597229,
+            "reference_length": 669,
+            "hypothesis_length": 191,
+            "length_ratio": 0.28550074738415543
+          }
+        }
+      ],
+      "Qwen3-235b": [
+        {
+          "record_id": "architecture_nan/0005-provide-test-builders.md",
+          "repo_folder": "architecture_nan",
+          "title": "5. Provide Test Builders",
+          "dataset_index": 4,
+          "scores": {
+            "rouge1_f": 0.21088435374149658,
+            "rouge2_f": 0.030716723549488057,
+            "rougeL_f": 0.11564625850340136,
+            "bleu_avg": 0.04414006035946787,
+            "meteor": 0.14097779148673661,
+            "bert_f1": 0.8214314579963684,
+            "bert_precision": 0.8280777931213379,
+            "bert_recall": 0.8148910403251648,
+            "reference_length": 408,
+            "hypothesis_length": 207,
+            "length_ratio": 0.5073529411764706
+          }
+        },
+        {
+          "record_id": "jabref_docs_adr/0045-use-input-flag-always-for-input-files.md",
+          "repo_folder": "jabref_docs_adr",
+          "title": "Use `--input` Flag Consistently for Reading Input Files",
+          "dataset_index": 45,
+          "scores": {
+            "rouge1_f": 0.3536404160475483,
+            "rouge2_f": 0.0894187779433681,
+            "rougeL_f": 0.16344725111441308,
+            "bleu_avg": 0.10514311398079224,
+            "meteor": 0.27227546711894185,
+            "bert_f1": 0.8325592279434204,
+            "bert_precision": 0.8290095329284668,
+            "bert_recall": 0.8361396193504333,
+            "reference_length": 383,
+            "hypothesis_length": 296,
+            "length_ratio": 0.7728459530026109
+          }
+        },
+        {
+          "record_id": "datalab_architecture_decisions/0038-yarn-workspaces-for-monorepo.md",
+          "repo_folder": "datalab_architecture_decisions",
+          "title": "38. Yarn Workspaces for package management and resolution across services",
+          "dataset_index": 37,
+          "scores": {
+            "rouge1_f": 0.2961876832844575,
+            "rouge2_f": 0.061764705882352944,
+            "rougeL_f": 0.1466275659824047,
+            "bleu_avg": 0.017055528216734003,
+            "meteor": 0.13252754861753413,
+            "bert_f1": 0.8304172158241272,
+            "bert_precision": 0.846764087677002,
+            "bert_recall": 0.8146895170211792,
+            "reference_length": 482,
+            "hypothesis_length": 191,
+            "length_ratio": 0.3962655601659751
+          }
+        }
+      ]
+    },
+    "RAG_Based_K3": {
+      "Gemini-2.5-Pro": [
+        {
+          "record_id": "architecture_nan/0005-provide-test-builders.md",
+          "repo_folder": "architecture_nan",
+          "title": "5. Provide Test Builders",
+          "dataset_index": 1,
+          "scores": {
+            "rouge1_f": 0.31818181818181823,
+            "rouge2_f": 0.06639004149377593,
+            "rougeL_f": 0.18181818181818185,
+            "bleu_avg": 0.09043522180374824,
+            "meteor": 0.2166673767968513,
+            "bert_f1": 0.8320887088775635,
+            "bert_precision": 0.8326899409294128,
+            "bert_recall": 0.8314882516860962,
+            "reference_length": 266,
+            "hypothesis_length": 207,
+            "length_ratio": 0.7781954887218046
+          }
+        },
+        {
+          "record_id": "jabref_docs_adr/0045-use-input-flag-always-for-input-files.md",
+          "repo_folder": "jabref_docs_adr",
+          "title": "Use `--input` Flag Consistently for Reading Input Files",
+          "dataset_index": 42,
+          "scores": {
+            "rouge1_f": 0.40512223515715945,
+            "rouge2_f": 0.15402567094515754,
+            "rougeL_f": 0.23748544819557624,
+            "bleu_avg": 0.12283531807888791,
+            "meteor": 0.27160777719491125,
+            "bert_f1": 0.8482458591461182,
+            "bert_precision": 0.843949556350708,
+            "bert_recall": 0.8525860905647278,
+            "reference_length": 541,
+            "hypothesis_length": 296,
+            "length_ratio": 0.5471349353049908
+          }
+        },
+        {
+          "record_id": "datalab_architecture_decisions/0038-yarn-workspaces-for-monorepo.md",
+          "repo_folder": "datalab_architecture_decisions",
+          "title": "38. Yarn Workspaces for package management and resolution across services",
+          "dataset_index": 34,
+          "scores": {
+            "rouge1_f": 0.4092664092664092,
+            "rouge2_f": 0.11627906976744186,
+            "rougeL_f": 0.18532818532818535,
+            "bleu_avg": 0.08035258075088124,
+            "meteor": 0.26786175679545193,
+            "bert_f1": 0.8582149744033813,
+            "bert_precision": 0.8680187463760376,
+            "bert_recall": 0.8486302495002747,
+            "reference_length": 311,
+            "hypothesis_length": 191,
+            "length_ratio": 0.6141479099678456
+          }
+        }
+      ],
+      "Gemma3-4b": [
+        {
+          "record_id": "architecture_nan/0005-provide-test-builders.md",
+          "repo_folder": "architecture_nan",
+          "title": "5. Provide Test Builders",
+          "dataset_index": 1,
+          "scores": {
+            "rouge1_f": 0.1846153846153846,
+            "rouge2_f": 0.03430531732418525,
+            "rougeL_f": 0.10256410256410256,
+            "bleu_avg": 0.048109793654923336,
+            "meteor": 0.1309136400387773,
+            "bert_f1": 0.8010673522949219,
+            "bert_precision": 0.8004205226898193,
+            "bert_recall": 0.8017152547836304,
+            "reference_length": 379,
+            "hypothesis_length": 207,
+            "length_ratio": 0.5461741424802111
+          }
+        },
+        {
+          "record_id": "jabref_docs_adr/0045-use-input-flag-always-for-input-files.md",
+          "repo_folder": "jabref_docs_adr",
+          "title": "Use `--input` Flag Consistently for Reading Input Files",
+          "dataset_index": 42,
+          "scores": {
+            "rouge1_f": 0.4025974025974026,
+            "rouge2_f": 0.12760416666666666,
+            "rougeL_f": 0.22597402597402597,
+            "bleu_avg": 0.17277997989794536,
+            "meteor": 0.29908406369781515,
+            "bert_f1": 0.8464589715003967,
+            "bert_precision": 0.833592414855957,
+            "bert_recall": 0.8597288727760315,
+            "reference_length": 457,
+            "hypothesis_length": 296,
+            "length_ratio": 0.6477024070021882
+          }
+        },
+        {
+          "record_id": "datalab_architecture_decisions/0038-yarn-workspaces-for-monorepo.md",
+          "repo_folder": "datalab_architecture_decisions",
+          "title": "38. Yarn Workspaces for package management and resolution across services",
+          "dataset_index": 34,
+          "scores": {
+            "rouge1_f": 0.3656307129798903,
+            "rouge2_f": 0.12110091743119267,
+            "rougeL_f": 0.20109689213893966,
+            "bleu_avg": 0.07801888861479485,
+            "meteor": 0.21247643731595106,
+            "bert_f1": 0.851158618927002,
+            "bert_precision": 0.8607157468795776,
+            "bert_recall": 0.84181147813797,
+            "reference_length": 346,
+            "hypothesis_length": 191,
+            "length_ratio": 0.5520231213872833
+          }
+        }
+      ],
+      "GLM-4.6": [
+        {
+          "record_id": "architecture_nan/0005-provide-test-builders.md",
+          "repo_folder": "architecture_nan",
+          "title": "5. Provide Test Builders",
+          "dataset_index": 1,
+          "scores": {
+            "rouge1_f": 0.23316062176165803,
+            "rouge2_f": 0.036458333333333336,
+            "rougeL_f": 0.13471502590673576,
+            "bleu_avg": 0.062095837581056766,
+            "meteor": 0.2397832198493758,
+            "bert_f1": 0.826224148273468,
+            "bert_precision": 0.802698016166687,
+            "bert_recall": 0.8511710166931152,
+            "reference_length": 186,
+            "hypothesis_length": 207,
+            "length_ratio": 1.1129032258064515
+          }
+        },
+        {
+          "record_id": "jabref_docs_adr/0045-use-input-flag-always-for-input-files.md",
+          "repo_folder": "jabref_docs_adr",
+          "title": "Use `--input` Flag Consistently for Reading Input Files",
+          "dataset_index": 42,
+          "scores": {
+            "rouge1_f": 0.4010088272383355,
+            "rouge2_f": 0.1441213653603034,
+            "rougeL_f": 0.2597730138713745,
+            "bleu_avg": 0.1787262088966021,
+            "meteor": 0.3142977138852478,
+            "bert_f1": 0.866157054901123,
+            "bert_precision": 0.8649660348892212,
+            "bert_recall": 0.8673513531684875,
+            "reference_length": 470,
+            "hypothesis_length": 296,
+            "length_ratio": 0.6297872340425532
+          }
+        },
+        {
+          "record_id": "datalab_architecture_decisions/0038-yarn-workspaces-for-monorepo.md",
+          "repo_folder": "datalab_architecture_decisions",
+          "title": "38. Yarn Workspaces for package management and resolution across services",
+          "dataset_index": 34,
+          "scores": {
+            "rouge1_f": 0.38394415357766143,
+            "rouge2_f": 0.11908931698774078,
+            "rougeL_f": 0.1954624781849913,
+            "bleu_avg": 0.0687636915845992,
+            "meteor": 0.2560843324535319,
+            "bert_f1": 0.853958785533905,
+            "bert_precision": 0.8672270178794861,
+            "bert_recall": 0.8410903215408325,
+            "reference_length": 371,
+            "hypothesis_length": 191,
+            "length_ratio": 0.5148247978436657
+          }
+        }
+      ],
+      "Qwen3-235b": [
+        {
+          "record_id": "architecture_nan/0005-provide-test-builders.md",
+          "repo_folder": "architecture_nan",
+          "title": "5. Provide Test Builders",
+          "dataset_index": 1,
+          "scores": {
+            "rouge1_f": 0.23060796645702306,
+            "rouge2_f": 0.029473684210526315,
+            "rougeL_f": 0.14255765199161427,
+            "bleu_avg": 0.07306328835859711,
+            "meteor": 0.1816818508548907,
+            "bert_f1": 0.8264915347099304,
+            "bert_precision": 0.823885977268219,
+            "bert_recall": 0.8291136622428894,
+            "reference_length": 275,
+            "hypothesis_length": 207,
+            "length_ratio": 0.7527272727272727
+          }
+        },
+        {
+          "record_id": "jabref_docs_adr/0045-use-input-flag-always-for-input-files.md",
+          "repo_folder": "jabref_docs_adr",
+          "title": "Use `--input` Flag Consistently for Reading Input Files",
+          "dataset_index": 42,
+          "scores": {
+            "rouge1_f": 0.3579418344519016,
+            "rouge2_f": 0.11210762331838565,
+            "rougeL_f": 0.174496644295302,
+            "bleu_avg": 0.08769421804288645,
+            "meteor": 0.2284358037572717,
+            "bert_f1": 0.846691370010376,
+            "bert_precision": 0.8389776945114136,
+            "bert_recall": 0.8545482754707336,
+            "reference_length": 562,
+            "hypothesis_length": 296,
+            "length_ratio": 0.5266903914590747
+          }
+        },
+        {
+          "record_id": "datalab_architecture_decisions/0038-yarn-workspaces-for-monorepo.md",
+          "repo_folder": "datalab_architecture_decisions",
+          "title": "38. Yarn Workspaces for package management and resolution across services",
+          "dataset_index": 34,
+          "scores": {
+            "rouge1_f": 0.3507109004739336,
+            "rouge2_f": 0.07923930269413629,
+            "rougeL_f": 0.17061611374407584,
+            "bleu_avg": 0.03643769110069098,
+            "meteor": 0.18390934141286713,
+            "bert_f1": 0.8438102602958679,
+            "bert_precision": 0.8609117269515991,
+            "bert_recall": 0.8273749351501465,
+            "reference_length": 430,
+            "hypothesis_length": 191,
+            "length_ratio": 0.4441860465116279
+          }
+        }
+      ]
+    }
+  }
+}
