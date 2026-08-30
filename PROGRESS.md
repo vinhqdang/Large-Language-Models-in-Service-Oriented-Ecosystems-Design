@@ -445,15 +445,99 @@ paper exists. Bibliography: 27 → 31 entries.
 addition needs to trim something else first; there is no headroom left.
 153 tests passing.
 
+## Status: third review cycle — harmonized published-baseline metrics, fixed a real methodology flaw (2026-08-30, later still)
+
+User asked for one more independent review pass. Dispatched two parallel
+reviewer agents (technical-accuracy, academic-writing-quality), same
+pattern as cycles 1 and 2. The technical reviewer found something more
+serious than wording: the "Context Matters" package's own evaluation
+script (`Experiments/CommonCode/evaluate_ADRs.py`) calls
+`compare_ADRs(reference=generation, hypothesis=ground_truth)` — i.e. its
+BLEU/METEOR are computed with prediction and reference **reversed**
+relative to standard usage and to this project's own metrics code, and
+its ROUGE-1 uses no stemmer where ours does. This meant Table VIII (the
+published-baseline comparison added in the previous cycle) was not
+actually apples-to-apples: it mixed the package's own (differently
+computed) scores against this project's own metrics.
+
+**Fix**: rewrote `src/evaluation/published_baselines.py` and
+`scripts/extract_published_baseline_comparison.py` to stop trusting the
+package's precomputed `Evaluations/*.json` scores entirely and instead
+recompute all four metrics from the package's raw
+`Generated_ADRs/{repo}.json` generation/ground-truth text pairs using
+this project's own `compute_corpus_metrics` — identical BERTScore
+checkpoint, identical sacrebleu BLEU, identical stemmed ROUGE-1,
+identical METEOR, on both sides. Ran the real script for real (all 24
+generation/reference pairs matched, 3 held-out items × 4 models × 2
+strategies).
+
+**The harmonized numbers changed the finding materially.** Under the old
+(flawed-orientation) numbers, `cadence_full` looked roughly comparable to
+the published models. Under the harmonized numbers, `cadence_full` scores
+below every one of the eight published rows on every metric, including
+BERTScore — while this project's own naive `zero_shot`/`retrieval_only`
+baselines hold up reasonably well against the same published models. The
+manuscript's Table VIII and Section IV-E prose were rewritten to report
+this honestly (with model-size disclosure per row and a BERTScore-methodology
+footnote) rather than keep the prior "not obviously outclassed" framing,
+which did not survive harmonization.
+
+Other confirmed findings fixed in the same pass:
+- The worked example (Section III-G) claimed its $B=4$ run illustrated
+  "exactly the mechanism" the $B=5$ evaluation diagnoses — false; $B=4$ is
+  infeasible by construction regardless of tactic naming. Reworded to say
+  so explicitly while keeping the tactic-naming illustration.
+- Pilot run's `max_repair_iterations` was misstated as 1 in prose (should
+  be 2, matching Table VI's own footnote and `scripts/run_evaluation.py`'s
+  actual default).
+- "72 catalogued folders (Repo Inaccessible or Doubt (no repo dir))" was a
+  false clean 2-category split; verified via script that the true
+  composition is 39/40 Repo Inaccessible + 32/33 Doubt(no repo dir) +
+  1/5 Doubt(file contents) — reworded accordingly.
+- Abstract was missing the "$B=5$ is the only arithmetically achievable
+  budget tested" qualifier present everywhere else in the paper; fixed an
+  ambiguous "match X against Y" verb in the same paragraph.
+- Introduction's three-contributions list and the Conclusion didn't
+  mention the published-baseline comparison (Section IV-E) at all — added
+  to both.
+- An inconsistent BERTScore noise-threshold argument (a 0.009 gap called
+  "signal" in one place, a 0.003 gap called "noise" in another, against a
+  separately-established ~0.018 spread) — reworded to lean on
+  BLEU/ROUGE-1/METEOR's agreement for the Stage-4 positive finding instead
+  of BERTScore.
+- Removed ungrounded "(non-simulated)"/"simulated" parentheticals that
+  referenced nothing else in the paper.
+- Added the missing `\cite{iso25010}` at first mention; added a BLEU row
+  (previously silently omitted) to the metric-spread table with a
+  scale-comparability footnote.
+- Data and Code Availability now lists `run_worked_example.py` and
+  `extract_published_baseline_comparison.py` explicitly and no longer
+  overclaims the pilot run's per-item results are committed (they aren't —
+  only the scaled run's per-system aggregate is).
+- Added infeasibility caveats directly to Table VI/VII captions (not just
+  prose) and an "Illustrative" marker to the worked-example table caption
+  — a pattern both prior review cycles also flagged.
+- Annotated `scripts/run_evaluation_repair2_verification.py`'s stale
+  docstring, which still described the canonical
+  `evaluation_results_scaled.json` as the old repair=1 baseline; it's
+  actually the repair=2 run now.
+
+Manuscript recompiles cleanly, exactly 14 pages, no undefined references,
+no new overfull hboxes. Full suite: 155 tests passing (2 new tests added
+for the recomputation logic). Committed and pushed.
+
 ## Next step
 
 What's genuinely still open, in priority order:
 
-0. **Consider whether the published-baseline comparison (Table VIII) should
-   be extended to more of the corpus's 5 strategies/4 models**, or whether
-   the current 2-strategy/4-model slice is sufficient — this was added
-   reactively to close a real gap, not originally planned, so it hasn't
-   been through a review cycle yet.
+0. **The harmonized published-baseline comparison now shows `cadence_full`
+   scoring below every published frontier model on every metric** (Table
+   VIII, Section IV-E) — reported honestly rather than softened, but it
+   means "evaluate CADENCE against a stronger local backbone" (already in
+   Future Work) is now a more load-bearing next step than it was before
+   this cycle, since the current comparison can't separate a genuine
+   algorithmic gap from the ~2-orders-of-magnitude scale gap between our
+   1.5B backbone and the published models (4B–357B).
 1. **Larger $N$** is still the single most valuable remaining action —
    giving repair its full budget ruled out one candidate explanation but
    did not add sample size; `B=5`'s 0% result is still one data point at
