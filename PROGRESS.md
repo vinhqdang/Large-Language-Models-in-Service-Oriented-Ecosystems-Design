@@ -379,10 +379,65 @@ project's Claude memory). Responded with three things, all committed:
      now holds the new 5-system/repair=2 data; the superseded run is
      archived at `evaluation_results_scaled_repair1.json`.
 
+## Status: figure fixes, a real worked example, and published-baseline comparison (2026-08-30, later)
+
+Three more rounds of direct user feedback, each addressed for real, not cosmetically:
+
+1. **"Figure 2 is too wide and overlap with text, figure 3 is not readable"**
+   — Figure 2 (knowledge-graph excerpt) was rendering wider than the IEEE
+   column and bleeding into the adjacent column's text; wrapped in
+   `\resizebox{\columnwidth}{!}{...}`. Figure 3 (a pilot-run bar chart) was
+   illegible at print size; replaced with Table IX, a compact min/max/spread
+   table over the same three metrics — states the actual analytical point
+   (BERTScore's spread is an order of magnitude smaller than ROUGE-1's or
+   METEOR's) more directly than the chart did.
+2. **"There is no example from our running, to show what are we doing"**
+   — added `scripts/run_worked_example.py`, which runs the real, complete
+   4-stage pipeline once on one decision context and saves the full
+   structured result to `data/processed/worked_example.json`. The real run
+   turned out to be a good illustration on its own: under `tactic_budget=4`,
+   Stage 3 selected only 3 tactics (leaving one budget slot unused) because
+   the deliberated candidate's text never named a fourth tactic covering
+   security or maintainability — a concrete instance of exactly the
+   mechanism the aggregate results diagnose, not a contrived example. Now
+   manuscript Section III-G, with Table IV of its per-attribute utility
+   scores.
+3. **"We evaluated using only [our own] dataset and no baseline model from
+   published papers... the comparison is weak"** — real, substantive gap:
+   every baseline in the evaluation was our own re-implementation, never an
+   actual published system's reported numbers. Fixed by going back to the
+   "Context Matters" replication package (already used for the retrieval
+   corpus) and discovering it ships its own real generations and scores
+   from four frontier models (Gemini-2.5-Pro, GLM-4.6, Qwen3-235B,
+   Gemma3-4B) under 5 real prompting strategies, computed with equivalent
+   metric libraries to our own (HuggingFace `evaluate`'s ROUGE/METEOR/
+   BERTScore; its BLEU is 0–1 scale, so ×100 for consistency with our
+   sacrebleu numbers). Matched our exact 3 scaled-run held-out items into
+   that package **by title** (verified unique per repo) and extracted the
+   identical-item scores under its `Baseline` (matches our `zero_shot`)
+   and `RAG_Based` $k=3$ (matches our `retrieval_only`) strategies — a
+   true apples-to-apples comparison against real published numbers on the
+   same items, not an approximation. New:
+   `src/evaluation/published_baselines.py` (index-matching + aggregation,
+   tested), `scripts/extract_published_baseline_comparison.py`, and the
+   committed `data/processed/published_baseline_comparison.json`. Now
+   manuscript Section IV-E with Table VIII, honestly caveated (these are
+   much larger models, their prompt is considerably more elaborate than
+   ours, $N=3$ can't support a capability claim either way — framed as an
+   external sanity check, not a "our tiny model beats frontier models"
+   claim, even though the raw numbers are close).
+
+Manuscript is now **13 pages** (14-page CFP limit), **153 tests passing**.
+
 ## Next step
 
 What's genuinely still open, in priority order:
 
+0. **Consider whether the published-baseline comparison (Table VIII) should
+   be extended to more of the corpus's 5 strategies/4 models**, or whether
+   the current 2-strategy/4-model slice is sufficient — this was added
+   reactively to close a real gap, not originally planned, so it hasn't
+   been through a review cycle yet.
 1. **Larger $N$** is still the single most valuable remaining action —
    giving repair its full budget ruled out one candidate explanation but
    did not add sample size; `B=5`'s 0% result is still one data point at
