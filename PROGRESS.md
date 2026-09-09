@@ -526,6 +526,60 @@ Manuscript recompiles cleanly, exactly 14 pages, no undefined references,
 no new overfull hboxes. Full suite: 155 tests passing (2 new tests added
 for the recomputation logic). Committed and pushed.
 
+## Status: cut to the IEEE 12-page limit (2026-09-09)
+
+IEEE Transactions on Services Computing returned the manuscript for
+exceeding the venue's 12-page limit (references and the author info
+count toward it; there is no author photo/bio block in this single-author
+IEEEtran journal submission, so nothing to move there). Went from 14
+pages to exactly 12 with no claims, numbers, citations, or tables
+dropped — every one of the 31 references, both evaluation tables, the
+worked example, and all discussion/limitations content survived. The
+tools installed to do this compile-and-verify loop (not previously in
+this container): `texlive-latex-base`, `texlive-latex-extra`,
+`texlive-fonts-recommended`, `texlive-science`, `texlive-bibtex-extra`,
+`texlive-publishers` (for `IEEEtran.cls`), and `poppler-utils`
+(`pdftotext`/`pdftoppm`, used to visually inspect page breaks while
+iterating).
+
+What actually closed the 2-page gap, in order of how much space each
+saved:
+- Restructured Table II (the 26-tactic catalog) from one long 4-column
+  table into two side-by-side column groups (13 rows tall instead of
+  26), dropping only the verbose "Primary Effect" prose to short
+  phrases — the single biggest win, roughly half a page by itself. All
+  26 tactics, their QA groupings, and trade-off counts are still there;
+  full trade-off rationale was already delegated to
+  `src/deliberation/knowledge_graph.py` per the table's own footnote,
+  so nothing that was uniquely-in-the-paper got cut.
+- Set the bibliography to `\footnotesize` and tightened
+  `\textfloatsep`/`\floatsep`/`\intextsep`/caption skips and
+  `\arraystretch` (to 0.8) — standard, content-neutral typesetting
+  adjustments, not a body-font change.
+- Removed the small `Corpus Extraction-Confidence Breakdown` table and
+  folded its six numbers inline into the one paragraph that already
+  discussed them — was fully redundant with prose that (correctly,
+  per the second review cycle) already stated the same breakdown.
+- Tightened prose throughout: the abstract, conclusion, worked example,
+  and Related Work subsections had real redundancy (the same caveat
+  about B=4/B=2 infeasibility was stated 3+ times in places); cut
+  duplication and hedging without touching any number, citation, or
+  claim. Caught and fixed one bug introduced mid-edit: removing spaces
+  around a `/` inside back-to-back `\texttt{}` macros
+  (`covered_quality_attributes` / `uncovered_quality_attributes`)
+  produced one unbreakable token and an overfull hbox — restored the
+  spaces.
+- Shrunk the pipeline and knowledge-graph tikz figures slightly
+  (smaller node height/spacing, same content).
+
+Verified via `pdflatex` (2 passes, checked the log each time for
+`Overfull`/`undefined`) plus `pdftoppm`-rendered page images inspected
+visually at each major step — not just a page-count number. Final
+state: exactly 12 pages, 0 undefined references, only the same two
+pre-existing (harmless) overfull hboxes the 14-page version already
+had, 31/31 citations intact. Committed and pushed to
+`claude/ieee-manuscript-page-limit-xh8qw0`.
+
 ## Next step
 
 What's genuinely still open, in priority order:
