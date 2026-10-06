@@ -637,3 +637,83 @@ citation-verification subagent rather than the full pipeline.
 - Work happens directly on `main` (no feature branches) — user's explicit choice.
 - Push after every commit, no Claude identity in commits (global user convention).
 - Implementation plans executed task-by-task: write failing tests, implement, verify passing, sanity-check against real data when the real data is small enough to (never in automated unit tests — those stay fast and network/data-free), get an independent code review before committing non-trivial logic, commit, push.
+
+## Status: IEEE TSC rejected on scope grounds; retargeted to Elsevier JSS (2026-10-06)
+
+TSC's decision on TSCSI-2026-09-1300: **reject**, scope-only. The AE was
+explicit that this was not a technical-merit judgment: CADENCE's service-
+oriented framing was "contextual rather than constitutive" — the
+algorithm, corpus, and evaluation don't actually model anything that
+distinguishes service-oriented architectural decisions from architectural
+decisions in general, so it didn't fit the special issue's SOC-specific
+scope. EIC suggested a venue focused on software architecture instead.
+
+User chose to retarget Elsevier's **Journal of Systems and Software**
+(JSS) rather than a software-architecture venue, and rather than trying
+to force a genuine SOC angle into the contribution. Produced a new,
+separate manuscript rather than editing `cadence.tex` in place, since the
+two targets need materially different LaTeX:
+
+- `manuscript/cadence_jss.tex` — same algorithm, same evaluation, same
+  31 citations, same quantitative claims as the IEEE version, converted
+  to Elsevier's `elsarticle` class (`[preprint,12pt,authoryear]`) instead
+  of `IEEEtran`. JSS's reference style is author-year (Harvard), not
+  numbered, so every `\cite` became `\citep`/`\citet` as appropriate
+  (narrative citations like "Dhar et al. demonstrate..." use `\citet`
+  with the manually-typed author name removed, so natbib generates it
+  once instead of duplicating it) and the 31 references moved from a
+  manual `thebibliography` block into `manuscript/cadence_jss.bib`
+  (BibTeX, `elsarticle-harv.bst`) — easier to maintain and lets natbib
+  auto-disambiguate the two 2026 Gupta-et-al. entries as 2026a/2026b.
+- Light, honest reframing per the AE's own actual complaint, not a
+  rewrite of the contribution: opened the Introduction with "Software
+  systems" instead of "Service-oriented systems" as the universal
+  framing device, dropped one Related Work sentence's "special issue"
+  phrasing, and removed the one "in service-oriented systems" qualifier
+  from the abstract's first sentence. Nothing about the algorithm,
+  corpus, or evaluation changed — the paper was already general-purpose
+  underneath the framing, which was exactly the AE's point.
+- `table*`/`figure*` (IEEE two-column spanning floats) became plain
+  `table`/`figure` (JSS/elsarticle's `preprint` layout is single-column);
+  the two-column-compressed version of the 26-tactic table (built for
+  the TSC 12-page squeeze) was reverted back to one full-width vertical
+  table now that there's no page limit to fight.
+- Added `\usepackage{placeins}` with `\FloatBarrier` after every single
+  table/figure — without it, LaTeX deferred almost every large table
+  (pilot run, scaled run, published-comparison) all the way to the last
+  2 pages of the document, after the bibliography, because the preprint
+  layout's single column couldn't absorb that many large floats near
+  where they're cited. Fixed; tables now land within 1 page of their
+  first reference, in document order.
+- Table 7 (published frontier-model comparison, the widest one) needed
+  `\resizebox{\textwidth}{!}{...}` — its columns summed wider than
+  elsarticle preprint's ~390pt single-column width (was previously fine
+  as an IEEE two-column `table*` at ~7.1in). Without this it overflowed
+  the page margin by ~3.4in.
+
+Compiles clean: `pdflatex` → `bibtex` → `pdflatex` ×2, 0 undefined
+references, 0 LaTeX errors, 31/31 citations resolved and correctly
+author-year-formatted (verified visually via rendered page images, not
+just the page/error count). 32 pages — expected and not a concern:
+`preprint` mode is deliberately spread out for review (large margins,
+generous leading); JSS has no stated page limit, and Elsevier's own
+production typesetting will reflow this into their final two-column
+layout regardless of what the submitted PDF looks like. A handful of
+small (under ~1in) overfull-hbox warnings remain, all inside dense
+`\texttt{}`-heavy prose (corpus status strings, parameter names); checked
+visually on the actual rendered pages and none of them bleed into the
+margin or collide with anything — cosmetic TeX pessimism, not a real
+layout defect.
+
+Not yet done, if picked back up: `manuscript/cadence.tex` (the IEEE
+version) was left untouched/unreformatted — it still exists as the
+record of what was submitted to TSC. No author response/cover letter
+was drafted for JSS (not customarily required at initial Elsevier
+submission the way an IEEE cover letter sometimes is). The 12-page-limit
+compression work done for TSC (terser prose, the 2-column tactic table)
+was deliberately *not* carried over to the JSS version beyond what was
+needed for layout fixes — JSS has no page pressure, so if there's ever
+time, the trimmed-for-space prose could be expanded back out for
+clarity now that there's room, though the current (already
+review-hardened) wording is fully correct as-is and this is optional
+polish, not a defect.
