@@ -7,16 +7,16 @@
   arr/.style={-{Stealth[length=1.6mm]}, thick},
   darr/.style={-{Stealth[length=1.4mm]}, dashed},
 ]
-\node[top] (scripts) at (6.3,10.3) {\textbf{\texttt{scripts/}} -- entry points\\[1pt]{\tiny\ttfamily fetch\_adr\_corpus, build\_retrieval\_index, run\_cadence\_demo, run\_evaluation*, run\_worked\_example, extract\_published\_baseline\_comparison}};
+\node[top] (scripts) at (6.3,10.3) {\textbf{Entry-point scripts}\\[1pt]{\tiny corpus fetch, dataset and index build, pipeline demos, evaluation runs, worked example, published-baseline comparison}};
 
-\node[pkg] (ev) at (6.3,8.4) {\textbf{\texttt{src/evaluation}} -- 5 systems, metrics, harness\\[1pt]\modl{systems ~~ harness ~~ held\_out\_set ~~ metrics ~~ published\_baselines}};
-\node[pkg] (cr) at (6.3,6.5) {\textbf{\texttt{src/critique}} -- Stage 4\\[1pt]\modl{structural\_utility ~~ llm\_critique ~~ finalize}};
-\node[pkg] (so) at (6.3,4.6) {\textbf{\texttt{src/solver}} -- Stage 3\\[1pt]\modl{tactic\_extraction ~~ feasibility ~~ repair ~~ synthesis\_format}};
-\node[pkg] (de) at (6.3,2.7) {\textbf{\texttt{src/deliberation}} -- Stage 2\\[1pt]\modl{knowledge\_graph ~~ agent ~~ orchestrator ~~ llm\_client}};
-\node[pkg] (re) at (6.3,0.8) {\textbf{\texttt{src/retrieval}} -- Stage 1\\[1pt]\modl{records ~~ embeddings ~~ index ~~ retriever}};
+\node[pkg] (ev) at (6.3,8.4) {\textbf{Evaluation package} -- systems, harness, metrics\\[1pt]{\tiny the five systems, held-out sampling, run harness, metric scoring, published-baseline comparison}};
+\node[pkg] (cr) at (6.3,6.5) {\textbf{Critique package} -- Stage 4\\[1pt]{\tiny structural utility score, LLM critique and its parser, finalization}};
+\node[pkg] (so) at (6.3,4.6) {\textbf{Solver package} -- Stage 3\\[1pt]{\tiny tactic extraction, feasibility check (Z3), repair loop, response parser}};
+\node[pkg] (de) at (6.3,2.7) {\textbf{Deliberation package} -- Stage 2\\[1pt]{\tiny knowledge graph, quality-attribute agent, orchestrator, LLM clients}};
+\node[pkg] (re) at (6.3,0.8) {\textbf{Retrieval package} -- Stage 1\\[1pt]{\tiny ADR record parsing, embedding, vector index, retriever}};
 
-\node[data] (dt) at (1.45,-1.2) {\textbf{\texttt{src/data}}\\[1pt]\modl{download ~~ inventory ~~ paths}};
-\node[data] (art) at (1.45,0.8) {\texttt{data/processed/}\\[1pt]\modl{adr\_records.jsonl}\\\modl{adr\_embeddings.npy}};
+\node[data] (dt) at (1.45,-1.2) {\textbf{Data package}\\[1pt]{\tiny corpus download and inventory}};
+\node[data] (art) at (1.45,0.8) {Processed corpus\\[1pt]{\tiny ADR records and embeddings}};
 
 \node[ext] (e1) at (11.7,0.8) {sentence-transformers\\(all-MiniLM-L6-v2)};
 \node[ext] (e2) at (11.7,2.7) {NetworkX (knowledge graph)\\Hugging Face / Gemini\\(LLM backends)};

@@ -732,3 +732,20 @@ components were chosen), and `results_figure.tex` (Table 6 plotted, B=5).
 Also fixed Table 2 height, over-wide tables, and breakable code identifiers.
 `README.md` was a two-line stub; it now covers the algorithm, layout,
 manuscripts, setup, running, tests and data licence.
+
+## Status: JSS manuscript made self-contained (2026-10-06, later still)
+
+User: the paper must not depend on the repository for content. Done in
+`manuscript/cadence_jss.tex`: Appendix A is the full 26-tactic catalog (effect
+and every trade-off edge with its rationale), generated programmatically from
+`src/deliberation/knowledge_graph.py` so it can't drift from the code
+(26 tactics, 36 trade-off edges); Appendix B reproduces every prompt template
+verbatim (agent system/propose/critique, synthesis, repair, critique,
+baselines). Code identifiers in running text became prose or notation
+(`max_repair_iterations` -> K, `max_rounds` -> R, `tactic_budget` -> B, solver
+API names described in words), system names are now small-caps labels
+(Zero-Shot ... Cadence-Full), the tactic-extraction rule (>=60% of name stems)
+and decoding settings (temperature 0.7, 400 tokens) are stated in the text, and
+file/script paths were removed from the body, figures and Data Availability
+(which now just gives the repo URL for reproduction). The IEEE `cadence.tex`
+was not touched.
