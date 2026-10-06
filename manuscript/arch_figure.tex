@@ -1,0 +1,77 @@
+\begin{tikzpicture}[
+  font=\scriptsize,
+  box/.style={draw, rounded corners=2pt, align=center, minimum height=0.75cm, inner sep=2pt},
+  store/.style={draw, align=center, minimum height=0.75cm, inner sep=2pt, fill=gray!15},
+  ext/.style={draw, dashed, rounded corners=2pt, align=center, inner sep=3pt},
+  layer/.style={draw=gray, rounded corners=3pt, inner xsep=6pt, inner ysep=6pt},
+  lbl/.style={font=\scriptsize\bfseries, anchor=south west, inner sep=1pt},
+  arr/.style={-{Stealth[length=1.6mm]}, thick},
+  darr/.style={-{Stealth[length=1.4mm]}, dashed},
+]
+% ---- inputs
+\node[box, text width=6.4cm] (inp) at (5.2,12.7) {Inputs: decision context $c$, required quality attributes $Q$, tactic budget $B$};
+
+% ---- Stage 1
+\node[store, text width=2.6cm] (corpus) at (1.5,10.8) {ADR corpus\\(6{,}173 mined ADRs)};
+\node[box, text width=2.9cm] (index) at (5.2,10.8) {Embedding index\\(cosine similarity)};
+\node[box, text width=2.7cm] (retr) at (8.9,10.8) {Retriever:\\top-$k$ precedents $P$};
+\begin{scope}[on background layer]
+\node[layer, fit=(corpus)(index)(retr)] (L1) {};
+\end{scope}
+\node[lbl] at (L1.north west) {Stage 1 -- retrieval};
+
+% ---- Stage 2
+\node[store, text width=2.5cm] (kg) at (1.6,8.2) {Knowledge graph $G$\\26 tactics\\(supports, trade-offs)};
+\foreach \x/\n/\t in {3.95/Perf/Perf.,5.3/Sec/Sec.,6.65/Maint/Maint.,8.0/Scal/Scal.,9.35/Cost/Cost}
+  \node[box, text width=1.0cm] (ag\n) at (\x,8.2) {\t\\agent};
+\node[box, text width=6.4cm] (orch) at (6.65,6.8) {Orchestrator: bounded debate $\rightarrow$ one converged candidate $(d,r)$};
+\begin{scope}[on background layer]
+\node[layer, fit=(kg)(agPerf)(agCost)(orch)] (L2) {};
+\end{scope}
+\node[lbl] at (L2.north west) {Stage 2 -- knowledge-graph-grounded deliberation};
+
+% ---- Stage 3
+\node[box, text width=2.1cm] (ext) at (1.5,4.3) {Tactic extractor\\(word-stem match)};
+\node[box, text width=2.4cm] (z1) at (4.5,4.3) {Z3 Phase 1:\\budget + coverage\\(unsat core)};
+\node[box, text width=2.4cm] (z2) at (7.5,4.3) {Z3 Phase 2:\\lexicographic\\Optimize};
+\node[box, text width=1.5cm] (dec) at (10.1,4.3) {Feasible\\or cap $K$?};
+\node[box, text width=5.2cm] (rep) at (5.2,2.9) {Repair prompt from uncovered attributes\\(standalone LLM call, same budget $B$)};
+\begin{scope}[on background layer]
+\node[layer, fit=(ext)(z1)(z2)(dec)(rep)] (L3) {};
+\end{scope}
+\node[lbl] at (L3.north west) {Stage 3 -- solver verification and repair};
+
+% ---- Stage 4
+\node[box, text width=2.8cm] (su) at (1.9,0.7) {Structural utility\\(deterministic)};
+\node[box, text width=2.8cm] (qc) at (5.4,0.7) {Qualitative critique\\(separate LLM pass)};
+\node[box, text width=2.8cm] (fin) at (8.9,0.7) {\textbf{FinalADR}\\+ full provenance};
+\begin{scope}[on background layer]
+\node[layer, fit=(su)(qc)(fin)] (L4) {};
+\end{scope}
+\node[lbl] at (L4.north west) {Stage 4 -- self-critique finalization};
+
+% ---- shared LLM backbone
+\node[ext, text width=1.6cm, minimum height=7.2cm] (llm) at (13.1,6.0) {Shared\\LLM\\backbone\\[2pt](Qwen2.5-\\1.5B-\\Instruct)};
+
+% ---- main flow
+\draw[arr] (inp.south) -- (inp |- L1.north);
+\draw[arr] (corpus) -- (index);
+\draw[arr] (index) -- (retr);
+\draw[arr] (retr.south) -- (retr.south |- L2.north);
+\draw[arr] (kg) -- (agPerf);
+\foreach \n in {Perf,Sec,Maint,Scal,Cost} \draw[arr] (ag\n.south) -- (ag\n.south |- orch.north);
+\draw[arr] ([xshift=2.6cm]orch.south) -- ([xshift=2.6cm]orch.south |- L3.north);
+\draw[arr] (ext) -- (z1);
+\draw[arr] (z1) -- (z2);
+\draw[arr] (z2) -- (dec);
+\draw[arr] (dec.south) |- node[pos=0.75,above,font=\tiny]{no} (rep.east);
+\draw[arr] (rep.west) -| node[pos=0.55,left,font=\tiny]{revised} (ext.south);
+\draw[arr] (dec.east) -- (11.5,4.3) -- node[pos=0.45,left,font=\tiny]{yes} (11.5,0.7) -- (fin.east);
+\draw[arr] (su) -- (qc);
+\draw[arr] (qc) -- (fin);
+
+% ---- LLM usage (dashed)
+\draw[darr] (llm.west |- agCost) -- (agCost.east);
+\draw[darr] (llm.west |- rep) -- (L3.east |- rep);
+\draw[darr] (llm.south) -- (13.1,-0.9) -- (5.4,-0.9) -- (qc.south);
+\end{tikzpicture}
