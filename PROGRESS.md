@@ -717,3 +717,18 @@ time, the trimmed-for-space prose could be expanded back out for
 clarity now that there's room, though the current (already
 review-hardened) wording is fully correct as-is and this is optional
 polish, not a defect.
+
+## Status: JSS manuscript gets real figures; README rewritten (2026-10-06, later)
+
+User pointed out the JSS manuscript was all text, tables and formulas with no
+visualization of a software architecture. Added (all TikZ/pgfplots, in
+`manuscript/`, `\input` from `cadence_jss.tex`): `arch_figure.tex` (component
+architecture of the four stages), `impl_figure.tex` (software architecture of
+this code base, drawn from the real `src/` packages and their actual import
+directions: evaluation -> critique -> solver -> deliberation -> retrieval, no
+upward imports), `example_figure.tex` (the worked example as a before/after
+architecture; the topology is schematic since the run only reports which
+components were chosen), and `results_figure.tex` (Table 6 plotted, B=5).
+Also fixed Table 2 height, over-wide tables, and breakable code identifiers.
+`README.md` was a two-line stub; it now covers the algorithm, layout,
+manuscripts, setup, running, tests and data licence.

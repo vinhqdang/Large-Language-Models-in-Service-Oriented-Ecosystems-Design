@@ -1,0 +1,37 @@
+\begin{tikzpicture}[
+  font=\scriptsize,
+  pkg/.style={draw, rounded corners=2pt, align=center, text width=6.5cm, minimum height=1.25cm, inner sep=3pt, fill=blue!6},
+  data/.style={draw, align=center, text width=2.7cm, minimum height=1.1cm, inner sep=3pt, fill=gray!15},
+  ext/.style={draw, dashed, rounded corners=2pt, align=center, text width=3.0cm, minimum height=1.0cm, inner sep=3pt},
+  top/.style={draw, rounded corners=2pt, align=center, text width=12.4cm, minimum height=0.9cm, inner sep=3pt, fill=orange!10},
+  arr/.style={-{Stealth[length=1.6mm]}, thick},
+  darr/.style={-{Stealth[length=1.4mm]}, dashed},
+]
+\node[top] (scripts) at (6.3,10.3) {\textbf{\texttt{scripts/}} -- entry points\\[1pt]{\tiny\ttfamily fetch\_adr\_corpus, build\_retrieval\_index, run\_cadence\_demo, run\_evaluation*, run\_worked\_example, extract\_published\_baseline\_comparison}};
+
+\node[pkg] (ev) at (6.3,8.4) {\textbf{\texttt{src/evaluation}} -- 5 systems, metrics, harness\\[1pt]\modl{systems ~~ harness ~~ held\_out\_set ~~ metrics ~~ published\_baselines}};
+\node[pkg] (cr) at (6.3,6.5) {\textbf{\texttt{src/critique}} -- Stage 4\\[1pt]\modl{structural\_utility ~~ llm\_critique ~~ finalize}};
+\node[pkg] (so) at (6.3,4.6) {\textbf{\texttt{src/solver}} -- Stage 3\\[1pt]\modl{tactic\_extraction ~~ feasibility ~~ repair ~~ synthesis\_format}};
+\node[pkg] (de) at (6.3,2.7) {\textbf{\texttt{src/deliberation}} -- Stage 2\\[1pt]\modl{knowledge\_graph ~~ agent ~~ orchestrator ~~ llm\_client}};
+\node[pkg] (re) at (6.3,0.8) {\textbf{\texttt{src/retrieval}} -- Stage 1\\[1pt]\modl{records ~~ embeddings ~~ index ~~ retriever}};
+
+\node[data] (dt) at (1.45,-1.2) {\textbf{\texttt{src/data}}\\[1pt]\modl{download ~~ inventory ~~ paths}};
+\node[data] (art) at (1.45,0.8) {\texttt{data/processed/}\\[1pt]\modl{adr\_records.jsonl}\\\modl{adr\_embeddings.npy}};
+
+\node[ext] (e1) at (11.7,0.8) {sentence-transformers\\(all-MiniLM-L6-v2)};
+\node[ext] (e2) at (11.7,2.7) {NetworkX (knowledge graph)\\Hugging Face / Gemini\\(LLM backends)};
+\node[ext] (e3) at (11.7,4.6) {Z3 SMT solver};
+\node[ext] (e4) at (11.7,8.4) {BERTScore, sacreBLEU,\\ROUGE, NLTK (METEOR)};
+
+\draw[arr] (scripts.south -| ev) -- (ev.north);
+\draw[arr] (ev) -- (cr);
+\draw[arr] (cr) -- (so);
+\draw[arr] (so) -- (de);
+\draw[arr] (de) -- (re);
+\draw[arr] (dt) -- (art);
+\draw[arr] (art) -- (re);
+\draw[darr] (e1) -- (re);
+\draw[darr] (e2) -- (de);
+\draw[darr] (e3) -- (so);
+\draw[darr] (e4) -- (ev);
+\end{tikzpicture}

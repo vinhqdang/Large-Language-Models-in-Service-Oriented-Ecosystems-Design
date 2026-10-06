@@ -1,0 +1,38 @@
+\begin{tikzpicture}[
+  font=\scriptsize,
+  comp/.style={draw, rounded corners=2pt, align=center, minimum height=0.8cm, inner sep=3pt},
+  new/.style={draw, rounded corners=2pt, align=center, minimum height=0.8cm, inner sep=3pt, fill=green!12, very thick},
+  gap/.style={draw, dashed, red!70!black, align=center, minimum height=0.8cm, inner sep=3pt, text=red!70!black},
+  panel/.style={draw=gray, rounded corners=3pt, inner sep=7pt},
+  lbl/.style={font=\scriptsize\bfseries, anchor=south west, inner sep=1pt},
+  arr/.style={-{Stealth[length=1.6mm]}, thick},
+  tac/.style={font=\tiny\itshape, align=center, text=green!40!black},
+]
+% ---- before
+\node[comp, text width=1.9cm] (mc0) at (1.2,5.2) {Mobile client\\(10x read traffic)};
+\node[comp, text width=2.3cm] (os0) at (4.6,5.2) {Order-processing\\service};
+\draw[arr] (mc0) -- (os0);
+\begin{scope}[on background layer]
+\node[panel, fit=(mc0)(os0)] (P0) {};
+\end{scope}
+\node[lbl] at (P0.north west) {Before: context given to CADENCE};
+\node[font=\tiny, align=left, text width=2.4cm] at (8.3,5.2) {Requirements: low p99 read latency, operable by a small team, no new security risk};
+
+% ---- after
+\node[comp, text width=1.9cm] (mc) at (1.2,2.2) {Mobile client};
+\node[comp, text width=2.3cm] (os) at (4.0,2.2) {Order-processing\\service};
+\node[new, text width=2.0cm] (mq) at (7.0,2.2) {Message queue};
+\node[new, text width=2.1cm] (fn) at (10.0,3.0) {Serverless\\functions};
+\node[new, text width=2.1cm] (es) at (10.0,1.3) {Event-sourcing\\store};
+\draw[arr] (mc) -- (os);
+\draw[arr] (os) -- (mq);
+\draw[arr] (mq) -- (fn);
+\draw[arr] (mq) -- (es);
+\node[gap, text width=2.2cm] (g1) at (4.0,0.0) {Security: uncovered\\(combined 4.5/10)};
+\node[gap, text width=2.2cm] (g2) at (7.0,0.0) {Maintainability: uncovered\\(combined 3.5/10)};
+\node[font=\tiny\itshape, text width=10.5cm, align=left, text=green!40!black] (leg) at (6.9,-1.5) {Extracted tactics (green): async.\ processing via message queues; event-driven architecture; serverless/FaaS deployment};
+\begin{scope}[on background layer]
+\node[panel, fit=(mc)(os)(mq)(fn)(es)(g1)(g2)(leg)] (P1) {};
+\end{scope}
+\node[lbl] at (P1.north west) {After: CADENCE's finalized decision (illustrative, $B=4$)};
+\end{tikzpicture}

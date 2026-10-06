@@ -1,0 +1,22 @@
+\begin{tikzpicture}
+\pgfplotsset{every axis/.append style={
+  width=6.6cm, height=4.3cm, xbar, bar width=7pt, xmin=0, enlarge y limits=0.12,
+  symbolic y coords={cadence\_full, cadence\_no\_critique, multiagent\_no\_solver, retrieval\_only, zero\_shot},
+  ytick={cadence\_full,cadence\_no\_critique,multiagent\_no\_solver,retrieval\_only,zero\_shot}, y dir=reverse, font=\scriptsize, y tick label style={font=\tiny\ttfamily},
+  nodes near coords, nodes near coords align={horizontal}, every node near coord/.append style={font=\tiny, /pgf/number format/fixed, /pgf/number format/fixed zerofill},
+  title style={font=\scriptsize\bfseries}, xmajorgrids, grid style={gray!25}}}
+\begin{groupplot}[group style={group size=2 by 2, horizontal sep=1.2cm, vertical sep=1.4cm, yticklabels at=edge left}]
+\nextgroupplot[title={BERTScore F1}, xmax=1.0, xtick={0,0.4,0.8}, /pgf/number format/precision=3]
+\addplot[fill=gray!55, draw=gray!70, bar shift=0pt] coordinates {(0.824,zero\_shot) (0.813,retrieval\_only) (0.812,multiagent\_no\_solver) (0.797,cadence\_no\_critique)};
+\addplot[fill=blue!65, draw=blue!80!black, bar shift=0pt] coordinates {(0.806,cadence\_full)};
+\nextgroupplot[title={BLEU (0--100)}, xmax=6, xtick={0,2,4,6}, /pgf/number format/precision=2]
+\addplot[fill=gray!55, draw=gray!70, bar shift=0pt] coordinates {(4.24,zero\_shot) (3.76,retrieval\_only) (0.43,multiagent\_no\_solver) (0.44,cadence\_no\_critique)};
+\addplot[fill=blue!65, draw=blue!80!black, bar shift=0pt] coordinates {(1.04,cadence\_full)};
+\nextgroupplot[title={ROUGE-1 F1}, xmax=0.45, xtick={0,0.15,0.3,0.45}, /pgf/number format/precision=3]
+\addplot[fill=gray!55, draw=gray!70, bar shift=0pt] coordinates {(0.300,zero\_shot) (0.312,retrieval\_only) (0.179,multiagent\_no\_solver) (0.174,cadence\_no\_critique)};
+\addplot[fill=blue!65, draw=blue!80!black, bar shift=0pt] coordinates {(0.198,cadence\_full)};
+\nextgroupplot[title={METEOR}, xmax=0.38, xtick={0,0.1,0.2,0.3}, /pgf/number format/precision=3]
+\addplot[fill=gray!55, draw=gray!70, bar shift=0pt] coordinates {(0.252,zero\_shot) (0.238,retrieval\_only) (0.091,multiagent\_no\_solver) (0.092,cadence\_no\_critique)};
+\addplot[fill=blue!65, draw=blue!80!black, bar shift=0pt] coordinates {(0.100,cadence\_full)};
+\end{groupplot}
+\end{tikzpicture}
