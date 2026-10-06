@@ -749,3 +749,18 @@ and decoding settings (temperature 0.7, 400 tokens) are stated in the text, and
 file/script paths were removed from the body, figures and Data Availability
 (which now just gives the repo URL for reproduction). The IEEE `cadence.tex`
 was not touched.
+
+## Status: SUBMITTED to Elsevier Journal of Systems and Software (2026-10-06)
+
+User submitted `manuscript/cadence_jss.pdf` / `.tex` (+ `cadence_jss.bib` and the
+four `*_figure.tex` files) to JSS after the TSC scope rejection. Chosen
+submission classifications: AI in Software Engineering; Design & Architecture;
+Formal methods; Quality, Metrics, Technical Debt; Data science/mining & MSR.
+(SOA and microservices was deliberately left out — TSC judged the service-oriented
+angle to be motivation only.) Form fields used the manuscript title and keywords;
+the abstract field got a 247-word condensed version because the paper's own
+abstract is 433 words. `cadence_jss.tex` still carries the 433-word abstract.
+
+Nothing is pending on our side. Next action only when JSS responds: if reviewers
+ask for revisions, the likely asks are a larger held-out sample (N=3 is the main
+weakness) and a stronger local backbone — see "Next step" above.
