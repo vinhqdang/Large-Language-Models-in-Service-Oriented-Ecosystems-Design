@@ -31,7 +31,7 @@ iterations). `src/data` fetches and inventories the corpus.
 - Against four published frontier models on the identical held-out items,
   `cadence_full` with a 1.5B backbone scores below all of them.
 
-Numbers, tables and caveats are in the manuscript and in `PROGRESS.md`.
+Numbers, tables and caveats are in the manuscript; `PROGRESS.md` is the running log of decisions and history.
 
 ## Repository layout
 
@@ -45,19 +45,31 @@ docs/           design spec and implementation plans
 PROGRESS.md     running log: status, decisions, environment notes, next steps
 ```
 
+## Status
+
+The paper was first sent to the *IEEE Transactions on Services Computing*
+special issue, cut to its 12-page limit, and **rejected on scope grounds only**
+(the editors judged the service-oriented framing to be motivation rather than
+part of the contribution; technical merit was not assessed). It was then
+reformatted and **submitted to Elsevier's *Journal of Systems and Software*
+(October 2026)**. Nothing is pending on the repository side until the journal
+replies.
+
 ## Manuscripts
 
 | File | Target | Format |
 |---|---|---|
-| `manuscript/cadence.tex` / `.pdf` | IEEE Transactions on Services Computing (special issue); cut to the 12-page limit, then **rejected on scope grounds** (not technical merit) | `IEEEtran`, numbered citations |
-| `manuscript/cadence_jss.tex` / `.pdf` | Elsevier *Journal of Systems and Software* | `elsarticle`, author-year citations |
+| `manuscript/cadence.tex` / `.pdf` | IEEE TSC special issue (12 pages, rejected on scope) | `IEEEtran`, numbered citations |
+| `manuscript/cadence_jss.tex` / `.pdf` | Elsevier *Journal of Systems and Software* (**submitted**) | `elsarticle`, author-year citations |
 
-The JSS version also needs `cadence_jss.bib` and the figure files it inputs
-(`arch_figure.tex`, `impl_figure.tex`, `example_figure.tex`,
-`results_figure.tex`), so keep them in the same folder. Its figures cover the
-pipeline, the component architecture, the software architecture of this code
-base, the worked example as an architecture, the knowledge-graph excerpt, and
-the evaluation results.
+The JSS version is self-contained: it includes the full 26-tactic catalog with
+every trade-off edge (Appendix A) and every prompt template (Appendix B), so it
+can be read without this repository. It also needs `cadence_jss.bib` and the
+figure files it inputs (`arch_figure.tex`, `impl_figure.tex`,
+`example_figure.tex`, `results_figure.tex`), so keep them in the same folder.
+Its figures cover the pipeline, the component architecture, the software
+architecture of this code base, the worked example as an architecture, the
+knowledge-graph excerpt, and the evaluation results.
 
 Build (needs a TeX distribution with `elsarticle`, `pgfplots`, `adjustbox`,
 `placeins`, `natbib`):
