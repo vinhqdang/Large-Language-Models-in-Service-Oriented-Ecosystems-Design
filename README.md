@@ -56,8 +56,8 @@ PROGRESS.md     running log: status, decisions, environment notes, next steps
 2. Elsevier *Journal of Systems and Software*: **desk-rejected** (2026-10). The
    editor found that the paper did not engage enough with the software
    engineering literature or show how it advances the state of the art in SE.
-3. The paper is now being revised for Elsevier *Information and Software
-   Technology* (`manuscript/cadence_ist.tex`). The revision rebuilds the
+3. **Submitted to Elsevier *Information and Software Technology*
+   (2026-10-14)** (`manuscript/cadence_ist.tex`). The revision rebuilds the
    Related Work around the software-architecture literature, reframes the
    paper around four research questions, and replaces the N = 3 evaluation
    with a paired N = 30 evaluation.
@@ -68,7 +68,7 @@ PROGRESS.md     running log: status, decisions, environment notes, next steps
 |---|---|---|
 | `manuscript/cadence.tex` / `.pdf` | IEEE TSC special issue (12 pages, rejected on scope) | `IEEEtran`, numbered citations |
 | `manuscript/cadence_jss.tex` / `.pdf` | Elsevier *Journal of Systems and Software* (desk-rejected) | `elsarticle`, author-year citations |
-| `manuscript/cadence_ist.tex` / `.pdf` | Elsevier *Information and Software Technology* (in preparation) | `elsarticle`, author-year citations, structured abstract |
+| `manuscript/cadence_ist.tex` / `.pdf` | Elsevier *Information and Software Technology* (**submitted**) | `elsarticle`, author-year citations, structured abstract |
 
 The JSS version is self-contained: it includes the full 26-tactic catalog with
 every trade-off edge (Appendix A) and every prompt template (Appendix B), so it

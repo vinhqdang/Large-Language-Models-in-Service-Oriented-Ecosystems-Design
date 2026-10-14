@@ -834,3 +834,17 @@ Findings that change the paper:
 Remaining steps: the user should confirm the IST transfer, then submit
 `manuscript/cadence_ist.pdf`. A human expert evaluation is the most
 valuable next study.
+
+## Status: SUBMITTED to Elsevier Information and Software Technology (2026-10-14)
+
+Submitted `manuscript/cadence_ist.pdf` (51 pages, abstract 292 words, IST
+structured format) together with the LaTeX sources (`cadence_ist.tex`,
+`cadence_ist.bib`, `.bbl`, and the five figure `.tex` files). This version
+is commit `649ec70`.
+
+Done for now. Nothing is pending on the repository side until IST replies.
+If reviewers ask for a human study, the plan is to have 2 or 3 architects
+rate a sample (for example 10 items) of the paired-run decisions in
+`data/processed/evaluation_paired_items.jsonl`, judging whether each
+addresses the stated quality concerns. That is the main limitation the
+paper names.
