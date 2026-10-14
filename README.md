@@ -25,12 +25,13 @@ iterations). `src/data` fetches and inventories the corpus.
 - Multi-agent deliberation lowers agreement on all four metrics. Truncating the
   baselines to CADENCE's length closes only part of the gap, so this is not
   just a length effect.
-- The solver flags 29 of 30 deliberated decisions as leaving required quality
+- The solver flags all 30 deliberated decisions as leaving required quality
   attributes without a committed tactic. Repair raises mean coverage from 0.57
   to 1.63 of 5 attributes but makes only 1 of 30 decisions feasible at B = 5,
   and 0 at B = 7. The bottleneck is tactic diversity, not budget.
 - Stage 4 (critique) never changes the decision text. Its residual weaknesses,
-  rendered as an ADR "Consequences" section, significantly increase agreement.
+  rendered as an ADR "Consequences" section, significantly increase agreement
+  on BERTScore, ROUGE-1 and METEOR.
 - The earlier N = 3 result crediting self-critique with gains (7 of 8
   comparisons) was sampling noise from unpaired runs, and is retracted.
 

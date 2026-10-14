@@ -1,0 +1,2697 @@
+{
+  "held_out_items": [
+    {
+      "record_id": "portfolio_docs_architecture_decisions/0012-remove-custom-json-serialization.md",
+      "repo_folder": "portfolio_docs_architecture_decisions",
+      "title": "12. remove custom json serialization"
+    },
+    {
+      "record_id": "up_fiscal_data_decisions/003-selnium.md",
+      "repo_folder": "up_fiscal_data_decisions",
+      "title": "Use Selenium to Scrape Koshvani data"
+    },
+    {
+      "record_id": "WorkoutLog_docs_adr/0002_remove_state.md",
+      "repo_folder": "WorkoutLog_docs_adr",
+      "title": "2. Remove the state objects from the view models"
+    },
+    {
+      "record_id": "Conduit_doc_adr/0002-solve-the-xunit-msbuild-problem-with-assembly-merging.md",
+      "repo_folder": "Conduit_doc_adr",
+      "title": "2. Solve the Xunit/MsBuild problem with Assembly Merging"
+    },
+    {
+      "record_id": "drt_v2_doc_architecture_decisions/0010-use-akka-persistence.md",
+      "repo_folder": "drt_v2_doc_architecture_decisions",
+      "title": "10. use akka persistence"
+    },
+    {
+      "record_id": "opg_data_docs_architecture_decisions/0007-error-handling-and-status-codes.md",
+      "repo_folder": "opg_data_docs_architecture_decisions",
+      "title": "7. Error Handling And Status Codes"
+    },
+    {
+      "record_id": "galaxy_zoo_touch_table_docs_arch/adr-6.md",
+      "repo_folder": "galaxy_zoo_touch_table_docs_arch",
+      "title": "ADR 6: Choosing a Test Framework"
+    },
+    {
+      "record_id": "k8s_vagrant_centos_cluster_doc_architecture_decisions/0001-record-architecture-decisions.md",
+      "repo_folder": "k8s_vagrant_centos_cluster_doc_architecture_decisions",
+      "title": "1. Record architecture decisions"
+    },
+    {
+      "record_id": "apply_for_teacher_training_adr/0018-public-ids-for-qualifications.md",
+      "repo_folder": "apply_for_teacher_training_adr",
+      "title": "18. Public ids for qualifications"
+    },
+    {
+      "record_id": "galaxy_zoo_touch_table_docs_arch/adr-2.md",
+      "repo_folder": "galaxy_zoo_touch_table_docs_arch",
+      "title": "ADR 2: Using Windows Presentation Foundation (WPF)"
+    },
+    {
+      "record_id": "adr_tools_doc_adr/0006-packaging-and-distribution-in-other-version-control-repositories.md",
+      "repo_folder": "adr_tools_doc_adr",
+      "title": "6. Packaging and distribution in other version control repositories"
+    },
+    {
+      "record_id": "cloud_sdk_js_knowledge_base_implementation_documentation/0010-release-version-1-vdm.md",
+      "repo_folder": "cloud_sdk_js_knowledge_base_implementation_documentation",
+      "title": "Release VDM for 1.0"
+    },
+    {
+      "record_id": "dl4j_dev_tools_codegen_adr/0004-auto_initialization_for_inplace_operations.md",
+      "repo_folder": "dl4j_dev_tools_codegen_adr",
+      "title": "Auto initialization for in-place operations"
+    },
+    {
+      "record_id": "TruBudget_docs_developer_architecture/0003-project-data-model.md",
+      "repo_folder": "TruBudget_docs_developer_architecture",
+      "title": "Data model for projects"
+    },
+    {
+      "record_id": "lenses_jdbc_doc_adr/0001-use-the-Value-projection-only.md",
+      "repo_folder": "lenses_jdbc_doc_adr",
+      "title": "1. Use only the Value projection"
+    },
+    {
+      "record_id": "opg_data_deputy_reporting_docs_architecture_decisions/0001-record-architecture-decisions.md",
+      "repo_folder": "opg_data_deputy_reporting_docs_architecture_decisions",
+      "title": "1. Record architecture decisions"
+    },
+    {
+      "record_id": "PlaceCal_doc_adr/0005-create-secretary-permissions.md",
+      "repo_folder": "PlaceCal_doc_adr",
+      "title": "Create secretary permissions"
+    },
+    {
+      "record_id": "mercury_platform_doc_adr/0001-record-architecture-decisions.md",
+      "repo_folder": "mercury_platform_doc_adr",
+      "title": "1. Record architecture decisions"
+    },
+    {
+      "record_id": "old_web_frontend_docs_adr/0001-use-react-with-typescript.md",
+      "repo_folder": "old_web_frontend_docs_adr",
+      "title": "Use React with TypeScript"
+    },
+    {
+      "record_id": "casa_doc_architecture_decisions/0001-record-architecture-decisions.md",
+      "repo_folder": "casa_doc_architecture_decisions",
+      "title": "1. Record architecture decisions"
+    },
+    {
+      "record_id": "monitoring_doc_documentation_architecture_decisions/0004-cloudwatch-metrics.md",
+      "repo_folder": "monitoring_doc_documentation_architecture_decisions",
+      "title": "4. Cloudwatch Metrics"
+    },
+    {
+      "record_id": "jabref_docs_adr/0023-localized-preferences.md",
+      "repo_folder": "jabref_docs_adr",
+      "title": "Localized Preferences"
+    },
+    {
+      "record_id": "docker_texlive_docs_adr/0000-use-markdown-architectural-decision-records.md",
+      "repo_folder": "docker_texlive_docs_adr",
+      "title": "Use Markdown Architectural Decision Records"
+    },
+    {
+      "record_id": "compliantkubernetes_docs_compliantkubernetes_adr/0023-allow-snippets-annotations.md",
+      "repo_folder": "compliantkubernetes_docs_compliantkubernetes_adr",
+      "title": "[Superseded by [ADR-0056](0056-allow-snippets-annotations-after-risk-acceptance.md)] Only allow Ingress Configuration Snippet Annotations after Proper Risk Acceptance"
+    },
+    {
+      "record_id": "TOSCAna_docs_dev_adr/0015-persist-to-filesystem.md",
+      "repo_folder": "TOSCAna_docs_dev_adr",
+      "title": "Persist to filesystem"
+    },
+    {
+      "record_id": "cafebabelcom_docs_architecture_decisions/0004-deal-with-translations.md",
+      "repo_folder": "cafebabelcom_docs_architecture_decisions",
+      "title": "4. Deal with translations"
+    },
+    {
+      "record_id": "cloud_controller_ng_decisions/0004-adding-key-prefix-to-annotations.md",
+      "repo_folder": "cloud_controller_ng_decisions",
+      "title": "Positive Consequences"
+    },
+    {
+      "record_id": "information_manipulation_analyzer_decision_records/0001-folder-structure.md",
+      "repo_folder": "information_manipulation_analyzer_decision_records",
+      "title": "Decision Record - Folder structure"
+    },
+    {
+      "record_id": "manage_frontend_docs/03-typescript.md",
+      "repo_folder": "manage_frontend_docs",
+      "title": "To use Typescript as the programming language"
+    },
+    {
+      "record_id": "community_sigs_and_wgs_archive_sig_core_decisions/dr-009-ServiceBinding_in_Kyma.md",
+      "repo_folder": "community_sigs_and_wgs_archive_sig_core_decisions",
+      "title": "DR 009: ServiceBinding in Kyma"
+    }
+  ],
+  "metric_note": "All scores recomputed from the package's raw generation/ground-truth text pairs (Generated_ADRs/) using this project's own compute_corpus_metrics, NOT the package's own precomputed Evaluations/*.json scores -- those use a reversed prediction/reference orientation for BLEU/METEOR and no ROUGE stemmer, making them non-comparable to this work's own metric numbers.",
+  "results": {
+    "Baseline": {
+      "Gemini-2.5-Pro": [
+        {
+          "record_id": "portfolio_docs_architecture_decisions/0012-remove-custom-json-serialization.md",
+          "repo_folder": "portfolio_docs_architecture_decisions",
+          "title": "12. remove custom json serialization",
+          "dataset_index": 11,
+          "scores": {
+            "bertscore_f1": 0.828407347202301,
+            "bleu": 0.8771964305618338,
+            "rouge1_f": 0.1492537313432836,
+            "meteor": 0.2344650541765927
+          }
+        },
+        {
+          "record_id": "up_fiscal_data_decisions/003-selnium.md",
+          "repo_folder": "up_fiscal_data_decisions",
+          "title": "Use Selenium to Scrape Koshvani data",
+          "dataset_index": 2,
+          "scores": {
+            "bertscore_f1": 0.8431172370910645,
+            "bleu": 1.8135813664794964,
+            "rouge1_f": 0.12359550561797751,
+            "meteor": 0.19295676820588328
+          }
+        },
+        {
+          "record_id": "WorkoutLog_docs_adr/0002_remove_state.md",
+          "repo_folder": "WorkoutLog_docs_adr",
+          "title": "2. Remove the state objects from the view models",
+          "dataset_index": 1,
+          "scores": {
+            "bertscore_f1": 0.8287539482116699,
+            "bleu": 1.7741024696864072,
+            "rouge1_f": 0.15269086357947434,
+            "meteor": 0.22886830245368056
+          }
+        },
+        {
+          "record_id": "Conduit_doc_adr/0002-solve-the-xunit-msbuild-problem-with-assembly-merging.md",
+          "repo_folder": "Conduit_doc_adr",
+          "title": "2. Solve the Xunit/MsBuild problem with Assembly Merging",
+          "dataset_index": 1,
+          "scores": {
+            "bertscore_f1": 0.8485912084579468,
+            "bleu": 2.8848676274368694,
+            "rouge1_f": 0.16444981862152358,
+            "meteor": 0.2832886762625054
+          }
+        },
+        {
+          "record_id": "drt_v2_doc_architecture_decisions/0010-use-akka-persistence.md",
+          "repo_folder": "drt_v2_doc_architecture_decisions",
+          "title": "10. use akka persistence",
+          "dataset_index": 9,
+          "scores": {
+            "bertscore_f1": 0.8380467295646667,
+            "bleu": 0.9511402473989008,
+            "rouge1_f": 0.1263736263736264,
+            "meteor": 0.23587744665375207
+          }
+        },
+        {
+          "record_id": "opg_data_docs_architecture_decisions/0007-error-handling-and-status-codes.md",
+          "repo_folder": "opg_data_docs_architecture_decisions",
+          "title": "7. Error Handling And Status Codes",
+          "dataset_index": 6,
+          "scores": {
+            "bertscore_f1": 0.8106223940849304,
+            "bleu": 6.956840916221261,
+            "rouge1_f": 0.464628023733455,
+            "meteor": 0.22221400927124366
+          }
+        },
+        {
+          "record_id": "galaxy_zoo_touch_table_docs_arch/adr-6.md",
+          "repo_folder": "galaxy_zoo_touch_table_docs_arch",
+          "title": "ADR 6: Choosing a Test Framework",
+          "dataset_index": 5,
+          "scores": {
+            "bertscore_f1": 0.8093100786209106,
+            "bleu": 2.965195160823825,
+            "rouge1_f": 0.3054545454545455,
+            "meteor": 0.2717460634837764
+          }
+        },
+        {
+          "record_id": "k8s_vagrant_centos_cluster_doc_architecture_decisions/0001-record-architecture-decisions.md",
+          "repo_folder": "k8s_vagrant_centos_cluster_doc_architecture_decisions",
+          "title": "1. Record architecture decisions",
+          "dataset_index": 0,
+          "scores": {
+            "bertscore_f1": 0.8328803777694702,
+            "bleu": 2.687239837013391,
+            "rouge1_f": 0.18819776714513559,
+            "meteor": 0.29013448235360734
+          }
+        },
+        {
+          "record_id": "apply_for_teacher_training_adr/0018-public-ids-for-qualifications.md",
+          "repo_folder": "apply_for_teacher_training_adr",
+          "title": "18. Public ids for qualifications",
+          "dataset_index": 17,
+          "scores": {
+            "bertscore_f1": 0.8233258128166199,
+            "bleu": 4.4360852449651,
+            "rouge1_f": 0.4475421863536317,
+            "meteor": 0.2980307039310218
+          }
+        },
+        {
+          "record_id": "galaxy_zoo_touch_table_docs_arch/adr-2.md",
+          "repo_folder": "galaxy_zoo_touch_table_docs_arch",
+          "title": "ADR 2: Using Windows Presentation Foundation (WPF)",
+          "dataset_index": 1,
+          "scores": {
+            "bertscore_f1": 0.8316729068756104,
+            "bleu": 4.070143004364148,
+            "rouge1_f": 0.30111524163568776,
+            "meteor": 0.28755787109564046
+          }
+        },
+        {
+          "record_id": "adr_tools_doc_adr/0006-packaging-and-distribution-in-other-version-control-repositories.md",
+          "repo_folder": "adr_tools_doc_adr",
+          "title": "6. Packaging and distribution in other version control repositories",
+          "dataset_index": 5,
+          "scores": {
+            "bertscore_f1": 0.8349987268447876,
+            "bleu": 2.5791534320064318,
+            "rouge1_f": 0.20849420849420852,
+            "meteor": 0.2809814070661043
+          }
+        },
+        {
+          "record_id": "cloud_sdk_js_knowledge_base_implementation_documentation/0010-release-version-1-vdm.md",
+          "repo_folder": "cloud_sdk_js_knowledge_base_implementation_documentation",
+          "title": "Release VDM for 1.0",
+          "dataset_index": 9,
+          "scores": {
+            "bertscore_f1": 0.8171821236610413,
+            "bleu": 0.7683534336576033,
+            "rouge1_f": 0.16141732283464566,
+            "meteor": 0.22459803164484177
+          }
+        },
+        {
+          "record_id": "dl4j_dev_tools_codegen_adr/0004-auto_initialization_for_inplace_operations.md",
+          "repo_folder": "dl4j_dev_tools_codegen_adr",
+          "title": "Auto initialization for in-place operations",
+          "dataset_index": 3,
+          "scores": {
+            "bertscore_f1": 0.8212639689445496,
+            "bleu": 2.4892258032650583,
+            "rouge1_f": 0.2565905096660808,
+            "meteor": 0.2806608642919691
+          }
+        },
+        {
+          "record_id": "TruBudget_docs_developer_architecture/0003-project-data-model.md",
+          "repo_folder": "TruBudget_docs_developer_architecture",
+          "title": "Data model for projects",
+          "dataset_index": null,
+          "scores": null
+        },
+        {
+          "record_id": "lenses_jdbc_doc_adr/0001-use-the-Value-projection-only.md",
+          "repo_folder": "lenses_jdbc_doc_adr",
+          "title": "1. Use only the Value projection",
+          "dataset_index": 0,
+          "scores": {
+            "bertscore_f1": 0.8222120404243469,
+            "bleu": 2.540071784880994,
+            "rouge1_f": 0.21030042918454936,
+            "meteor": 0.2667255915615246
+          }
+        },
+        {
+          "record_id": "opg_data_deputy_reporting_docs_architecture_decisions/0001-record-architecture-decisions.md",
+          "repo_folder": "opg_data_deputy_reporting_docs_architecture_decisions",
+          "title": "1. Record architecture decisions",
+          "dataset_index": 0,
+          "scores": {
+            "bertscore_f1": 0.8250629901885986,
+            "bleu": 2.6368717113854157,
+            "rouge1_f": 0.1375,
+            "meteor": 0.2488942625661376
+          }
+        },
+        {
+          "record_id": "PlaceCal_doc_adr/0005-create-secretary-permissions.md",
+          "repo_folder": "PlaceCal_doc_adr",
+          "title": "Create secretary permissions",
+          "dataset_index": 4,
+          "scores": {
+            "bertscore_f1": 0.8148833513259888,
+            "bleu": 1.9800405144070856,
+            "rouge1_f": 0.3725910064239829,
+            "meteor": 0.25354916546362843
+          }
+        },
+        {
+          "record_id": "mercury_platform_doc_adr/0001-record-architecture-decisions.md",
+          "repo_folder": "mercury_platform_doc_adr",
+          "title": "1. Record architecture decisions",
+          "dataset_index": 0,
+          "scores": {
+            "bertscore_f1": 0.8272659182548523,
+            "bleu": 2.7610514998874054,
+            "rouge1_f": 0.14666666666666667,
+            "meteor": 0.2693843567109645
+          }
+        },
+        {
+          "record_id": "old_web_frontend_docs_adr/0001-use-react-with-typescript.md",
+          "repo_folder": "old_web_frontend_docs_adr",
+          "title": "Use React with TypeScript",
+          "dataset_index": 1,
+          "scores": {
+            "bertscore_f1": 0.8075079321861267,
+            "bleu": 1.2045318363697695,
+            "rouge1_f": 0.17079207920792078,
+            "meteor": 0.2587412854657347
+          }
+        },
+        {
+          "record_id": "casa_doc_architecture_decisions/0001-record-architecture-decisions.md",
+          "repo_folder": "casa_doc_architecture_decisions",
+          "title": "1. Record architecture decisions",
+          "dataset_index": 0,
+          "scores": {
+            "bertscore_f1": 0.8231392502784729,
+            "bleu": 2.416027503934759,
+            "rouge1_f": 0.12942989214175657,
+            "meteor": 0.22750335287696635
+          }
+        },
+        {
+          "record_id": "monitoring_doc_documentation_architecture_decisions/0004-cloudwatch-metrics.md",
+          "repo_folder": "monitoring_doc_documentation_architecture_decisions",
+          "title": "4. Cloudwatch Metrics",
+          "dataset_index": 3,
+          "scores": {
+            "bertscore_f1": 0.8149040937423706,
+            "bleu": 4.506622917231516,
+            "rouge1_f": 0.39375750300120044,
+            "meteor": 0.23285301674126188
+          }
+        },
+        {
+          "record_id": "jabref_docs_adr/0023-localized-preferences.md",
+          "repo_folder": "jabref_docs_adr",
+          "title": "Localized Preferences",
+          "dataset_index": null,
+          "scores": null
+        },
+        {
+          "record_id": "docker_texlive_docs_adr/0000-use-markdown-architectural-decision-records.md",
+          "repo_folder": "docker_texlive_docs_adr",
+          "title": "Use Markdown Architectural Decision Records",
+          "dataset_index": 0,
+          "scores": {
+            "bertscore_f1": 0.8225977420806885,
+            "bleu": 2.854411067075329,
+            "rouge1_f": 0.23736780258519388,
+            "meteor": 0.27248809855326145
+          }
+        },
+        {
+          "record_id": "compliantkubernetes_docs_compliantkubernetes_adr/0023-allow-snippets-annotations.md",
+          "repo_folder": "compliantkubernetes_docs_compliantkubernetes_adr",
+          "title": "[Superseded by [ADR-0056](0056-allow-snippets-annotations-after-risk-acceptance.md)] Only allow Ingress Configuration Snippet Annotations after Proper Risk Acceptance",
+          "dataset_index": 23,
+          "scores": {
+            "bertscore_f1": 0.8588110208511353,
+            "bleu": 9.395372286736954,
+            "rouge1_f": 0.46488052136133234,
+            "meteor": 0.3167653155535539
+          }
+        },
+        {
+          "record_id": "TOSCAna_docs_dev_adr/0015-persist-to-filesystem.md",
+          "repo_folder": "TOSCAna_docs_dev_adr",
+          "title": "Persist to filesystem",
+          "dataset_index": 15,
+          "scores": {
+            "bertscore_f1": 0.8217979073524475,
+            "bleu": 3.4494644893470454,
+            "rouge1_f": 0.23312883435582823,
+            "meteor": 0.2898492188125902
+          }
+        },
+        {
+          "record_id": "cafebabelcom_docs_architecture_decisions/0004-deal-with-translations.md",
+          "repo_folder": "cafebabelcom_docs_architecture_decisions",
+          "title": "4. Deal with translations",
+          "dataset_index": 3,
+          "scores": {
+            "bertscore_f1": 0.8244730830192566,
+            "bleu": 1.5909670040107624,
+            "rouge1_f": 0.17453798767967146,
+            "meteor": 0.2383756040167745
+          }
+        },
+        {
+          "record_id": "cloud_controller_ng_decisions/0004-adding-key-prefix-to-annotations.md",
+          "repo_folder": "cloud_controller_ng_decisions",
+          "title": "Positive Consequences",
+          "dataset_index": null,
+          "scores": null
+        },
+        {
+          "record_id": "information_manipulation_analyzer_decision_records/0001-folder-structure.md",
+          "repo_folder": "information_manipulation_analyzer_decision_records",
+          "title": "Decision Record - Folder structure",
+          "dataset_index": 0,
+          "scores": {
+            "bertscore_f1": 0.7974552512168884,
+            "bleu": 0.8815624176023115,
+            "rouge1_f": 0.2071197411003236,
+            "meteor": 0.22133607763165372
+          }
+        },
+        {
+          "record_id": "manage_frontend_docs/03-typescript.md",
+          "repo_folder": "manage_frontend_docs",
+          "title": "To use Typescript as the programming language",
+          "dataset_index": 3,
+          "scores": {
+            "bertscore_f1": 0.8449718952178955,
+            "bleu": 1.8544456478564966,
+            "rouge1_f": 0.12455089820359283,
+            "meteor": 0.22188212329810936
+          }
+        },
+        {
+          "record_id": "community_sigs_and_wgs_archive_sig_core_decisions/dr-009-ServiceBinding_in_Kyma.md",
+          "repo_folder": "community_sigs_and_wgs_archive_sig_core_decisions",
+          "title": "DR 009: ServiceBinding in Kyma",
+          "dataset_index": 8,
+          "scores": {
+            "bertscore_f1": 0.8193617463111877,
+            "bleu": 2.730631683488517,
+            "rouge1_f": 0.3041198501872659,
+            "meteor": 0.30405129448323376
+          }
+        }
+      ],
+      "Gemma3-4b": [
+        {
+          "record_id": "portfolio_docs_architecture_decisions/0012-remove-custom-json-serialization.md",
+          "repo_folder": "portfolio_docs_architecture_decisions",
+          "title": "12. remove custom json serialization",
+          "dataset_index": 11,
+          "scores": {
+            "bertscore_f1": 0.813439130783081,
+            "bleu": 1.123097648293757,
+            "rouge1_f": 0.1743119266055046,
+            "meteor": 0.25244412606353683
+          }
+        },
+        {
+          "record_id": "up_fiscal_data_decisions/003-selnium.md",
+          "repo_folder": "up_fiscal_data_decisions",
+          "title": "Use Selenium to Scrape Koshvani data",
+          "dataset_index": 2,
+          "scores": {
+            "bertscore_f1": 0.82627934217453,
+            "bleu": 2.66033998051471,
+            "rouge1_f": 0.17625899280575538,
+            "meteor": 0.20467836257309946
+          }
+        },
+        {
+          "record_id": "WorkoutLog_docs_adr/0002_remove_state.md",
+          "repo_folder": "WorkoutLog_docs_adr",
+          "title": "2. Remove the state objects from the view models",
+          "dataset_index": 1,
+          "scores": {
+            "bertscore_f1": 0.8222381472587585,
+            "bleu": 2.0185869230269406,
+            "rouge1_f": 0.15208034433285508,
+            "meteor": 0.1867335562987737
+          }
+        },
+        {
+          "record_id": "Conduit_doc_adr/0002-solve-the-xunit-msbuild-problem-with-assembly-merging.md",
+          "repo_folder": "Conduit_doc_adr",
+          "title": "2. Solve the Xunit/MsBuild problem with Assembly Merging",
+          "dataset_index": 1,
+          "scores": {
+            "bertscore_f1": 0.8310195207595825,
+            "bleu": 1.4434528120898422,
+            "rouge1_f": 0.15773809523809523,
+            "meteor": 0.21634506306650345
+          }
+        },
+        {
+          "record_id": "drt_v2_doc_architecture_decisions/0010-use-akka-persistence.md",
+          "repo_folder": "drt_v2_doc_architecture_decisions",
+          "title": "10. use akka persistence",
+          "dataset_index": 9,
+          "scores": {
+            "bertscore_f1": 0.8233717083930969,
+            "bleu": 1.1914316760514334,
+            "rouge1_f": 0.1675579322638146,
+            "meteor": 0.2942501294244996
+          }
+        },
+        {
+          "record_id": "opg_data_docs_architecture_decisions/0007-error-handling-and-status-codes.md",
+          "repo_folder": "opg_data_docs_architecture_decisions",
+          "title": "7. Error Handling And Status Codes",
+          "dataset_index": 6,
+          "scores": {
+            "bertscore_f1": 0.8178732395172119,
+            "bleu": 2.2843376547579735,
+            "rouge1_f": 0.33645890788747934,
+            "meteor": 0.16365861924301767
+          }
+        },
+        {
+          "record_id": "galaxy_zoo_touch_table_docs_arch/adr-6.md",
+          "repo_folder": "galaxy_zoo_touch_table_docs_arch",
+          "title": "ADR 6: Choosing a Test Framework",
+          "dataset_index": 5,
+          "scores": {
+            "bertscore_f1": 0.8167722225189209,
+            "bleu": 5.230122256022312,
+            "rouge1_f": 0.31951219512195117,
+            "meteor": 0.2670822291620126
+          }
+        },
+        {
+          "record_id": "k8s_vagrant_centos_cluster_doc_architecture_decisions/0001-record-architecture-decisions.md",
+          "repo_folder": "k8s_vagrant_centos_cluster_doc_architecture_decisions",
+          "title": "1. Record architecture decisions",
+          "dataset_index": 0,
+          "scores": {
+            "bertscore_f1": 0.8212831020355225,
+            "bleu": 2.5234975830331505,
+            "rouge1_f": 0.16022889842632332,
+            "meteor": 0.2777071985679581
+          }
+        },
+        {
+          "record_id": "apply_for_teacher_training_adr/0018-public-ids-for-qualifications.md",
+          "repo_folder": "apply_for_teacher_training_adr",
+          "title": "18. Public ids for qualifications",
+          "dataset_index": 17,
+          "scores": {
+            "bertscore_f1": 0.8190008401870728,
+            "bleu": 1.2147073137142235,
+            "rouge1_f": 0.3560477001703577,
+            "meteor": 0.22483104674796744
+          }
+        },
+        {
+          "record_id": "galaxy_zoo_touch_table_docs_arch/adr-2.md",
+          "repo_folder": "galaxy_zoo_touch_table_docs_arch",
+          "title": "ADR 2: Using Windows Presentation Foundation (WPF)",
+          "dataset_index": 1,
+          "scores": {
+            "bertscore_f1": 0.8174874186515808,
+            "bleu": 4.071913054080964,
+            "rouge1_f": 0.3227917121046892,
+            "meteor": 0.28602221974460296
+          }
+        },
+        {
+          "record_id": "adr_tools_doc_adr/0006-packaging-and-distribution-in-other-version-control-repositories.md",
+          "repo_folder": "adr_tools_doc_adr",
+          "title": "6. Packaging and distribution in other version control repositories",
+          "dataset_index": 5,
+          "scores": {
+            "bertscore_f1": 0.8337982296943665,
+            "bleu": 2.6072127631070714,
+            "rouge1_f": 0.3054054054054054,
+            "meteor": 0.2808894764224648
+          }
+        },
+        {
+          "record_id": "cloud_sdk_js_knowledge_base_implementation_documentation/0010-release-version-1-vdm.md",
+          "repo_folder": "cloud_sdk_js_knowledge_base_implementation_documentation",
+          "title": "Release VDM for 1.0",
+          "dataset_index": 9,
+          "scores": {
+            "bertscore_f1": 0.8097645044326782,
+            "bleu": 0.9357705390525963,
+            "rouge1_f": 0.17964071856287425,
+            "meteor": 0.20552385910775461
+          }
+        },
+        {
+          "record_id": "dl4j_dev_tools_codegen_adr/0004-auto_initialization_for_inplace_operations.md",
+          "repo_folder": "dl4j_dev_tools_codegen_adr",
+          "title": "Auto initialization for in-place operations",
+          "dataset_index": 3,
+          "scores": {
+            "bertscore_f1": 0.8191371560096741,
+            "bleu": 3.5433086216246825,
+            "rouge1_f": 0.29200463499420626,
+            "meteor": 0.25796545010304006
+          }
+        },
+        {
+          "record_id": "TruBudget_docs_developer_architecture/0003-project-data-model.md",
+          "repo_folder": "TruBudget_docs_developer_architecture",
+          "title": "Data model for projects",
+          "dataset_index": null,
+          "scores": null
+        },
+        {
+          "record_id": "lenses_jdbc_doc_adr/0001-use-the-Value-projection-only.md",
+          "repo_folder": "lenses_jdbc_doc_adr",
+          "title": "1. Use only the Value projection",
+          "dataset_index": 0,
+          "scores": {
+            "bertscore_f1": 0.8044120073318481,
+            "bleu": 0.9676827230168065,
+            "rouge1_f": 0.25846153846153846,
+            "meteor": 0.23476423004474084
+          }
+        },
+        {
+          "record_id": "opg_data_deputy_reporting_docs_architecture_decisions/0001-record-architecture-decisions.md",
+          "repo_folder": "opg_data_deputy_reporting_docs_architecture_decisions",
+          "title": "1. Record architecture decisions",
+          "dataset_index": 0,
+          "scores": {
+            "bertscore_f1": 0.8163496851921082,
+            "bleu": 1.0411683746978124,
+            "rouge1_f": 0.12832550860719874,
+            "meteor": 0.23985221478648824
+          }
+        },
+        {
+          "record_id": "PlaceCal_doc_adr/0005-create-secretary-permissions.md",
+          "repo_folder": "PlaceCal_doc_adr",
+          "title": "Create secretary permissions",
+          "dataset_index": 4,
+          "scores": {
+            "bertscore_f1": 0.8149454593658447,
+            "bleu": 1.3107626363014597,
+            "rouge1_f": 0.34328358208955223,
+            "meteor": 0.20815625971811624
+          }
+        },
+        {
+          "record_id": "mercury_platform_doc_adr/0001-record-architecture-decisions.md",
+          "repo_folder": "mercury_platform_doc_adr",
+          "title": "1. Record architecture decisions",
+          "dataset_index": 0,
+          "scores": {
+            "bertscore_f1": 0.8051876425743103,
+            "bleu": 0.7740580405806198,
+            "rouge1_f": 0.12424242424242422,
+            "meteor": 0.16758074344911641
+          }
+        },
+        {
+          "record_id": "old_web_frontend_docs_adr/0001-use-react-with-typescript.md",
+          "repo_folder": "old_web_frontend_docs_adr",
+          "title": "Use React with TypeScript",
+          "dataset_index": 1,
+          "scores": {
+            "bertscore_f1": 0.8130080699920654,
+            "bleu": 2.4420780586497104,
+            "rouge1_f": 0.22014925373134325,
+            "meteor": 0.291276469623474
+          }
+        },
+        {
+          "record_id": "casa_doc_architecture_decisions/0001-record-architecture-decisions.md",
+          "repo_folder": "casa_doc_architecture_decisions",
+          "title": "1. Record architecture decisions",
+          "dataset_index": 0,
+          "scores": {
+            "bertscore_f1": 0.8142463564872742,
+            "bleu": 0.8255361543870651,
+            "rouge1_f": 0.1272727272727273,
+            "meteor": 0.20913372118273296
+          }
+        },
+        {
+          "record_id": "monitoring_doc_documentation_architecture_decisions/0004-cloudwatch-metrics.md",
+          "repo_folder": "monitoring_doc_documentation_architecture_decisions",
+          "title": "4. Cloudwatch Metrics",
+          "dataset_index": 3,
+          "scores": {
+            "bertscore_f1": 0.8065337538719177,
+            "bleu": 2.5801681911605017,
+            "rouge1_f": 0.3116313094367228,
+            "meteor": 0.18644252743681444
+          }
+        },
+        {
+          "record_id": "jabref_docs_adr/0023-localized-preferences.md",
+          "repo_folder": "jabref_docs_adr",
+          "title": "Localized Preferences",
+          "dataset_index": null,
+          "scores": null
+        },
+        {
+          "record_id": "docker_texlive_docs_adr/0000-use-markdown-architectural-decision-records.md",
+          "repo_folder": "docker_texlive_docs_adr",
+          "title": "Use Markdown Architectural Decision Records",
+          "dataset_index": 0,
+          "scores": {
+            "bertscore_f1": 0.8150863647460938,
+            "bleu": 5.022185446337449,
+            "rouge1_f": 0.2445414847161572,
+            "meteor": 0.2894440872595596
+          }
+        },
+        {
+          "record_id": "compliantkubernetes_docs_compliantkubernetes_adr/0023-allow-snippets-annotations.md",
+          "repo_folder": "compliantkubernetes_docs_compliantkubernetes_adr",
+          "title": "[Superseded by [ADR-0056](0056-allow-snippets-annotations-after-risk-acceptance.md)] Only allow Ingress Configuration Snippet Annotations after Proper Risk Acceptance",
+          "dataset_index": 23,
+          "scores": {
+            "bertscore_f1": 0.8243728280067444,
+            "bleu": 6.358823748082499,
+            "rouge1_f": 0.39072256913470116,
+            "meteor": 0.24125407416335176
+          }
+        },
+        {
+          "record_id": "TOSCAna_docs_dev_adr/0015-persist-to-filesystem.md",
+          "repo_folder": "TOSCAna_docs_dev_adr",
+          "title": "Persist to filesystem",
+          "dataset_index": 15,
+          "scores": {
+            "bertscore_f1": 0.8241559267044067,
+            "bleu": 2.699361483641458,
+            "rouge1_f": 0.24143556280587275,
+            "meteor": 0.27941864513342723
+          }
+        },
+        {
+          "record_id": "cafebabelcom_docs_architecture_decisions/0004-deal-with-translations.md",
+          "repo_folder": "cafebabelcom_docs_architecture_decisions",
+          "title": "4. Deal with translations",
+          "dataset_index": 3,
+          "scores": {
+            "bertscore_f1": 0.8235572576522827,
+            "bleu": 1.1109055807368324,
+            "rouge1_f": 0.25273010920436817,
+            "meteor": 0.245706106870229
+          }
+        },
+        {
+          "record_id": "cloud_controller_ng_decisions/0004-adding-key-prefix-to-annotations.md",
+          "repo_folder": "cloud_controller_ng_decisions",
+          "title": "Positive Consequences",
+          "dataset_index": null,
+          "scores": null
+        },
+        {
+          "record_id": "information_manipulation_analyzer_decision_records/0001-folder-structure.md",
+          "repo_folder": "information_manipulation_analyzer_decision_records",
+          "title": "Decision Record - Folder structure",
+          "dataset_index": 0,
+          "scores": {
+            "bertscore_f1": 0.8114938139915466,
+            "bleu": 1.2263698778767078,
+            "rouge1_f": 0.22079999999999997,
+            "meteor": 0.21502781172859378
+          }
+        },
+        {
+          "record_id": "manage_frontend_docs/03-typescript.md",
+          "repo_folder": "manage_frontend_docs",
+          "title": "To use Typescript as the programming language",
+          "dataset_index": 3,
+          "scores": {
+            "bertscore_f1": 0.8343244194984436,
+            "bleu": 2.907150800757556,
+            "rouge1_f": 0.19140625000000003,
+            "meteor": 0.2963319851585546
+          }
+        },
+        {
+          "record_id": "community_sigs_and_wgs_archive_sig_core_decisions/dr-009-ServiceBinding_in_Kyma.md",
+          "repo_folder": "community_sigs_and_wgs_archive_sig_core_decisions",
+          "title": "DR 009: ServiceBinding in Kyma",
+          "dataset_index": 8,
+          "scores": {
+            "bertscore_f1": 0.8218969106674194,
+            "bleu": 3.7367986067955705,
+            "rouge1_f": 0.30571992110453644,
+            "meteor": 0.2630422871497729
+          }
+        }
+      ],
+      "GLM-4.6": [
+        {
+          "record_id": "portfolio_docs_architecture_decisions/0012-remove-custom-json-serialization.md",
+          "repo_folder": "portfolio_docs_architecture_decisions",
+          "title": "12. remove custom json serialization",
+          "dataset_index": 11,
+          "scores": {
+            "bertscore_f1": 0.8257439732551575,
+            "bleu": 3.54773281722089,
+            "rouge1_f": 0.2222222222222222,
+            "meteor": 0.26271458284500193
+          }
+        },
+        {
+          "record_id": "up_fiscal_data_decisions/003-selnium.md",
+          "repo_folder": "up_fiscal_data_decisions",
+          "title": "Use Selenium to Scrape Koshvani data",
+          "dataset_index": 2,
+          "scores": {
+            "bertscore_f1": 0.8383142352104187,
+            "bleu": 1.6328659985990424,
+            "rouge1_f": 0.10822060353798127,
+            "meteor": 0.20465593299013646
+          }
+        },
+        {
+          "record_id": "WorkoutLog_docs_adr/0002_remove_state.md",
+          "repo_folder": "WorkoutLog_docs_adr",
+          "title": "2. Remove the state objects from the view models",
+          "dataset_index": 1,
+          "scores": {
+            "bertscore_f1": 0.8304003477096558,
+            "bleu": 4.8661894631893325,
+            "rouge1_f": 0.23275862068965522,
+            "meteor": 0.3026455067655484
+          }
+        },
+        {
+          "record_id": "Conduit_doc_adr/0002-solve-the-xunit-msbuild-problem-with-assembly-merging.md",
+          "repo_folder": "Conduit_doc_adr",
+          "title": "2. Solve the Xunit/MsBuild problem with Assembly Merging",
+          "dataset_index": 1,
+          "scores": {
+            "bertscore_f1": 0.849172830581665,
+            "bleu": 2.5308090993960284,
+            "rouge1_f": 0.13609467455621302,
+            "meteor": 0.2530782842195441
+          }
+        },
+        {
+          "record_id": "drt_v2_doc_architecture_decisions/0010-use-akka-persistence.md",
+          "repo_folder": "drt_v2_doc_architecture_decisions",
+          "title": "10. use akka persistence",
+          "dataset_index": 9,
+          "scores": {
+            "bertscore_f1": 0.8266485333442688,
+            "bleu": 1.2473948487287003,
+            "rouge1_f": 0.10949720670391061,
+            "meteor": 0.22867154034543805
+          }
+        },
+        {
+          "record_id": "opg_data_docs_architecture_decisions/0007-error-handling-and-status-codes.md",
+          "repo_folder": "opg_data_docs_architecture_decisions",
+          "title": "7. Error Handling And Status Codes",
+          "dataset_index": 6,
+          "scores": {
+            "bertscore_f1": 0.8179956078529358,
+            "bleu": 5.5933318809900445,
+            "rouge1_f": 0.4241573033707865,
+            "meteor": 0.2225595102048501
+          }
+        },
+        {
+          "record_id": "galaxy_zoo_touch_table_docs_arch/adr-6.md",
+          "repo_folder": "galaxy_zoo_touch_table_docs_arch",
+          "title": "ADR 6: Choosing a Test Framework",
+          "dataset_index": 5,
+          "scores": {
+            "bertscore_f1": 0.8325505256652832,
+            "bleu": 3.727634237574609,
+            "rouge1_f": 0.3235294117647059,
+            "meteor": 0.29641681478536547
+          }
+        },
+        {
+          "record_id": "k8s_vagrant_centos_cluster_doc_architecture_decisions/0001-record-architecture-decisions.md",
+          "repo_folder": "k8s_vagrant_centos_cluster_doc_architecture_decisions",
+          "title": "1. Record architecture decisions",
+          "dataset_index": 0,
+          "scores": {
+            "bertscore_f1": 0.8288573622703552,
+            "bleu": 5.600166045591072,
+            "rouge1_f": 0.24137931034482762,
+            "meteor": 0.36145782470130877
+          }
+        },
+        {
+          "record_id": "apply_for_teacher_training_adr/0018-public-ids-for-qualifications.md",
+          "repo_folder": "apply_for_teacher_training_adr",
+          "title": "18. Public ids for qualifications",
+          "dataset_index": 17,
+          "scores": {
+            "bertscore_f1": 0.8294036984443665,
+            "bleu": 5.552104317700371,
+            "rouge1_f": 0.340080971659919,
+            "meteor": 0.19777129009105246
+          }
+        },
+        {
+          "record_id": "galaxy_zoo_touch_table_docs_arch/adr-2.md",
+          "repo_folder": "galaxy_zoo_touch_table_docs_arch",
+          "title": "ADR 2: Using Windows Presentation Foundation (WPF)",
+          "dataset_index": 1,
+          "scores": {
+            "bertscore_f1": 0.8272439241409302,
+            "bleu": 4.361079280180826,
+            "rouge1_f": 0.3095004897159648,
+            "meteor": 0.30240515269210855
+          }
+        },
+        {
+          "record_id": "adr_tools_doc_adr/0006-packaging-and-distribution-in-other-version-control-repositories.md",
+          "repo_folder": "adr_tools_doc_adr",
+          "title": "6. Packaging and distribution in other version control repositories",
+          "dataset_index": 5,
+          "scores": {
+            "bertscore_f1": 0.8364689350128174,
+            "bleu": 3.8380578298405017,
+            "rouge1_f": 0.3069908814589666,
+            "meteor": 0.32426636123436764
+          }
+        },
+        {
+          "record_id": "cloud_sdk_js_knowledge_base_implementation_documentation/0010-release-version-1-vdm.md",
+          "repo_folder": "cloud_sdk_js_knowledge_base_implementation_documentation",
+          "title": "Release VDM for 1.0",
+          "dataset_index": 9,
+          "scores": {
+            "bertscore_f1": 0.8192629218101501,
+            "bleu": 1.3194012566880415,
+            "rouge1_f": 0.24953445065176907,
+            "meteor": 0.2623988659882136
+          }
+        },
+        {
+          "record_id": "dl4j_dev_tools_codegen_adr/0004-auto_initialization_for_inplace_operations.md",
+          "repo_folder": "dl4j_dev_tools_codegen_adr",
+          "title": "Auto initialization for in-place operations",
+          "dataset_index": 3,
+          "scores": {
+            "bertscore_f1": 0.8299242854118347,
+            "bleu": 5.202419333213468,
+            "rouge1_f": 0.3162274618585298,
+            "meteor": 0.2871964522860937
+          }
+        },
+        {
+          "record_id": "TruBudget_docs_developer_architecture/0003-project-data-model.md",
+          "repo_folder": "TruBudget_docs_developer_architecture",
+          "title": "Data model for projects",
+          "dataset_index": null,
+          "scores": null
+        },
+        {
+          "record_id": "lenses_jdbc_doc_adr/0001-use-the-Value-projection-only.md",
+          "repo_folder": "lenses_jdbc_doc_adr",
+          "title": "1. Use only the Value projection",
+          "dataset_index": 0,
+          "scores": {
+            "bertscore_f1": 0.8215492963790894,
+            "bleu": 3.9099634909107386,
+            "rouge1_f": 0.29824561403508776,
+            "meteor": 0.2823099238579069
+          }
+        },
+        {
+          "record_id": "opg_data_deputy_reporting_docs_architecture_decisions/0001-record-architecture-decisions.md",
+          "repo_folder": "opg_data_deputy_reporting_docs_architecture_decisions",
+          "title": "1. Record architecture decisions",
+          "dataset_index": 0,
+          "scores": {
+            "bertscore_f1": 0.8161002397537231,
+            "bleu": 3.440967132390398,
+            "rouge1_f": 0.17061611374407581,
+            "meteor": 0.27123888606008384
+          }
+        },
+        {
+          "record_id": "PlaceCal_doc_adr/0005-create-secretary-permissions.md",
+          "repo_folder": "PlaceCal_doc_adr",
+          "title": "Create secretary permissions",
+          "dataset_index": 4,
+          "scores": {
+            "bertscore_f1": 0.8131544589996338,
+            "bleu": 2.5366948889119243,
+            "rouge1_f": 0.33394833948339475,
+            "meteor": 0.2100709266701836
+          }
+        },
+        {
+          "record_id": "mercury_platform_doc_adr/0001-record-architecture-decisions.md",
+          "repo_folder": "mercury_platform_doc_adr",
+          "title": "1. Record architecture decisions",
+          "dataset_index": 0,
+          "scores": {
+            "bertscore_f1": 0.8228670954704285,
+            "bleu": 4.609533991974224,
+            "rouge1_f": 0.15122873345935725,
+            "meteor": 0.2557523278056184
+          }
+        },
+        {
+          "record_id": "old_web_frontend_docs_adr/0001-use-react-with-typescript.md",
+          "repo_folder": "old_web_frontend_docs_adr",
+          "title": "Use React with TypeScript",
+          "dataset_index": 1,
+          "scores": {
+            "bertscore_f1": 0.8061026334762573,
+            "bleu": 1.849032791702406,
+            "rouge1_f": 0.15625,
+            "meteor": 0.2600872859008568
+          }
+        },
+        {
+          "record_id": "casa_doc_architecture_decisions/0001-record-architecture-decisions.md",
+          "repo_folder": "casa_doc_architecture_decisions",
+          "title": "1. Record architecture decisions",
+          "dataset_index": 0,
+          "scores": {
+            "bertscore_f1": 0.8250303268432617,
+            "bleu": 4.119595910738468,
+            "rouge1_f": 0.1878453038674033,
+            "meteor": 0.3202576284757178
+          }
+        },
+        {
+          "record_id": "monitoring_doc_documentation_architecture_decisions/0004-cloudwatch-metrics.md",
+          "repo_folder": "monitoring_doc_documentation_architecture_decisions",
+          "title": "4. Cloudwatch Metrics",
+          "dataset_index": 3,
+          "scores": {
+            "bertscore_f1": 0.7980432510375977,
+            "bleu": 2.6805371977166508,
+            "rouge1_f": 0.29828486204325133,
+            "meteor": 0.17220343054128764
+          }
+        },
+        {
+          "record_id": "jabref_docs_adr/0023-localized-preferences.md",
+          "repo_folder": "jabref_docs_adr",
+          "title": "Localized Preferences",
+          "dataset_index": null,
+          "scores": null
+        },
+        {
+          "record_id": "docker_texlive_docs_adr/0000-use-markdown-architectural-decision-records.md",
+          "repo_folder": "docker_texlive_docs_adr",
+          "title": "Use Markdown Architectural Decision Records",
+          "dataset_index": 0,
+          "scores": {
+            "bertscore_f1": 0.8215850591659546,
+            "bleu": 3.167556520431407,
+            "rouge1_f": 0.2912966252220248,
+            "meteor": 0.29101666005127813
+          }
+        },
+        {
+          "record_id": "compliantkubernetes_docs_compliantkubernetes_adr/0023-allow-snippets-annotations.md",
+          "repo_folder": "compliantkubernetes_docs_compliantkubernetes_adr",
+          "title": "[Superseded by [ADR-0056](0056-allow-snippets-annotations-after-risk-acceptance.md)] Only allow Ingress Configuration Snippet Annotations after Proper Risk Acceptance",
+          "dataset_index": 23,
+          "scores": {
+            "bertscore_f1": 0.8502063155174255,
+            "bleu": 8.163244575569479,
+            "rouge1_f": 0.4271698113207547,
+            "meteor": 0.28594159627797805
+          }
+        },
+        {
+          "record_id": "TOSCAna_docs_dev_adr/0015-persist-to-filesystem.md",
+          "repo_folder": "TOSCAna_docs_dev_adr",
+          "title": "Persist to filesystem",
+          "dataset_index": 15,
+          "scores": {
+            "bertscore_f1": 0.8342911005020142,
+            "bleu": 2.523006744088721,
+            "rouge1_f": 0.2959889349930843,
+            "meteor": 0.3011320441899586
+          }
+        },
+        {
+          "record_id": "cafebabelcom_docs_architecture_decisions/0004-deal-with-translations.md",
+          "repo_folder": "cafebabelcom_docs_architecture_decisions",
+          "title": "4. Deal with translations",
+          "dataset_index": 3,
+          "scores": {
+            "bertscore_f1": 0.8095559477806091,
+            "bleu": 2.7008816207791178,
+            "rouge1_f": 0.2475247524752475,
+            "meteor": 0.31491942698013387
+          }
+        },
+        {
+          "record_id": "cloud_controller_ng_decisions/0004-adding-key-prefix-to-annotations.md",
+          "repo_folder": "cloud_controller_ng_decisions",
+          "title": "Positive Consequences",
+          "dataset_index": null,
+          "scores": null
+        },
+        {
+          "record_id": "information_manipulation_analyzer_decision_records/0001-folder-structure.md",
+          "repo_folder": "information_manipulation_analyzer_decision_records",
+          "title": "Decision Record - Folder structure",
+          "dataset_index": 0,
+          "scores": {
+            "bertscore_f1": 0.7920496463775635,
+            "bleu": 0.23461138202722093,
+            "rouge1_f": 0.1719038817005545,
+            "meteor": 0.20879297219473492
+          }
+        },
+        {
+          "record_id": "manage_frontend_docs/03-typescript.md",
+          "repo_folder": "manage_frontend_docs",
+          "title": "To use Typescript as the programming language",
+          "dataset_index": 3,
+          "scores": {
+            "bertscore_f1": 0.8396178483963013,
+            "bleu": 1.6669492687506942,
+            "rouge1_f": 0.11791383219954647,
+            "meteor": 0.2214164640418966
+          }
+        },
+        {
+          "record_id": "community_sigs_and_wgs_archive_sig_core_decisions/dr-009-ServiceBinding_in_Kyma.md",
+          "repo_folder": "community_sigs_and_wgs_archive_sig_core_decisions",
+          "title": "DR 009: ServiceBinding in Kyma",
+          "dataset_index": 8,
+          "scores": {
+            "bertscore_f1": 0.8265116214752197,
+            "bleu": 5.23960714444009,
+            "rouge1_f": 0.35523613963039014,
+            "meteor": 0.3028402641166298
+          }
+        }
+      ],
+      "Qwen3-235b": [
+        {
+          "record_id": "portfolio_docs_architecture_decisions/0012-remove-custom-json-serialization.md",
+          "repo_folder": "portfolio_docs_architecture_decisions",
+          "title": "12. remove custom json serialization",
+          "dataset_index": 11,
+          "scores": {
+            "bertscore_f1": 0.8231304287910461,
+            "bleu": 2.153038850781146,
+            "rouge1_f": 0.19554030874785594,
+            "meteor": 0.25516369912097325
+          }
+        },
+        {
+          "record_id": "up_fiscal_data_decisions/003-selnium.md",
+          "repo_folder": "up_fiscal_data_decisions",
+          "title": "Use Selenium to Scrape Koshvani data",
+          "dataset_index": 2,
+          "scores": {
+            "bertscore_f1": 0.8410882949829102,
+            "bleu": 1.8977685887550493,
+            "rouge1_f": 0.18181818181818182,
+            "meteor": 0.2533359136138115
+          }
+        },
+        {
+          "record_id": "WorkoutLog_docs_adr/0002_remove_state.md",
+          "repo_folder": "WorkoutLog_docs_adr",
+          "title": "2. Remove the state objects from the view models",
+          "dataset_index": 1,
+          "scores": {
+            "bertscore_f1": 0.8174530267715454,
+            "bleu": 3.3465658703825456,
+            "rouge1_f": 0.19858156028368792,
+            "meteor": 0.2678211332930027
+          }
+        },
+        {
+          "record_id": "Conduit_doc_adr/0002-solve-the-xunit-msbuild-problem-with-assembly-merging.md",
+          "repo_folder": "Conduit_doc_adr",
+          "title": "2. Solve the Xunit/MsBuild problem with Assembly Merging",
+          "dataset_index": 1,
+          "scores": {
+            "bertscore_f1": 0.838264524936676,
+            "bleu": 3.3133304247510638,
+            "rouge1_f": 0.16292134831460675,
+            "meteor": 0.2597111576450141
+          }
+        },
+        {
+          "record_id": "drt_v2_doc_architecture_decisions/0010-use-akka-persistence.md",
+          "repo_folder": "drt_v2_doc_architecture_decisions",
+          "title": "10. use akka persistence",
+          "dataset_index": 9,
+          "scores": {
+            "bertscore_f1": 0.8221414685249329,
+            "bleu": 1.661262598335515,
+            "rouge1_f": 0.13353115727002968,
+            "meteor": 0.2649975778950987
+          }
+        },
+        {
+          "record_id": "opg_data_docs_architecture_decisions/0007-error-handling-and-status-codes.md",
+          "repo_folder": "opg_data_docs_architecture_decisions",
+          "title": "7. Error Handling And Status Codes",
+          "dataset_index": 6,
+          "scores": {
+            "bertscore_f1": 0.8100457191467285,
+            "bleu": 1.4177110291059658,
+            "rouge1_f": 0.2863636363636363,
+            "meteor": 0.132676563362656
+          }
+        },
+        {
+          "record_id": "galaxy_zoo_touch_table_docs_arch/adr-6.md",
+          "repo_folder": "galaxy_zoo_touch_table_docs_arch",
+          "title": "ADR 6: Choosing a Test Framework",
+          "dataset_index": 5,
+          "scores": {
+            "bertscore_f1": 0.8297750353813171,
+            "bleu": 5.513844864344906,
+            "rouge1_f": 0.2945736434108527,
+            "meteor": 0.22757835820895525
+          }
+        },
+        {
+          "record_id": "k8s_vagrant_centos_cluster_doc_architecture_decisions/0001-record-architecture-decisions.md",
+          "repo_folder": "k8s_vagrant_centos_cluster_doc_architecture_decisions",
+          "title": "1. Record architecture decisions",
+          "dataset_index": 0,
+          "scores": {
+            "bertscore_f1": 0.8233276605606079,
+            "bleu": 3.9343831635678597,
+            "rouge1_f": 0.21229050279329612,
+            "meteor": 0.330057271187231
+          }
+        },
+        {
+          "record_id": "apply_for_teacher_training_adr/0018-public-ids-for-qualifications.md",
+          "repo_folder": "apply_for_teacher_training_adr",
+          "title": "18. Public ids for qualifications",
+          "dataset_index": 17,
+          "scores": {
+            "bertscore_f1": 0.8227471709251404,
+            "bleu": 6.10465325853516,
+            "rouge1_f": 0.3671668137687555,
+            "meteor": 0.22616865015630652
+          }
+        },
+        {
+          "record_id": "galaxy_zoo_touch_table_docs_arch/adr-2.md",
+          "repo_folder": "galaxy_zoo_touch_table_docs_arch",
+          "title": "ADR 2: Using Windows Presentation Foundation (WPF)",
+          "dataset_index": 1,
+          "scores": {
+            "bertscore_f1": 0.827367901802063,
+            "bleu": 6.312022146070827,
+            "rouge1_f": 0.30730478589420657,
+            "meteor": 0.26772200061258805
+          }
+        },
+        {
+          "record_id": "adr_tools_doc_adr/0006-packaging-and-distribution-in-other-version-control-repositories.md",
+          "repo_folder": "adr_tools_doc_adr",
+          "title": "6. Packaging and distribution in other version control repositories",
+          "dataset_index": 5,
+          "scores": {
+            "bertscore_f1": 0.8335340023040771,
+            "bleu": 5.591098710759851,
+            "rouge1_f": 0.3081570996978852,
+            "meteor": 0.30715238198336
+          }
+        },
+        {
+          "record_id": "cloud_sdk_js_knowledge_base_implementation_documentation/0010-release-version-1-vdm.md",
+          "repo_folder": "cloud_sdk_js_knowledge_base_implementation_documentation",
+          "title": "Release VDM for 1.0",
+          "dataset_index": 9,
+          "scores": {
+            "bertscore_f1": 0.8171018362045288,
+            "bleu": 1.456690601398235,
+            "rouge1_f": 0.20031796502384736,
+            "meteor": 0.23392004513579934
+          }
+        },
+        {
+          "record_id": "dl4j_dev_tools_codegen_adr/0004-auto_initialization_for_inplace_operations.md",
+          "repo_folder": "dl4j_dev_tools_codegen_adr",
+          "title": "Auto initialization for in-place operations",
+          "dataset_index": 3,
+          "scores": {
+            "bertscore_f1": 0.8262516856193542,
+            "bleu": 4.889732359667702,
+            "rouge1_f": 0.3358974358974359,
+            "meteor": 0.2881023295470033
+          }
+        },
+        {
+          "record_id": "TruBudget_docs_developer_architecture/0003-project-data-model.md",
+          "repo_folder": "TruBudget_docs_developer_architecture",
+          "title": "Data model for projects",
+          "dataset_index": null,
+          "scores": null
+        },
+        {
+          "record_id": "lenses_jdbc_doc_adr/0001-use-the-Value-projection-only.md",
+          "repo_folder": "lenses_jdbc_doc_adr",
+          "title": "1. Use only the Value projection",
+          "dataset_index": 0,
+          "scores": {
+            "bertscore_f1": 0.814231812953949,
+            "bleu": 4.162151580414526,
+            "rouge1_f": 0.24878836833602586,
+            "meteor": 0.26719994957906407
+          }
+        },
+        {
+          "record_id": "opg_data_deputy_reporting_docs_architecture_decisions/0001-record-architecture-decisions.md",
+          "repo_folder": "opg_data_deputy_reporting_docs_architecture_decisions",
+          "title": "1. Record architecture decisions",
+          "dataset_index": 0,
+          "scores": {
+            "bertscore_f1": 0.8401041030883789,
+            "bleu": 8.432762776739068,
+            "rouge1_f": 0.22380952380952382,
+            "meteor": 0.36807635197846006
+          }
+        },
+        {
+          "record_id": "PlaceCal_doc_adr/0005-create-secretary-permissions.md",
+          "repo_folder": "PlaceCal_doc_adr",
+          "title": "Create secretary permissions",
+          "dataset_index": 4,
+          "scores": {
+            "bertscore_f1": 0.8270778059959412,
+            "bleu": 1.5821220048486329,
+            "rouge1_f": 0.3017163504968383,
+            "meteor": 0.20297999561404304
+          }
+        },
+        {
+          "record_id": "mercury_platform_doc_adr/0001-record-architecture-decisions.md",
+          "repo_folder": "mercury_platform_doc_adr",
+          "title": "1. Record architecture decisions",
+          "dataset_index": 0,
+          "scores": {
+            "bertscore_f1": 0.84564608335495,
+            "bleu": 9.904369297735261,
+            "rouge1_f": 0.23896103896103896,
+            "meteor": 0.34768027311130767
+          }
+        },
+        {
+          "record_id": "old_web_frontend_docs_adr/0001-use-react-with-typescript.md",
+          "repo_folder": "old_web_frontend_docs_adr",
+          "title": "Use React with TypeScript",
+          "dataset_index": 1,
+          "scores": {
+            "bertscore_f1": 0.8094724416732788,
+            "bleu": 2.557556929827048,
+            "rouge1_f": 0.19343696027633853,
+            "meteor": 0.2695773263433814
+          }
+        },
+        {
+          "record_id": "casa_doc_architecture_decisions/0001-record-architecture-decisions.md",
+          "repo_folder": "casa_doc_architecture_decisions",
+          "title": "1. Record architecture decisions",
+          "dataset_index": 0,
+          "scores": {
+            "bertscore_f1": 0.8263986110687256,
+            "bleu": 9.332727613133654,
+            "rouge1_f": 0.22580645161290322,
+            "meteor": 0.3221021274037506
+          }
+        },
+        {
+          "record_id": "monitoring_doc_documentation_architecture_decisions/0004-cloudwatch-metrics.md",
+          "repo_folder": "monitoring_doc_documentation_architecture_decisions",
+          "title": "4. Cloudwatch Metrics",
+          "dataset_index": 3,
+          "scores": {
+            "bertscore_f1": 0.8140313029289246,
+            "bleu": 2.9098757466985465,
+            "rouge1_f": 0.2955376737381126,
+            "meteor": 0.16435820053073602
+          }
+        },
+        {
+          "record_id": "jabref_docs_adr/0023-localized-preferences.md",
+          "repo_folder": "jabref_docs_adr",
+          "title": "Localized Preferences",
+          "dataset_index": null,
+          "scores": null
+        },
+        {
+          "record_id": "docker_texlive_docs_adr/0000-use-markdown-architectural-decision-records.md",
+          "repo_folder": "docker_texlive_docs_adr",
+          "title": "Use Markdown Architectural Decision Records",
+          "dataset_index": 0,
+          "scores": {
+            "bertscore_f1": 0.8177503943443298,
+            "bleu": 3.0784674624909614,
+            "rouge1_f": 0.26642984014209586,
+            "meteor": 0.2642758248329194
+          }
+        },
+        {
+          "record_id": "compliantkubernetes_docs_compliantkubernetes_adr/0023-allow-snippets-annotations.md",
+          "repo_folder": "compliantkubernetes_docs_compliantkubernetes_adr",
+          "title": "[Superseded by [ADR-0056](0056-allow-snippets-annotations-after-risk-acceptance.md)] Only allow Ingress Configuration Snippet Annotations after Proper Risk Acceptance",
+          "dataset_index": 23,
+          "scores": {
+            "bertscore_f1": 0.8535312414169312,
+            "bleu": 12.598520413348124,
+            "rouge1_f": 0.44423791821561337,
+            "meteor": 0.26898849778900125
+          }
+        },
+        {
+          "record_id": "TOSCAna_docs_dev_adr/0015-persist-to-filesystem.md",
+          "repo_folder": "TOSCAna_docs_dev_adr",
+          "title": "Persist to filesystem",
+          "dataset_index": 15,
+          "scores": {
+            "bertscore_f1": 0.8317044973373413,
+            "bleu": 3.2383154727849215,
+            "rouge1_f": 0.29855537720706254,
+            "meteor": 0.29802571209012646
+          }
+        },
+        {
+          "record_id": "cafebabelcom_docs_architecture_decisions/0004-deal-with-translations.md",
+          "repo_folder": "cafebabelcom_docs_architecture_decisions",
+          "title": "4. Deal with translations",
+          "dataset_index": 3,
+          "scores": {
+            "bertscore_f1": 0.8276011347770691,
+            "bleu": 4.617784853093413,
+            "rouge1_f": 0.2747252747252747,
+            "meteor": 0.30631380530062813
+          }
+        },
+        {
+          "record_id": "cloud_controller_ng_decisions/0004-adding-key-prefix-to-annotations.md",
+          "repo_folder": "cloud_controller_ng_decisions",
+          "title": "Positive Consequences",
+          "dataset_index": null,
+          "scores": null
+        },
+        {
+          "record_id": "information_manipulation_analyzer_decision_records/0001-folder-structure.md",
+          "repo_folder": "information_manipulation_analyzer_decision_records",
+          "title": "Decision Record - Folder structure",
+          "dataset_index": 0,
+          "scores": {
+            "bertscore_f1": 0.812216579914093,
+            "bleu": 1.7503408356968329,
+            "rouge1_f": 0.24144144144144145,
+            "meteor": 0.24028006398544516
+          }
+        },
+        {
+          "record_id": "manage_frontend_docs/03-typescript.md",
+          "repo_folder": "manage_frontend_docs",
+          "title": "To use Typescript as the programming language",
+          "dataset_index": 3,
+          "scores": {
+            "bertscore_f1": 0.8342169523239136,
+            "bleu": 2.127172444102348,
+            "rouge1_f": 0.16694490818030053,
+            "meteor": 0.2591964134560212
+          }
+        },
+        {
+          "record_id": "community_sigs_and_wgs_archive_sig_core_decisions/dr-009-ServiceBinding_in_Kyma.md",
+          "repo_folder": "community_sigs_and_wgs_archive_sig_core_decisions",
+          "title": "DR 009: ServiceBinding in Kyma",
+          "dataset_index": 8,
+          "scores": {
+            "bertscore_f1": 0.829947829246521,
+            "bleu": 7.739052665394918,
+            "rouge1_f": 0.3668993020937188,
+            "meteor": 0.31402582454342376
+          }
+        }
+      ]
+    },
+    "RAG_Based_K3": {
+      "Gemini-2.5-Pro": [
+        {
+          "record_id": "portfolio_docs_architecture_decisions/0012-remove-custom-json-serialization.md",
+          "repo_folder": "portfolio_docs_architecture_decisions",
+          "title": "12. remove custom json serialization",
+          "dataset_index": 8,
+          "scores": {
+            "bertscore_f1": 0.8617752194404602,
+            "bleu": 10.626661695430133,
+            "rouge1_f": 0.31020408163265306,
+            "meteor": 0.41593655325953804
+          }
+        },
+        {
+          "record_id": "up_fiscal_data_decisions/003-selnium.md",
+          "repo_folder": "up_fiscal_data_decisions",
+          "title": "Use Selenium to Scrape Koshvani data",
+          "dataset_index": null,
+          "scores": null
+        },
+        {
+          "record_id": "WorkoutLog_docs_adr/0002_remove_state.md",
+          "repo_folder": "WorkoutLog_docs_adr",
+          "title": "2. Remove the state objects from the view models",
+          "dataset_index": null,
+          "scores": null
+        },
+        {
+          "record_id": "Conduit_doc_adr/0002-solve-the-xunit-msbuild-problem-with-assembly-merging.md",
+          "repo_folder": "Conduit_doc_adr",
+          "title": "2. Solve the Xunit/MsBuild problem with Assembly Merging",
+          "dataset_index": null,
+          "scores": null
+        },
+        {
+          "record_id": "drt_v2_doc_architecture_decisions/0010-use-akka-persistence.md",
+          "repo_folder": "drt_v2_doc_architecture_decisions",
+          "title": "10. use akka persistence",
+          "dataset_index": 6,
+          "scores": {
+            "bertscore_f1": 0.8661583065986633,
+            "bleu": 13.241900550519608,
+            "rouge1_f": 0.31896551724137934,
+            "meteor": 0.48483971917901836
+          }
+        },
+        {
+          "record_id": "opg_data_docs_architecture_decisions/0007-error-handling-and-status-codes.md",
+          "repo_folder": "opg_data_docs_architecture_decisions",
+          "title": "7. Error Handling And Status Codes",
+          "dataset_index": 3,
+          "scores": {
+            "bertscore_f1": 0.8459378480911255,
+            "bleu": 19.202219695239716,
+            "rouge1_f": 0.5694013303769402,
+            "meteor": 0.3188013661200493
+          }
+        },
+        {
+          "record_id": "galaxy_zoo_touch_table_docs_arch/adr-6.md",
+          "repo_folder": "galaxy_zoo_touch_table_docs_arch",
+          "title": "ADR 6: Choosing a Test Framework",
+          "dataset_index": 2,
+          "scores": {
+            "bertscore_f1": 0.8578019142150879,
+            "bleu": 11.01774350689544,
+            "rouge1_f": 0.4387464387464387,
+            "meteor": 0.28246660942285634
+          }
+        },
+        {
+          "record_id": "k8s_vagrant_centos_cluster_doc_architecture_decisions/0001-record-architecture-decisions.md",
+          "repo_folder": "k8s_vagrant_centos_cluster_doc_architecture_decisions",
+          "title": "1. Record architecture decisions",
+          "dataset_index": null,
+          "scores": null
+        },
+        {
+          "record_id": "apply_for_teacher_training_adr/0018-public-ids-for-qualifications.md",
+          "repo_folder": "apply_for_teacher_training_adr",
+          "title": "18. Public ids for qualifications",
+          "dataset_index": 14,
+          "scores": {
+            "bertscore_f1": 0.8259015083312988,
+            "bleu": 7.277566349274848,
+            "rouge1_f": 0.44272445820433437,
+            "meteor": 0.28584214766096494
+          }
+        },
+        {
+          "record_id": "galaxy_zoo_touch_table_docs_arch/adr-2.md",
+          "repo_folder": "galaxy_zoo_touch_table_docs_arch",
+          "title": "ADR 2: Using Windows Presentation Foundation (WPF)",
+          "dataset_index": null,
+          "scores": null
+        },
+        {
+          "record_id": "adr_tools_doc_adr/0006-packaging-and-distribution-in-other-version-control-repositories.md",
+          "repo_folder": "adr_tools_doc_adr",
+          "title": "6. Packaging and distribution in other version control repositories",
+          "dataset_index": 2,
+          "scores": {
+            "bertscore_f1": 0.8674211502075195,
+            "bleu": 13.68438097136606,
+            "rouge1_f": 0.4217391304347826,
+            "meteor": 0.38258627136712015
+          }
+        },
+        {
+          "record_id": "cloud_sdk_js_knowledge_base_implementation_documentation/0010-release-version-1-vdm.md",
+          "repo_folder": "cloud_sdk_js_knowledge_base_implementation_documentation",
+          "title": "Release VDM for 1.0",
+          "dataset_index": 6,
+          "scores": {
+            "bertscore_f1": 0.831243097782135,
+            "bleu": 1.3193695251396536,
+            "rouge1_f": 0.22002820874471088,
+            "meteor": 0.266779934310878
+          }
+        },
+        {
+          "record_id": "dl4j_dev_tools_codegen_adr/0004-auto_initialization_for_inplace_operations.md",
+          "repo_folder": "dl4j_dev_tools_codegen_adr",
+          "title": "Auto initialization for in-place operations",
+          "dataset_index": 0,
+          "scores": {
+            "bertscore_f1": 0.85030597448349,
+            "bleu": 11.664753954748681,
+            "rouge1_f": 0.41569767441860467,
+            "meteor": 0.33293420837759474
+          }
+        },
+        {
+          "record_id": "TruBudget_docs_developer_architecture/0003-project-data-model.md",
+          "repo_folder": "TruBudget_docs_developer_architecture",
+          "title": "Data model for projects",
+          "dataset_index": null,
+          "scores": null
+        },
+        {
+          "record_id": "lenses_jdbc_doc_adr/0001-use-the-Value-projection-only.md",
+          "repo_folder": "lenses_jdbc_doc_adr",
+          "title": "1. Use only the Value projection",
+          "dataset_index": null,
+          "scores": null
+        },
+        {
+          "record_id": "opg_data_deputy_reporting_docs_architecture_decisions/0001-record-architecture-decisions.md",
+          "repo_folder": "opg_data_deputy_reporting_docs_architecture_decisions",
+          "title": "1. Record architecture decisions",
+          "dataset_index": null,
+          "scores": null
+        },
+        {
+          "record_id": "PlaceCal_doc_adr/0005-create-secretary-permissions.md",
+          "repo_folder": "PlaceCal_doc_adr",
+          "title": "Create secretary permissions",
+          "dataset_index": 1,
+          "scores": {
+            "bertscore_f1": 0.8399792313575745,
+            "bleu": 3.391936342885291,
+            "rouge1_f": 0.42748091603053434,
+            "meteor": 0.2951964221632749
+          }
+        },
+        {
+          "record_id": "mercury_platform_doc_adr/0001-record-architecture-decisions.md",
+          "repo_folder": "mercury_platform_doc_adr",
+          "title": "1. Record architecture decisions",
+          "dataset_index": null,
+          "scores": null
+        },
+        {
+          "record_id": "old_web_frontend_docs_adr/0001-use-react-with-typescript.md",
+          "repo_folder": "old_web_frontend_docs_adr",
+          "title": "Use React with TypeScript",
+          "dataset_index": null,
+          "scores": null
+        },
+        {
+          "record_id": "casa_doc_architecture_decisions/0001-record-architecture-decisions.md",
+          "repo_folder": "casa_doc_architecture_decisions",
+          "title": "1. Record architecture decisions",
+          "dataset_index": null,
+          "scores": null
+        },
+        {
+          "record_id": "monitoring_doc_documentation_architecture_decisions/0004-cloudwatch-metrics.md",
+          "repo_folder": "monitoring_doc_documentation_architecture_decisions",
+          "title": "4. Cloudwatch Metrics",
+          "dataset_index": 0,
+          "scores": {
+            "bertscore_f1": 0.8366355895996094,
+            "bleu": 1.97684853728285,
+            "rouge1_f": 0.3264604810996564,
+            "meteor": 0.15628813175384426
+          }
+        },
+        {
+          "record_id": "jabref_docs_adr/0023-localized-preferences.md",
+          "repo_folder": "jabref_docs_adr",
+          "title": "Localized Preferences",
+          "dataset_index": null,
+          "scores": null
+        },
+        {
+          "record_id": "docker_texlive_docs_adr/0000-use-markdown-architectural-decision-records.md",
+          "repo_folder": "docker_texlive_docs_adr",
+          "title": "Use Markdown Architectural Decision Records",
+          "dataset_index": null,
+          "scores": null
+        },
+        {
+          "record_id": "compliantkubernetes_docs_compliantkubernetes_adr/0023-allow-snippets-annotations.md",
+          "repo_folder": "compliantkubernetes_docs_compliantkubernetes_adr",
+          "title": "[Superseded by [ADR-0056](0056-allow-snippets-annotations-after-risk-acceptance.md)] Only allow Ingress Configuration Snippet Annotations after Proper Risk Acceptance",
+          "dataset_index": 20,
+          "scores": {
+            "bertscore_f1": 0.8828839063644409,
+            "bleu": 19.83761210637238,
+            "rouge1_f": 0.5220820189274448,
+            "meteor": 0.3398578666795389
+          }
+        },
+        {
+          "record_id": "TOSCAna_docs_dev_adr/0015-persist-to-filesystem.md",
+          "repo_folder": "TOSCAna_docs_dev_adr",
+          "title": "Persist to filesystem",
+          "dataset_index": 12,
+          "scores": {
+            "bertscore_f1": 0.8395321369171143,
+            "bleu": 12.917152152902775,
+            "rouge1_f": 0.3142329020332717,
+            "meteor": 0.431897992632048
+          }
+        },
+        {
+          "record_id": "cafebabelcom_docs_architecture_decisions/0004-deal-with-translations.md",
+          "repo_folder": "cafebabelcom_docs_architecture_decisions",
+          "title": "4. Deal with translations",
+          "dataset_index": 0,
+          "scores": {
+            "bertscore_f1": 0.8461959958076477,
+            "bleu": 11.670547111876312,
+            "rouge1_f": 0.34838709677419355,
+            "meteor": 0.3315647927562149
+          }
+        },
+        {
+          "record_id": "cloud_controller_ng_decisions/0004-adding-key-prefix-to-annotations.md",
+          "repo_folder": "cloud_controller_ng_decisions",
+          "title": "Positive Consequences",
+          "dataset_index": null,
+          "scores": null
+        },
+        {
+          "record_id": "information_manipulation_analyzer_decision_records/0001-folder-structure.md",
+          "repo_folder": "information_manipulation_analyzer_decision_records",
+          "title": "Decision Record - Folder structure",
+          "dataset_index": null,
+          "scores": null
+        },
+        {
+          "record_id": "manage_frontend_docs/03-typescript.md",
+          "repo_folder": "manage_frontend_docs",
+          "title": "To use Typescript as the programming language",
+          "dataset_index": 0,
+          "scores": {
+            "bertscore_f1": 0.8587007522583008,
+            "bleu": 6.963246796096082,
+            "rouge1_f": 0.24225352112676055,
+            "meteor": 0.373694470093362
+          }
+        },
+        {
+          "record_id": "community_sigs_and_wgs_archive_sig_core_decisions/dr-009-ServiceBinding_in_Kyma.md",
+          "repo_folder": "community_sigs_and_wgs_archive_sig_core_decisions",
+          "title": "DR 009: ServiceBinding in Kyma",
+          "dataset_index": 5,
+          "scores": {
+            "bertscore_f1": 0.8650213479995728,
+            "bleu": 14.30365331416359,
+            "rouge1_f": 0.48462484624846247,
+            "meteor": 0.34416339534925605
+          }
+        }
+      ],
+      "Gemma3-4b": [
+        {
+          "record_id": "portfolio_docs_architecture_decisions/0012-remove-custom-json-serialization.md",
+          "repo_folder": "portfolio_docs_architecture_decisions",
+          "title": "12. remove custom json serialization",
+          "dataset_index": 8,
+          "scores": {
+            "bertscore_f1": 0.8462411165237427,
+            "bleu": 7.297428987703414,
+            "rouge1_f": 0.26294820717131473,
+            "meteor": 0.31797024580737754
+          }
+        },
+        {
+          "record_id": "up_fiscal_data_decisions/003-selnium.md",
+          "repo_folder": "up_fiscal_data_decisions",
+          "title": "Use Selenium to Scrape Koshvani data",
+          "dataset_index": null,
+          "scores": null
+        },
+        {
+          "record_id": "WorkoutLog_docs_adr/0002_remove_state.md",
+          "repo_folder": "WorkoutLog_docs_adr",
+          "title": "2. Remove the state objects from the view models",
+          "dataset_index": null,
+          "scores": null
+        },
+        {
+          "record_id": "Conduit_doc_adr/0002-solve-the-xunit-msbuild-problem-with-assembly-merging.md",
+          "repo_folder": "Conduit_doc_adr",
+          "title": "2. Solve the Xunit/MsBuild problem with Assembly Merging",
+          "dataset_index": null,
+          "scores": null
+        },
+        {
+          "record_id": "drt_v2_doc_architecture_decisions/0010-use-akka-persistence.md",
+          "repo_folder": "drt_v2_doc_architecture_decisions",
+          "title": "10. use akka persistence",
+          "dataset_index": 6,
+          "scores": {
+            "bertscore_f1": 0.8276430368423462,
+            "bleu": 2.050137395363909,
+            "rouge1_f": 0.20720720720720723,
+            "meteor": 0.324839265864996
+          }
+        },
+        {
+          "record_id": "opg_data_docs_architecture_decisions/0007-error-handling-and-status-codes.md",
+          "repo_folder": "opg_data_docs_architecture_decisions",
+          "title": "7. Error Handling And Status Codes",
+          "dataset_index": 3,
+          "scores": {
+            "bertscore_f1": 0.8334993124008179,
+            "bleu": 1.3189435397127758,
+            "rouge1_f": 0.37346711259754733,
+            "meteor": 0.15094081346986804
+          }
+        },
+        {
+          "record_id": "galaxy_zoo_touch_table_docs_arch/adr-6.md",
+          "repo_folder": "galaxy_zoo_touch_table_docs_arch",
+          "title": "ADR 6: Choosing a Test Framework",
+          "dataset_index": 2,
+          "scores": {
+            "bertscore_f1": 0.8453421592712402,
+            "bleu": 9.070789172756898,
+            "rouge1_f": 0.35475578406169667,
+            "meteor": 0.2980485015834984
+          }
+        },
+        {
+          "record_id": "k8s_vagrant_centos_cluster_doc_architecture_decisions/0001-record-architecture-decisions.md",
+          "repo_folder": "k8s_vagrant_centos_cluster_doc_architecture_decisions",
+          "title": "1. Record architecture decisions",
+          "dataset_index": null,
+          "scores": null
+        },
+        {
+          "record_id": "apply_for_teacher_training_adr/0018-public-ids-for-qualifications.md",
+          "repo_folder": "apply_for_teacher_training_adr",
+          "title": "18. Public ids for qualifications",
+          "dataset_index": 14,
+          "scores": {
+            "bertscore_f1": 0.8211984038352966,
+            "bleu": 4.210297660241914,
+            "rouge1_f": 0.3387387387387387,
+            "meteor": 0.21529091194937122
+          }
+        },
+        {
+          "record_id": "galaxy_zoo_touch_table_docs_arch/adr-2.md",
+          "repo_folder": "galaxy_zoo_touch_table_docs_arch",
+          "title": "ADR 2: Using Windows Presentation Foundation (WPF)",
+          "dataset_index": null,
+          "scores": null
+        },
+        {
+          "record_id": "adr_tools_doc_adr/0006-packaging-and-distribution-in-other-version-control-repositories.md",
+          "repo_folder": "adr_tools_doc_adr",
+          "title": "6. Packaging and distribution in other version control repositories",
+          "dataset_index": 2,
+          "scores": {
+            "bertscore_f1": 0.8384062647819519,
+            "bleu": 5.966033910322511,
+            "rouge1_f": 0.3016157989228007,
+            "meteor": 0.3025448720282521
+          }
+        },
+        {
+          "record_id": "cloud_sdk_js_knowledge_base_implementation_documentation/0010-release-version-1-vdm.md",
+          "repo_folder": "cloud_sdk_js_knowledge_base_implementation_documentation",
+          "title": "Release VDM for 1.0",
+          "dataset_index": 6,
+          "scores": {
+            "bertscore_f1": 0.813006579875946,
+            "bleu": 1.0982074383512777,
+            "rouge1_f": 0.1964573268921095,
+            "meteor": 0.21474019088016968
+          }
+        },
+        {
+          "record_id": "dl4j_dev_tools_codegen_adr/0004-auto_initialization_for_inplace_operations.md",
+          "repo_folder": "dl4j_dev_tools_codegen_adr",
+          "title": "Auto initialization for in-place operations",
+          "dataset_index": 0,
+          "scores": {
+            "bertscore_f1": 0.8375046849250793,
+            "bleu": 8.617967725962776,
+            "rouge1_f": 0.3800277392510402,
+            "meteor": 0.2828154486252209
+          }
+        },
+        {
+          "record_id": "TruBudget_docs_developer_architecture/0003-project-data-model.md",
+          "repo_folder": "TruBudget_docs_developer_architecture",
+          "title": "Data model for projects",
+          "dataset_index": null,
+          "scores": null
+        },
+        {
+          "record_id": "lenses_jdbc_doc_adr/0001-use-the-Value-projection-only.md",
+          "repo_folder": "lenses_jdbc_doc_adr",
+          "title": "1. Use only the Value projection",
+          "dataset_index": null,
+          "scores": null
+        },
+        {
+          "record_id": "opg_data_deputy_reporting_docs_architecture_decisions/0001-record-architecture-decisions.md",
+          "repo_folder": "opg_data_deputy_reporting_docs_architecture_decisions",
+          "title": "1. Record architecture decisions",
+          "dataset_index": null,
+          "scores": null
+        },
+        {
+          "record_id": "PlaceCal_doc_adr/0005-create-secretary-permissions.md",
+          "repo_folder": "PlaceCal_doc_adr",
+          "title": "Create secretary permissions",
+          "dataset_index": 1,
+          "scores": {
+            "bertscore_f1": 0.8219821453094482,
+            "bleu": 2.696770306230685,
+            "rouge1_f": 0.3472113118617439,
+            "meteor": 0.22526026687816947
+          }
+        },
+        {
+          "record_id": "mercury_platform_doc_adr/0001-record-architecture-decisions.md",
+          "repo_folder": "mercury_platform_doc_adr",
+          "title": "1. Record architecture decisions",
+          "dataset_index": null,
+          "scores": null
+        },
+        {
+          "record_id": "old_web_frontend_docs_adr/0001-use-react-with-typescript.md",
+          "repo_folder": "old_web_frontend_docs_adr",
+          "title": "Use React with TypeScript",
+          "dataset_index": null,
+          "scores": null
+        },
+        {
+          "record_id": "casa_doc_architecture_decisions/0001-record-architecture-decisions.md",
+          "repo_folder": "casa_doc_architecture_decisions",
+          "title": "1. Record architecture decisions",
+          "dataset_index": null,
+          "scores": null
+        },
+        {
+          "record_id": "monitoring_doc_documentation_architecture_decisions/0004-cloudwatch-metrics.md",
+          "repo_folder": "monitoring_doc_documentation_architecture_decisions",
+          "title": "4. Cloudwatch Metrics",
+          "dataset_index": 0,
+          "scores": {
+            "bertscore_f1": 0.8138951063156128,
+            "bleu": 1.2739522479806253,
+            "rouge1_f": 0.27031650983746797,
+            "meteor": 0.1355260060349189
+          }
+        },
+        {
+          "record_id": "jabref_docs_adr/0023-localized-preferences.md",
+          "repo_folder": "jabref_docs_adr",
+          "title": "Localized Preferences",
+          "dataset_index": null,
+          "scores": null
+        },
+        {
+          "record_id": "docker_texlive_docs_adr/0000-use-markdown-architectural-decision-records.md",
+          "repo_folder": "docker_texlive_docs_adr",
+          "title": "Use Markdown Architectural Decision Records",
+          "dataset_index": null,
+          "scores": null
+        },
+        {
+          "record_id": "compliantkubernetes_docs_compliantkubernetes_adr/0023-allow-snippets-annotations.md",
+          "repo_folder": "compliantkubernetes_docs_compliantkubernetes_adr",
+          "title": "[Superseded by [ADR-0056](0056-allow-snippets-annotations-after-risk-acceptance.md)] Only allow Ingress Configuration Snippet Annotations after Proper Risk Acceptance",
+          "dataset_index": 20,
+          "scores": {
+            "bertscore_f1": 0.8670158982276917,
+            "bleu": 14.095086807074894,
+            "rouge1_f": 0.4194630872483222,
+            "meteor": 0.29873077858983266
+          }
+        },
+        {
+          "record_id": "TOSCAna_docs_dev_adr/0015-persist-to-filesystem.md",
+          "repo_folder": "TOSCAna_docs_dev_adr",
+          "title": "Persist to filesystem",
+          "dataset_index": 12,
+          "scores": {
+            "bertscore_f1": 0.8423783183097839,
+            "bleu": 11.519558208650203,
+            "rouge1_f": 0.33734939759036137,
+            "meteor": 0.36824175244861856
+          }
+        },
+        {
+          "record_id": "cafebabelcom_docs_architecture_decisions/0004-deal-with-translations.md",
+          "repo_folder": "cafebabelcom_docs_architecture_decisions",
+          "title": "4. Deal with translations",
+          "dataset_index": 0,
+          "scores": {
+            "bertscore_f1": 0.8245302438735962,
+            "bleu": 4.1000981757651305,
+            "rouge1_f": 0.27213822894168466,
+            "meteor": 0.28625215913665103
+          }
+        },
+        {
+          "record_id": "cloud_controller_ng_decisions/0004-adding-key-prefix-to-annotations.md",
+          "repo_folder": "cloud_controller_ng_decisions",
+          "title": "Positive Consequences",
+          "dataset_index": null,
+          "scores": null
+        },
+        {
+          "record_id": "information_manipulation_analyzer_decision_records/0001-folder-structure.md",
+          "repo_folder": "information_manipulation_analyzer_decision_records",
+          "title": "Decision Record - Folder structure",
+          "dataset_index": null,
+          "scores": null
+        },
+        {
+          "record_id": "manage_frontend_docs/03-typescript.md",
+          "repo_folder": "manage_frontend_docs",
+          "title": "To use Typescript as the programming language",
+          "dataset_index": 0,
+          "scores": {
+            "bertscore_f1": 0.84608393907547,
+            "bleu": 4.549802864418067,
+            "rouge1_f": 0.20720720720720717,
+            "meteor": 0.33018209377929364
+          }
+        },
+        {
+          "record_id": "community_sigs_and_wgs_archive_sig_core_decisions/dr-009-ServiceBinding_in_Kyma.md",
+          "repo_folder": "community_sigs_and_wgs_archive_sig_core_decisions",
+          "title": "DR 009: ServiceBinding in Kyma",
+          "dataset_index": 5,
+          "scores": {
+            "bertscore_f1": 0.8251789212226868,
+            "bleu": 6.9416098894157665,
+            "rouge1_f": 0.3333333333333333,
+            "meteor": 0.2838229917598642
+          }
+        }
+      ],
+      "GLM-4.6": [
+        {
+          "record_id": "portfolio_docs_architecture_decisions/0012-remove-custom-json-serialization.md",
+          "repo_folder": "portfolio_docs_architecture_decisions",
+          "title": "12. remove custom json serialization",
+          "dataset_index": 8,
+          "scores": {
+            "bertscore_f1": 0.8704849481582642,
+            "bleu": 14.318677133890917,
+            "rouge1_f": 0.3517060367454068,
+            "meteor": 0.39438614078721324
+          }
+        },
+        {
+          "record_id": "up_fiscal_data_decisions/003-selnium.md",
+          "repo_folder": "up_fiscal_data_decisions",
+          "title": "Use Selenium to Scrape Koshvani data",
+          "dataset_index": null,
+          "scores": null
+        },
+        {
+          "record_id": "WorkoutLog_docs_adr/0002_remove_state.md",
+          "repo_folder": "WorkoutLog_docs_adr",
+          "title": "2. Remove the state objects from the view models",
+          "dataset_index": null,
+          "scores": null
+        },
+        {
+          "record_id": "Conduit_doc_adr/0002-solve-the-xunit-msbuild-problem-with-assembly-merging.md",
+          "repo_folder": "Conduit_doc_adr",
+          "title": "2. Solve the Xunit/MsBuild problem with Assembly Merging",
+          "dataset_index": null,
+          "scores": null
+        },
+        {
+          "record_id": "drt_v2_doc_architecture_decisions/0010-use-akka-persistence.md",
+          "repo_folder": "drt_v2_doc_architecture_decisions",
+          "title": "10. use akka persistence",
+          "dataset_index": 6,
+          "scores": {
+            "bertscore_f1": 0.8633131980895996,
+            "bleu": 12.627629425330916,
+            "rouge1_f": 0.3179916317991632,
+            "meteor": 0.45943547487022013
+          }
+        },
+        {
+          "record_id": "opg_data_docs_architecture_decisions/0007-error-handling-and-status-codes.md",
+          "repo_folder": "opg_data_docs_architecture_decisions",
+          "title": "7. Error Handling And Status Codes",
+          "dataset_index": 3,
+          "scores": {
+            "bertscore_f1": 0.8489528298377991,
+            "bleu": 17.05892527133857,
+            "rouge1_f": 0.489622641509434,
+            "meteor": 0.30743488372787137
+          }
+        },
+        {
+          "record_id": "galaxy_zoo_touch_table_docs_arch/adr-6.md",
+          "repo_folder": "galaxy_zoo_touch_table_docs_arch",
+          "title": "ADR 6: Choosing a Test Framework",
+          "dataset_index": 2,
+          "scores": {
+            "bertscore_f1": 0.8630120158195496,
+            "bleu": 12.030205293138257,
+            "rouge1_f": 0.44992743105950656,
+            "meteor": 0.3161671851116012
+          }
+        },
+        {
+          "record_id": "k8s_vagrant_centos_cluster_doc_architecture_decisions/0001-record-architecture-decisions.md",
+          "repo_folder": "k8s_vagrant_centos_cluster_doc_architecture_decisions",
+          "title": "1. Record architecture decisions",
+          "dataset_index": null,
+          "scores": null
+        },
+        {
+          "record_id": "apply_for_teacher_training_adr/0018-public-ids-for-qualifications.md",
+          "repo_folder": "apply_for_teacher_training_adr",
+          "title": "18. Public ids for qualifications",
+          "dataset_index": 14,
+          "scores": {
+            "bertscore_f1": 0.82373046875,
+            "bleu": 6.939781606779904,
+            "rouge1_f": 0.4138513513513513,
+            "meteor": 0.23380585929385647
+          }
+        },
+        {
+          "record_id": "galaxy_zoo_touch_table_docs_arch/adr-2.md",
+          "repo_folder": "galaxy_zoo_touch_table_docs_arch",
+          "title": "ADR 2: Using Windows Presentation Foundation (WPF)",
+          "dataset_index": null,
+          "scores": null
+        },
+        {
+          "record_id": "adr_tools_doc_adr/0006-packaging-and-distribution-in-other-version-control-repositories.md",
+          "repo_folder": "adr_tools_doc_adr",
+          "title": "6. Packaging and distribution in other version control repositories",
+          "dataset_index": 2,
+          "scores": {
+            "bertscore_f1": 0.8578710556030273,
+            "bleu": 9.108741310372237,
+            "rouge1_f": 0.44575936883629186,
+            "meteor": 0.36082282371152796
+          }
+        },
+        {
+          "record_id": "cloud_sdk_js_knowledge_base_implementation_documentation/0010-release-version-1-vdm.md",
+          "repo_folder": "cloud_sdk_js_knowledge_base_implementation_documentation",
+          "title": "Release VDM for 1.0",
+          "dataset_index": 6,
+          "scores": {
+            "bertscore_f1": 0.8185428380966187,
+            "bleu": 1.3637343288508537,
+            "rouge1_f": 0.1846553966189857,
+            "meteor": 0.22064984652242273
+          }
+        },
+        {
+          "record_id": "dl4j_dev_tools_codegen_adr/0004-auto_initialization_for_inplace_operations.md",
+          "repo_folder": "dl4j_dev_tools_codegen_adr",
+          "title": "Auto initialization for in-place operations",
+          "dataset_index": 0,
+          "scores": {
+            "bertscore_f1": 0.8468323945999146,
+            "bleu": 12.395058395944778,
+            "rouge1_f": 0.42967542503863987,
+            "meteor": 0.33103284159509433
+          }
+        },
+        {
+          "record_id": "TruBudget_docs_developer_architecture/0003-project-data-model.md",
+          "repo_folder": "TruBudget_docs_developer_architecture",
+          "title": "Data model for projects",
+          "dataset_index": null,
+          "scores": null
+        },
+        {
+          "record_id": "lenses_jdbc_doc_adr/0001-use-the-Value-projection-only.md",
+          "repo_folder": "lenses_jdbc_doc_adr",
+          "title": "1. Use only the Value projection",
+          "dataset_index": null,
+          "scores": null
+        },
+        {
+          "record_id": "opg_data_deputy_reporting_docs_architecture_decisions/0001-record-architecture-decisions.md",
+          "repo_folder": "opg_data_deputy_reporting_docs_architecture_decisions",
+          "title": "1. Record architecture decisions",
+          "dataset_index": null,
+          "scores": null
+        },
+        {
+          "record_id": "PlaceCal_doc_adr/0005-create-secretary-permissions.md",
+          "repo_folder": "PlaceCal_doc_adr",
+          "title": "Create secretary permissions",
+          "dataset_index": 1,
+          "scores": {
+            "bertscore_f1": 0.8358930349349976,
+            "bleu": 3.6564881264108915,
+            "rouge1_f": 0.3476297968397291,
+            "meteor": 0.24721481258087316
+          }
+        },
+        {
+          "record_id": "mercury_platform_doc_adr/0001-record-architecture-decisions.md",
+          "repo_folder": "mercury_platform_doc_adr",
+          "title": "1. Record architecture decisions",
+          "dataset_index": null,
+          "scores": null
+        },
+        {
+          "record_id": "old_web_frontend_docs_adr/0001-use-react-with-typescript.md",
+          "repo_folder": "old_web_frontend_docs_adr",
+          "title": "Use React with TypeScript",
+          "dataset_index": null,
+          "scores": null
+        },
+        {
+          "record_id": "casa_doc_architecture_decisions/0001-record-architecture-decisions.md",
+          "repo_folder": "casa_doc_architecture_decisions",
+          "title": "1. Record architecture decisions",
+          "dataset_index": null,
+          "scores": null
+        },
+        {
+          "record_id": "monitoring_doc_documentation_architecture_decisions/0004-cloudwatch-metrics.md",
+          "repo_folder": "monitoring_doc_documentation_architecture_decisions",
+          "title": "4. Cloudwatch Metrics",
+          "dataset_index": 0,
+          "scores": {
+            "bertscore_f1": 0.8295298218727112,
+            "bleu": 2.7825316239650935,
+            "rouge1_f": 0.36757624398073835,
+            "meteor": 0.1726705393493535
+          }
+        },
+        {
+          "record_id": "jabref_docs_adr/0023-localized-preferences.md",
+          "repo_folder": "jabref_docs_adr",
+          "title": "Localized Preferences",
+          "dataset_index": null,
+          "scores": null
+        },
+        {
+          "record_id": "docker_texlive_docs_adr/0000-use-markdown-architectural-decision-records.md",
+          "repo_folder": "docker_texlive_docs_adr",
+          "title": "Use Markdown Architectural Decision Records",
+          "dataset_index": null,
+          "scores": null
+        },
+        {
+          "record_id": "compliantkubernetes_docs_compliantkubernetes_adr/0023-allow-snippets-annotations.md",
+          "repo_folder": "compliantkubernetes_docs_compliantkubernetes_adr",
+          "title": "[Superseded by [ADR-0056](0056-allow-snippets-annotations-after-risk-acceptance.md)] Only allow Ingress Configuration Snippet Annotations after Proper Risk Acceptance",
+          "dataset_index": 20,
+          "scores": {
+            "bertscore_f1": 0.8773047924041748,
+            "bleu": 18.65802413983875,
+            "rouge1_f": 0.46661170651277817,
+            "meteor": 0.3005019261610174
+          }
+        },
+        {
+          "record_id": "TOSCAna_docs_dev_adr/0015-persist-to-filesystem.md",
+          "repo_folder": "TOSCAna_docs_dev_adr",
+          "title": "Persist to filesystem",
+          "dataset_index": 12,
+          "scores": {
+            "bertscore_f1": 0.8488022089004517,
+            "bleu": 12.793080818877714,
+            "rouge1_f": 0.31746031746031744,
+            "meteor": 0.43730856570947685
+          }
+        },
+        {
+          "record_id": "cafebabelcom_docs_architecture_decisions/0004-deal-with-translations.md",
+          "repo_folder": "cafebabelcom_docs_architecture_decisions",
+          "title": "4. Deal with translations",
+          "dataset_index": 0,
+          "scores": {
+            "bertscore_f1": 0.8542287349700928,
+            "bleu": 11.058986592965436,
+            "rouge1_f": 0.34421364985163205,
+            "meteor": 0.3282158409846011
+          }
+        },
+        {
+          "record_id": "cloud_controller_ng_decisions/0004-adding-key-prefix-to-annotations.md",
+          "repo_folder": "cloud_controller_ng_decisions",
+          "title": "Positive Consequences",
+          "dataset_index": null,
+          "scores": null
+        },
+        {
+          "record_id": "information_manipulation_analyzer_decision_records/0001-folder-structure.md",
+          "repo_folder": "information_manipulation_analyzer_decision_records",
+          "title": "Decision Record - Folder structure",
+          "dataset_index": null,
+          "scores": null
+        },
+        {
+          "record_id": "manage_frontend_docs/03-typescript.md",
+          "repo_folder": "manage_frontend_docs",
+          "title": "To use Typescript as the programming language",
+          "dataset_index": 0,
+          "scores": {
+            "bertscore_f1": 0.8816758990287781,
+            "bleu": 11.161545765758484,
+            "rouge1_f": 0.34220532319391633,
+            "meteor": 0.4777792336361519
+          }
+        },
+        {
+          "record_id": "community_sigs_and_wgs_archive_sig_core_decisions/dr-009-ServiceBinding_in_Kyma.md",
+          "repo_folder": "community_sigs_and_wgs_archive_sig_core_decisions",
+          "title": "DR 009: ServiceBinding in Kyma",
+          "dataset_index": 5,
+          "scores": {
+            "bertscore_f1": 0.8473180532455444,
+            "bleu": 11.009605128959787,
+            "rouge1_f": 0.41975308641975306,
+            "meteor": 0.2844697310700183
+          }
+        }
+      ],
+      "Qwen3-235b": [
+        {
+          "record_id": "portfolio_docs_architecture_decisions/0012-remove-custom-json-serialization.md",
+          "repo_folder": "portfolio_docs_architecture_decisions",
+          "title": "12. remove custom json serialization",
+          "dataset_index": 8,
+          "scores": {
+            "bertscore_f1": 0.8607962131500244,
+            "bleu": 11.534050479223174,
+            "rouge1_f": 0.2931034482758621,
+            "meteor": 0.4015110631408527
+          }
+        },
+        {
+          "record_id": "up_fiscal_data_decisions/003-selnium.md",
+          "repo_folder": "up_fiscal_data_decisions",
+          "title": "Use Selenium to Scrape Koshvani data",
+          "dataset_index": null,
+          "scores": null
+        },
+        {
+          "record_id": "WorkoutLog_docs_adr/0002_remove_state.md",
+          "repo_folder": "WorkoutLog_docs_adr",
+          "title": "2. Remove the state objects from the view models",
+          "dataset_index": null,
+          "scores": null
+        },
+        {
+          "record_id": "Conduit_doc_adr/0002-solve-the-xunit-msbuild-problem-with-assembly-merging.md",
+          "repo_folder": "Conduit_doc_adr",
+          "title": "2. Solve the Xunit/MsBuild problem with Assembly Merging",
+          "dataset_index": null,
+          "scores": null
+        },
+        {
+          "record_id": "drt_v2_doc_architecture_decisions/0010-use-akka-persistence.md",
+          "repo_folder": "drt_v2_doc_architecture_decisions",
+          "title": "10. use akka persistence",
+          "dataset_index": 6,
+          "scores": {
+            "bertscore_f1": 0.8536584377288818,
+            "bleu": 8.101006007948191,
+            "rouge1_f": 0.2786377708978328,
+            "meteor": 0.447129016597598
+          }
+        },
+        {
+          "record_id": "opg_data_docs_architecture_decisions/0007-error-handling-and-status-codes.md",
+          "repo_folder": "opg_data_docs_architecture_decisions",
+          "title": "7. Error Handling And Status Codes",
+          "dataset_index": 3,
+          "scores": {
+            "bertscore_f1": 0.8508846759796143,
+            "bleu": 18.1545380392693,
+            "rouge1_f": 0.5026408450704225,
+            "meteor": 0.2888886865339708
+          }
+        },
+        {
+          "record_id": "galaxy_zoo_touch_table_docs_arch/adr-6.md",
+          "repo_folder": "galaxy_zoo_touch_table_docs_arch",
+          "title": "ADR 6: Choosing a Test Framework",
+          "dataset_index": 2,
+          "scores": {
+            "bertscore_f1": 0.8404796123504639,
+            "bleu": 8.413205639325367,
+            "rouge1_f": 0.3938679245283019,
+            "meteor": 0.32256303517407575
+          }
+        },
+        {
+          "record_id": "k8s_vagrant_centos_cluster_doc_architecture_decisions/0001-record-architecture-decisions.md",
+          "repo_folder": "k8s_vagrant_centos_cluster_doc_architecture_decisions",
+          "title": "1. Record architecture decisions",
+          "dataset_index": null,
+          "scores": null
+        },
+        {
+          "record_id": "apply_for_teacher_training_adr/0018-public-ids-for-qualifications.md",
+          "repo_folder": "apply_for_teacher_training_adr",
+          "title": "18. Public ids for qualifications",
+          "dataset_index": 14,
+          "scores": {
+            "bertscore_f1": 0.8336209654808044,
+            "bleu": 8.29794424684261,
+            "rouge1_f": 0.4084507042253521,
+            "meteor": 0.23682608280492057
+          }
+        },
+        {
+          "record_id": "galaxy_zoo_touch_table_docs_arch/adr-2.md",
+          "repo_folder": "galaxy_zoo_touch_table_docs_arch",
+          "title": "ADR 2: Using Windows Presentation Foundation (WPF)",
+          "dataset_index": null,
+          "scores": null
+        },
+        {
+          "record_id": "adr_tools_doc_adr/0006-packaging-and-distribution-in-other-version-control-repositories.md",
+          "repo_folder": "adr_tools_doc_adr",
+          "title": "6. Packaging and distribution in other version control repositories",
+          "dataset_index": 2,
+          "scores": {
+            "bertscore_f1": 0.8569830060005188,
+            "bleu": 9.381362536375718,
+            "rouge1_f": 0.3905967450271248,
+            "meteor": 0.36681515293600736
+          }
+        },
+        {
+          "record_id": "cloud_sdk_js_knowledge_base_implementation_documentation/0010-release-version-1-vdm.md",
+          "repo_folder": "cloud_sdk_js_knowledge_base_implementation_documentation",
+          "title": "Release VDM for 1.0",
+          "dataset_index": 6,
+          "scores": {
+            "bertscore_f1": 0.8333376049995422,
+            "bleu": 1.7823731197579669,
+            "rouge1_f": 0.2222222222222222,
+            "meteor": 0.2553013038228523
+          }
+        },
+        {
+          "record_id": "dl4j_dev_tools_codegen_adr/0004-auto_initialization_for_inplace_operations.md",
+          "repo_folder": "dl4j_dev_tools_codegen_adr",
+          "title": "Auto initialization for in-place operations",
+          "dataset_index": 0,
+          "scores": {
+            "bertscore_f1": 0.8459302186965942,
+            "bleu": 10.565052781524114,
+            "rouge1_f": 0.3972413793103448,
+            "meteor": 0.32344207145017995
+          }
+        },
+        {
+          "record_id": "TruBudget_docs_developer_architecture/0003-project-data-model.md",
+          "repo_folder": "TruBudget_docs_developer_architecture",
+          "title": "Data model for projects",
+          "dataset_index": null,
+          "scores": null
+        },
+        {
+          "record_id": "lenses_jdbc_doc_adr/0001-use-the-Value-projection-only.md",
+          "repo_folder": "lenses_jdbc_doc_adr",
+          "title": "1. Use only the Value projection",
+          "dataset_index": null,
+          "scores": null
+        },
+        {
+          "record_id": "opg_data_deputy_reporting_docs_architecture_decisions/0001-record-architecture-decisions.md",
+          "repo_folder": "opg_data_deputy_reporting_docs_architecture_decisions",
+          "title": "1. Record architecture decisions",
+          "dataset_index": null,
+          "scores": null
+        },
+        {
+          "record_id": "PlaceCal_doc_adr/0005-create-secretary-permissions.md",
+          "repo_folder": "PlaceCal_doc_adr",
+          "title": "Create secretary permissions",
+          "dataset_index": 1,
+          "scores": {
+            "bertscore_f1": 0.8353601694107056,
+            "bleu": 2.8154820535745873,
+            "rouge1_f": 0.35392829900839057,
+            "meteor": 0.2435217866845214
+          }
+        },
+        {
+          "record_id": "mercury_platform_doc_adr/0001-record-architecture-decisions.md",
+          "repo_folder": "mercury_platform_doc_adr",
+          "title": "1. Record architecture decisions",
+          "dataset_index": null,
+          "scores": null
+        },
+        {
+          "record_id": "old_web_frontend_docs_adr/0001-use-react-with-typescript.md",
+          "repo_folder": "old_web_frontend_docs_adr",
+          "title": "Use React with TypeScript",
+          "dataset_index": null,
+          "scores": null
+        },
+        {
+          "record_id": "casa_doc_architecture_decisions/0001-record-architecture-decisions.md",
+          "repo_folder": "casa_doc_architecture_decisions",
+          "title": "1. Record architecture decisions",
+          "dataset_index": null,
+          "scores": null
+        },
+        {
+          "record_id": "monitoring_doc_documentation_architecture_decisions/0004-cloudwatch-metrics.md",
+          "repo_folder": "monitoring_doc_documentation_architecture_decisions",
+          "title": "4. Cloudwatch Metrics",
+          "dataset_index": 0,
+          "scores": {
+            "bertscore_f1": 0.8384831547737122,
+            "bleu": 4.520940377576913,
+            "rouge1_f": 0.3669008587041374,
+            "meteor": 0.1884652817921236
+          }
+        },
+        {
+          "record_id": "jabref_docs_adr/0023-localized-preferences.md",
+          "repo_folder": "jabref_docs_adr",
+          "title": "Localized Preferences",
+          "dataset_index": null,
+          "scores": null
+        },
+        {
+          "record_id": "docker_texlive_docs_adr/0000-use-markdown-architectural-decision-records.md",
+          "repo_folder": "docker_texlive_docs_adr",
+          "title": "Use Markdown Architectural Decision Records",
+          "dataset_index": null,
+          "scores": null
+        },
+        {
+          "record_id": "compliantkubernetes_docs_compliantkubernetes_adr/0023-allow-snippets-annotations.md",
+          "repo_folder": "compliantkubernetes_docs_compliantkubernetes_adr",
+          "title": "[Superseded by [ADR-0056](0056-allow-snippets-annotations-after-risk-acceptance.md)] Only allow Ingress Configuration Snippet Annotations after Proper Risk Acceptance",
+          "dataset_index": 20,
+          "scores": {
+            "bertscore_f1": 0.8864536285400391,
+            "bleu": 19.563595220830933,
+            "rouge1_f": 0.49166666666666664,
+            "meteor": 0.341394434868314
+          }
+        },
+        {
+          "record_id": "TOSCAna_docs_dev_adr/0015-persist-to-filesystem.md",
+          "repo_folder": "TOSCAna_docs_dev_adr",
+          "title": "Persist to filesystem",
+          "dataset_index": 12,
+          "scores": {
+            "bertscore_f1": 0.8467512726783752,
+            "bleu": 10.355218938578554,
+            "rouge1_f": 0.2852807283763278,
+            "meteor": 0.36271121874234713
+          }
+        },
+        {
+          "record_id": "cafebabelcom_docs_architecture_decisions/0004-deal-with-translations.md",
+          "repo_folder": "cafebabelcom_docs_architecture_decisions",
+          "title": "4. Deal with translations",
+          "dataset_index": 0,
+          "scores": {
+            "bertscore_f1": 0.8470125794410706,
+            "bleu": 8.735970069454082,
+            "rouge1_f": 0.3123425692695214,
+            "meteor": 0.3153089334907517
+          }
+        },
+        {
+          "record_id": "cloud_controller_ng_decisions/0004-adding-key-prefix-to-annotations.md",
+          "repo_folder": "cloud_controller_ng_decisions",
+          "title": "Positive Consequences",
+          "dataset_index": null,
+          "scores": null
+        },
+        {
+          "record_id": "information_manipulation_analyzer_decision_records/0001-folder-structure.md",
+          "repo_folder": "information_manipulation_analyzer_decision_records",
+          "title": "Decision Record - Folder structure",
+          "dataset_index": null,
+          "scores": null
+        },
+        {
+          "record_id": "manage_frontend_docs/03-typescript.md",
+          "repo_folder": "manage_frontend_docs",
+          "title": "To use Typescript as the programming language",
+          "dataset_index": 0,
+          "scores": {
+            "bertscore_f1": 0.8556846976280212,
+            "bleu": 5.770237955053968,
+            "rouge1_f": 0.20792079207920794,
+            "meteor": 0.31072328873375993
+          }
+        },
+        {
+          "record_id": "community_sigs_and_wgs_archive_sig_core_decisions/dr-009-ServiceBinding_in_Kyma.md",
+          "repo_folder": "community_sigs_and_wgs_archive_sig_core_decisions",
+          "title": "DR 009: ServiceBinding in Kyma",
+          "dataset_index": 5,
+          "scores": {
+            "bertscore_f1": 0.8345868587493896,
+            "bleu": 8.782589092685571,
+            "rouge1_f": 0.3771551724137931,
+            "meteor": 0.3276014582852034
+          }
+        }
+      ]
+    }
+  }
+}

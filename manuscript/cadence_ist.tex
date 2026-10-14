@@ -46,7 +46,7 @@
 \textbf{Context:} Large language models (LLMs) are increasingly used to draft architecture decision records (ADRs). Existing approaches generate decisions from a prompt, retrieved precedents, or role-based agents, but none checks whether the resulting decision actually addresses the quality attributes at stake within what a team can build. Architecture optimization offers such checks, but only on design spaces that experts have specified by hand.
 \textbf{Objective:} We aim to join the two lines of work, and to find out which parts of an LLM decision pipeline improve the decision and where such a pipeline fails.
 \textbf{Method:} We present CADENCE, which retrieves precedent ADRs from a corpus of 6{,}173 mined records, lets five agents each advocate one ISO/IEC~25010 quality attribute while grounded in a tactic knowledge graph, encodes the decision's tactic commitments as a lexicographic weighted MaxSAT problem in the Z3 solver with an LLM repair loop, and scores the result. We evaluate it on 30 held-out ADRs from open-source projects in a paired ablation that adds one stage at a time, using a local 1.5B-parameter backbone, two tactic budgets, Wilcoxon tests with Holm correction, a length-controlled analysis, and a comparison with published frontier-model generations.
-\textbf{Results:} Retrieval slightly improves agreement with the recorded decisions. Multi-agent deliberation lowers it on all four metrics, by more than its shorter output explains. The solver correctly flags 29 of 30 deliberated decisions as leaving required quality attributes without a committed tactic. Repair raises mean coverage from 0.57 to 1.63 of five attributes but makes only one decision feasible. Extra budget does not help, because the committed tactics cluster on too few attributes. The critique stage does not change the decision text; its residual weaknesses, rendered as consequences, significantly increase agreement. The paired design also shows that an earlier small-sample gain attributed to critique was sampling noise.
+\textbf{Results:} Retrieval slightly improves agreement with the recorded decisions. Multi-agent deliberation lowers it on all four metrics, by more than its shorter output explains. The solver correctly flags all 30 deliberated decisions as leaving required quality attributes without a committed tactic. Repair raises mean coverage from 0.57 to 1.63 of five attributes but makes only one decision feasible. Extra budget does not help, because the committed tactics cluster on too few attributes. The critique stage does not change the decision text; its residual weaknesses, rendered as consequences, significantly increase agreement on three of the four metrics. The paired design also shows that an earlier small-sample gain attributed to critique was sampling noise. Published generations from four frontier models agree more with the recorded ADRs than every CADENCE variant, while our single-pass baseline is close to them.
 \textbf{Conclusion:} Formal verification is a reliable detector of quality-attribute gaps in LLM-drafted decisions, but repairing the text after the fact is not enough. Decisions should commit to tactics in a structured form, and LLM decision support should be evaluated by more than agreement with a single recorded ADR.
 \end{abstract}
 
@@ -78,7 +78,7 @@ The paper makes four contributions to software architecture research.
 \begin{enumerate}[leftmargin=*]
 \item \emph{An approach that couples LLM-generated decision alternatives with formal design-space verification.} CADENCE links the LLM-for-ADR line of work to tactic-based reasoning~\citep{bachmann2003,bass2021saip} and to solver-based architecture optimization~\citep{aleti2013}. To our knowledge it is the first ADR-generation approach in which a decision's quality-attribute coverage is checked by a solver rather than judged by another LLM (Table~\ref{tab:relatedwork}).
 \item \emph{An encoding from free-text deliberation to a budgeted coverage problem.} We show that the encoding must be lexicographic: under a weighted sum, a large trade-off weight can outvote coverage, and a decision that leaves an attribute uncovered is then reported as optimal (Section~\ref{sec:method-stage3}).
-\item \emph{A paired ablation study on held-out ADRs from open-source projects.} From the deliberation onward, all systems share the same intermediate outputs, so each comparison isolates exactly one stage. The study shows that the solver reliably detects decisions that leave quality attributes uncovered (29 of 30 items), and that the binding constraint is the diversity of the tactics a decision commits to, not the tactic budget. We release the per-item outputs and solver diagnostics.
+\item \emph{A paired ablation study on held-out ADRs from open-source projects.} From the deliberation onward, all systems share the same intermediate outputs, so each comparison isolates exactly one stage. The study shows that the solver reliably detects decisions that leave quality attributes uncovered (all 30 deliberated decisions), and that the binding constraint is the diversity of the tactics a decision commits to, not the tactic budget. We release the per-item outputs and solver diagnostics.
 \item \emph{Two lessons about measurement.} First, reference-based metrics penalize CADENCE's output beyond what its shorter length explains. Second, ablations of stochastic pipelines that re-sample shared stages can produce spurious stage effects. Our own earlier small-sample result for the critique stage was one such effect. Both lessons bear on how LLM-for-architecture studies should report results~\citep{evtikhiev2023,roy2021}.
 \end{enumerate}
 
@@ -494,14 +494,49 @@ Table~\ref{tab:rq2} and Figure~\ref{fig:coverage} report the solver's view of th
 
 \emph{Repair helps, but not enough.} Repair raises mean coverage to 1.63 attributes at $B=5$ and improves 17 of 30 items. It reaches full coverage once: on one item, the second repair produced a decision naming five tactics, one per attribute. Every other item exhausted both repair attempts.
 
-\emph{Slack does not help.} At $B=7$, no item is feasible, and coverage is lower than at $B=5$ (1.23; 12 items are better at $B=5$, 7 at $B=7$). The candidates and solver encoding are identical across budgets, so the difference comes entirely from the stochastic repair calls. The number of tactics is not what binds. Repaired candidates often name more tactics than either budget allows, up to 18 in one case. What binds is \emph{diversity}: the named tactics support too few distinct attributes. A larger budget cannot fix a decision that is silent on security.
+\emph{Slack does not help.} At $B=7$, no item is feasible, and coverage is lower than at $B=5$ (1.23; 12 items are better at $B=5$, 7 at $B=7$). The candidates and solver encoding are identical across budgets, so the difference comes entirely from the stochastic repair calls. The number of tactics is not what binds. Repaired decision statements often name more tactics than either budget allows, up to 18 in one case. What binds is \emph{diversity}: the named tactics support too few distinct attributes. A larger budget cannot fix a decision that is silent on security.
 
 This is the answer to RQ2 for this backbone: formal verification works as a \emph{detector}. On all 30 items it correctly reports that the decision leaves required attributes unaddressed, and it names which ones. Bounded repair through the same small model does not turn that detection into feasible decisions. Section~\ref{sec:discussion} discusses what this implies for the design.
 
 \subsection{RQ3: Comparison with Published Frontier-Model Generations}
 \label{sec:published-comparison}
 
-%%RQ3%%
+The comparisons above use our own baseline implementations and one small backbone. For an external reference point, we looked up our 30 held-out items in the ``Context Matters'' replication package's archive of generated ADRs~\citep{contextmatters-zenodo}, matching each item by repository and title. The archive holds generations from four models: Gemini-2.5-Pro~\citep{gemini25} (proprietary, size undisclosed), GLM-4.6~\citep{glm45} (about 357B parameters, mixture-of-experts), Qwen3-235B~\citep{qwen3} (235B total, 22B active, mixture-of-experts) and Gemma3-4B~\citep{gemma3} (4B, dense). Each model was run under a title-only strategy and a retrieval-augmented strategy ($k=3$), against the same ground truth we use. The title-only generations cover 27 of our 30 items. The retrieval-augmented generations cover 15, because the package did not run that strategy for every record.
+
+We do not use the package's precomputed scores. Its evaluation script computes BLEU and METEOR with prediction and reference swapped, relative to standard usage and to our code, and computes ROUGE-1 without stemming. We therefore recompute all four metrics from the package's raw generation and ground-truth texts with exactly our own metric code. Every number in Table~\ref{tab:published} is computed the same way, and each comparison uses only the items both sides cover. (GLM-4.6 has no technical report of its own; we cite GLM-4.5, of which it is an incremental update.)
+
+\begin{table}[!htbp]
+\caption{Published frontier-model generations from the ``Context Matters'' package and this work's systems on the same held-out items. All scores were recomputed with this paper's metric code from raw text. Each block uses only the items that the published strategy covers.\label{tab:published}}
+\centering
+\begin{adjustbox}{max width=\textwidth}
+\begin{tabular}{@{}llcccc@{}}
+\toprule
+System & Size & BERTScore F1 & BLEU & ROUGE-1 F1 & METEOR \\
+\midrule
+\multicolumn{6}{@{}l}{\emph{Title-only strategy, 27 items}} \\
+Gemini-2.5-Pro & undisclosed & 0.826 & 2.82 & 0.235 & 0.258 \\
+GLM-4.6 & $\sim$357B MoE & 0.825 & 3.55 & 0.253 & 0.267 \\
+Qwen3-235B & 235B (22B active) & 0.827 & 4.50 & 0.258 & 0.267 \\
+Gemma3-4B & 4B & 0.819 & 2.36 & 0.239 & 0.240 \\
+\sysZS{} (this work) & 1.5B & 0.814 & 1.85 & 0.255 & 0.228 \\
+\sysNC{}, $B=5$ (this work) & 1.5B & 0.801 & 0.63 & 0.151 & 0.097 \\
+\sysFull{}+Cons., $B=5$ (this work) & 1.5B & 0.803 & 0.70 & 0.179 & 0.139 \\
+\midrule
+\multicolumn{6}{@{}l}{\emph{Retrieval-augmented strategy ($k=3$), 15 items}} \\
+Gemini-2.5-Pro & undisclosed & 0.852 & 10.61 & 0.387 & 0.336 \\
+GLM-4.6 & $\sim$357B MoE & 0.851 & 10.46 & 0.379 & 0.325 \\
+Qwen3-235B & 235B (22B active) & 0.848 & 9.12 & 0.352 & 0.315 \\
+Gemma3-4B & 4B & 0.834 & 5.65 & 0.307 & 0.269 \\
+\sysRO{} (this work) & 1.5B & 0.822 & 1.76 & 0.286 & 0.218 \\
+\sysNC{}, $B=5$ (this work) & 1.5B & 0.801 & 0.43 & 0.141 & 0.086 \\
+\sysFull{}+Cons., $B=5$ (this work) & 1.5B & 0.805 & 0.57 & 0.187 & 0.134 \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\end{table}
+\FloatBarrier
+
+Two observations follow from Table~\ref{tab:published}. First, our single-pass baselines are not artificially weak. Under the title-only strategy, \sysZS{} with a 1.5B backbone matches the published models on ROUGE-1 (0.255 against 0.235--0.258). It trails the frontier models on BERTScore by about 0.011 (winning on 5--6 of 27 items) and is close to Gemma3-4B, a model about 2.7 times its size. Second, CADENCE's gap to the published systems is the same gap it has to our own baselines, only wider. On BERTScore, \sysNC{} trails every published model on 23 to 26 of 27 title-only items, and on all or all but one of the 15 retrieval-augmented items. Retrieval also helps the published models much more than our title-only precedents help \sysRO{}. On the 15 items both strategies cover, their BERTScore rises by 0.013 to 0.026 from title-only to retrieval-augmented generation; ours rises by 0.003. A strong retrieval baseline is therefore the bar any LLM-for-ADR approach has to clear on reference agreement. On this measure CADENCE does not clear it with a small backbone, for the reasons analyzed in RQ4.
 
 \subsection{RQ4: How Well Do Reference-Based Metrics Capture the Difference?}
 \label{sec:rq4}
@@ -543,7 +578,7 @@ During development we ran two smaller evaluations, each with $N=3$ items (seeds 
 
 \subsection{Verification as a Detector: Where the Pipeline Loses Quality-Attribute Commitments}
 
-The central result is a mismatch between two stages. The quality-attribute advocates do raise their concerns, and Stage~3 checks precisely whether the decision addresses those concerns. Between the two, however, Stage~2's synthesis compresses the debate into a one-line decision, and the concerns of four of the five advocates rarely survive the compression (Section~\ref{sec:rq2}). Stage~3 then reports this correctly on 29 of 30 items. Repairing the text afterwards, with the same 1.5B model, recovers coverage only partially.
+The central result is a mismatch between two stages. The quality-attribute advocates do raise their concerns, and Stage~3 checks precisely whether the decision addresses those concerns. Between the two, however, Stage~2's synthesis compresses the debate into a one-line decision, and the concerns of four of the five advocates rarely survive the compression (Section~\ref{sec:rq2}). Stage~3 then reports this correctly on all 30 items. Repairing the text afterwards, with the same 1.5B model, recovers coverage only partially: 29 of 30 decisions remain infeasible at $B=5$.
 
 This locates the problem at the interface between language and formal model, not in the solver. The architecture-optimization literature assumes a design space that experts specify in a formal model~\citep{aleti2013,martens2010,koziolek2011peropteryx}. CADENCE instead extracts the design space from generated text, and the extraction is only as rich as the text. Three design changes follow from the data, and each can be tested with the same paired protocol:
 \begin{enumerate}[leftmargin=*]
@@ -555,7 +590,7 @@ Each change also benefits from a richer, empirically grounded tactic model. The 
 
 \subsection{Implications for Practitioners}
 
-For teams that already use LLMs to draft ADRs, the results support two practical steps. First, a draft that reads well does not necessarily address the team's quality concerns. In our sample, the deliberated drafts left on average more than four of five required attributes without a named tactic. Second, the check that exposes this is cheap. Stage~3's tactic extraction is deterministic, the solver instance is tiny, and neither needs a large model. A coverage report that names which required attributes a draft leaves unaddressed is a useful review aid even when no automatic repair follows. Stage~4's residual weaknesses, rendered as a Consequences section, are a second inexpensive addition. They make the draft agree significantly more with what architects recorded (Section~\ref{sec:rq1}). The final decision remains a human responsibility. The influence factors that dominate real decisions, such as team expertise, organizational constraints and existing commitments~\citep{weinreich2015}, are not in the title-only task context CADENCE receives here.
+For teams that already use LLMs to draft ADRs, the results support two practical steps. First, a draft that reads well does not necessarily address the team's quality concerns. In our sample, the deliberated drafts left on average more than four of five required attributes without a named tactic. Second, the check that exposes this is cheap. Stage~3's tactic extraction is deterministic, the solver instance is tiny, and neither needs a large model. A coverage report that names which required attributes a draft leaves unaddressed is a useful review aid even when no automatic repair follows. Stage~4's residual weaknesses, rendered as a Consequences section, are a second inexpensive addition. They make the draft agree significantly more with what architects recorded, on three of the four metrics (Section~\ref{sec:rq1}). The final decision remains a human responsibility. The influence factors that dominate real decisions, such as team expertise, organizational constraints and existing commitments~\citep{weinreich2015}, are not in the title-only task context CADENCE receives here.
 
 \subsection{Implications for Research on LLM-Assisted Architecture}
 
@@ -584,7 +619,7 @@ Two implementation findings generalize. First, the lexicographic encoding in Sta
 
 We presented CADENCE, an approach to LLM-assisted architectural decision-making that combines precedent retrieval from mined ADRs, deliberation among quality-attribute advocates grounded in a tactic knowledge graph, verification of the decision's tactic commitments with an SMT solver, and a scored critique. Its aim is to join two lines of software architecture research that have developed separately: LLM-based ADR generation, which produces fluent decisions without checking them, and tactic-based and search-based architecture design, which checks decisions but needs a formal model specified by hand.
 
-A paired evaluation on 30 held-out ADRs from open-source projects gives a clear picture for a small local backbone. Retrieval helps slightly. Multi-agent deliberation lowers agreement with the recorded decisions, by more than output length explains. Solver verification is a reliable detector: it reports, correctly, that 29 of 30 deliberated decisions leave required quality attributes without a committed tactic. Repair improves coverage but makes only one decision feasible, and budget slack does not help, because the binding constraint is the diversity of the committed tactics, not their number. Stage~4 does not change the decision text. Its residual weaknesses, rendered as consequences, do bring the text closer to what architects wrote. The paired design also corrected an earlier small-sample finding that had credited the critique stage with gains caused by sampling noise.
+A paired evaluation on 30 held-out ADRs from open-source projects gives a clear picture for a small local backbone. Retrieval helps slightly. Multi-agent deliberation lowers agreement with the recorded decisions, by more than output length explains. Solver verification is a reliable detector: it reports, correctly, that all 30 deliberated decisions leave required quality attributes without a committed tactic. Repair improves coverage but makes only one decision feasible, and budget slack does not help, because the binding constraint is the diversity of the committed tactics, not their number. Stage~4 does not change the decision text. Its residual weaknesses, rendered as consequences, do bring the text closer to what architects wrote. The paired design also corrected an earlier small-sample finding that had credited the critique stage with gains caused by sampling noise.
 
 Future work follows from these findings: structured, catalog-constrained decision output; feedback of uncovered attributes to the advocate agents; solver-first selection of tactic sets; an empirically grounded tactic model; stronger backbones; and evaluation by architects of whether decisions address their quality concerns, rather than by agreement with a single recorded text.
 

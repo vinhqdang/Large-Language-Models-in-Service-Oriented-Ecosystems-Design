@@ -816,8 +816,21 @@ Findings that change the paper:
   bottleneck is the diversity of committed tactics, which cluster on one
   attribute, not the budget.
 
-Remaining steps:
-- RQ3: re-run `extract_published_baseline_comparison.py --paired` on the 30
-  items (the Zenodo archive is 460 MB and slow to fetch).
-- Final compile and visual check.
-- The user should confirm the IST transfer and then submit.
+- RQ3: `extract_published_baseline_comparison.py --paired` was run locally
+  on CPU, with only the Generated_ADRs folders extracted from the 460 MB
+  Zenodo zip into the gitignored `data/extracted/`. Coverage is 27 of 30
+  items for title-only and 15 of 30 for RAG k=3. Output is
+  `data/processed/published_baseline_comparison_paired.json`, aggregated in
+  the `published` block of `evaluation_paired_stats.json`. Zero-Shot (1.5B)
+  is close to the frontier models (BERTScore about -0.011). CADENCE-NC trails
+  all of them.
+- Environment: the NLTK downloader is blocked by the proxy ("Security
+  Violation"). Fetch wordnet, omw-1.4 and punkt_tab zips from
+  raw.githubusercontent.com/nltk/nltk_data/gh-pages/packages/ into
+  /root/nltk_data and unzip them.
+- The Colab VM was reclaimed after the run; the results had already been
+  downloaded.
+
+Remaining steps: the user should confirm the IST transfer, then submit
+`manuscript/cadence_ist.pdf`. A human expert evaluation is the most
+valuable next study.

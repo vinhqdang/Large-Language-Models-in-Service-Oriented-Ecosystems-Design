@@ -22,6 +22,8 @@ PROCESSED = _PROJECT_ROOT / "data" / "processed"
 RESULTS_PATH = PROCESSED / "evaluation_paired_results.json"
 STATS_PATH = PROCESSED / "evaluation_paired_stats.json"
 LENGTH_CONTROL_PATH = PROCESSED / "evaluation_length_control.json"  # from scripts/length_control.py
+# from scripts/extract_published_baseline_comparison.py --paired
+PUBLISHED_PATH = PROCESSED / "published_baseline_comparison_paired.json"
 
 METRICS = ("bertscore_f1", "bleu", "rouge1_f", "meteor")
 N_BOOT = 10_000
@@ -56,6 +58,27 @@ def holm(pvalues):
         running = max(running, (len(pvalues) - rank) * pvalues[i])
         adjusted[i] = min(1.0, running)
     return adjusted.tolist()
+
+
+def published_comparison(per_item):
+    """Means of each published model/strategy over the items it covers, and the
+    same items' means for this work's systems, so every row is comparable."""
+    pub = json.loads(PUBLISHED_PATH.read_text(encoding="utf-8"))["results"]
+    ours = ("zero_shot", "retrieval_only", "cadence_no_critique@B=5", "cadence_full_consequences@B=5")
+    rows = []
+    for strategy, per_model in pub.items():
+        for model, items in per_model.items():
+            found = {i["record_id"]: i["scores"] for i in items if i["scores"] is not None}
+            row = {"strategy": strategy, "model": model, "n": len(found)}
+            for m in METRICS:
+                row[m] = float(np.mean([v[m] for v in found.values()])) if found else None
+            for system in ours:
+                ids = [i for i in found if i in per_item[system]]
+                diffs = [per_item[system][i]["bertscore_f1"] - found[i]["bertscore_f1"] for i in ids]
+                row[f"bertscore_diff_vs_{system}"] = float(np.mean(diffs)) if diffs else None
+                row[f"bertscore_wins_{system}"] = int(sum(d > 0 for d in diffs))
+            rows.append(row)
+    return rows
 
 
 def main():
@@ -115,6 +138,9 @@ def main():
     rho = spearmanr(ratios, rouge)
     out["length"]["spearman_length_ratio_vs_rouge1"] = {"rho": float(rho.statistic), "p": float(rho.pvalue),
                                                         "n": len(ratios)}
+
+    if PUBLISHED_PATH.exists():
+        out["published"] = published_comparison(per_item)
 
     STATS_PATH.write_text(json.dumps(out, indent=2) + "\n", encoding="utf-8")
     print(json.dumps(out, indent=2))
