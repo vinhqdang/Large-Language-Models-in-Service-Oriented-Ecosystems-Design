@@ -19,17 +19,20 @@ multi-agent without solver, CADENCE without critique) and the metrics
 (BERTScore, BLEU, ROUGE-1, METEOR, constraint-satisfaction rate, repair
 iterations). `src/data` fetches and inventories the corpus.
 
-## Headline findings (small sample, N = 3 per run)
+## Headline findings (paired evaluation, N = 30 held-out ADRs)
 
-- At the one tactic budget where feasibility is arithmetically possible
-  (B = 5), constraint satisfaction is 0 % and repair never converges, even with
-  the full repair budget. This is reported as a diagnosed negative result.
-- Self-critique gives a modest, consistent gain over the same pipeline without
-  it (higher in 7 of 8 system/budget/metric comparisons).
-- Surface n-gram metrics penalise CADENCE's deliberately terse, solver-parseable
-  output; BERTScore stays comparable across systems.
-- Against four published frontier models on the identical held-out items,
-  `cadence_full` with a 1.5B backbone scores below all of them.
+- Retrieval slightly improves agreement with the recorded ADRs (BERTScore +0.004, significant).
+- Multi-agent deliberation lowers agreement on all four metrics. Truncating the
+  baselines to CADENCE's length closes only part of the gap, so this is not
+  just a length effect.
+- The solver flags 29 of 30 deliberated decisions as leaving required quality
+  attributes without a committed tactic. Repair raises mean coverage from 0.57
+  to 1.63 of 5 attributes but makes only 1 of 30 decisions feasible at B = 5,
+  and 0 at B = 7. The bottleneck is tactic diversity, not budget.
+- Stage 4 (critique) never changes the decision text. Its residual weaknesses,
+  rendered as an ADR "Consequences" section, significantly increase agreement.
+- The earlier N = 3 result crediting self-critique with gains (7 of 8
+  comparisons) was sampling noise from unpaired runs, and is retracted.
 
 Numbers, tables and caveats are in the manuscript; `PROGRESS.md` is the running log of decisions and history.
 
@@ -47,20 +50,24 @@ PROGRESS.md     running log: status, decisions, environment notes, next steps
 
 ## Status
 
-The paper was first sent to the *IEEE Transactions on Services Computing*
-special issue, cut to its 12-page limit, and **rejected on scope grounds only**
-(the editors judged the service-oriented framing to be motivation rather than
-part of the contribution; technical merit was not assessed). It was then
-reformatted and **submitted to Elsevier's *Journal of Systems and Software*
-(October 2026)**. Nothing is pending on the repository side until the journal
-replies.
+1. *IEEE Transactions on Services Computing* special issue: **rejected on scope
+   grounds** (service-oriented framing judged to be motivation only).
+2. Elsevier *Journal of Systems and Software*: **desk-rejected** (2026-10). The
+   editor found that the paper did not engage enough with the software
+   engineering literature or show how it advances the state of the art in SE.
+3. The paper is now being revised for Elsevier *Information and Software
+   Technology* (`manuscript/cadence_ist.tex`). The revision rebuilds the
+   Related Work around the software-architecture literature, reframes the
+   paper around four research questions, and replaces the N = 3 evaluation
+   with a paired N = 30 evaluation.
 
 ## Manuscripts
 
 | File | Target | Format |
 |---|---|---|
 | `manuscript/cadence.tex` / `.pdf` | IEEE TSC special issue (12 pages, rejected on scope) | `IEEEtran`, numbered citations |
-| `manuscript/cadence_jss.tex` / `.pdf` | Elsevier *Journal of Systems and Software* (**submitted**) | `elsarticle`, author-year citations |
+| `manuscript/cadence_jss.tex` / `.pdf` | Elsevier *Journal of Systems and Software* (desk-rejected) | `elsarticle`, author-year citations |
+| `manuscript/cadence_ist.tex` / `.pdf` | Elsevier *Information and Software Technology* (in preparation) | `elsarticle`, author-year citations, structured abstract |
 
 The JSS version is self-contained: it includes the full 26-tactic catalog with
 every trade-off edge (Appendix A) and every prompt template (Appendix B), so it
@@ -101,8 +108,11 @@ python scripts/build_retrieval_index.py     # embed records -> data/processed/ad
 
 python scripts/run_cadence_demo.py          # full four-stage pipeline on one context
 python scripts/run_worked_example.py        # the manuscript's worked example
-python scripts/run_evaluation_scaled.py     # scaled evaluation (budget real wall-clock time)
-python scripts/extract_published_baseline_comparison.py   # recompute published-model metrics
+python scripts/run_evaluation_scaled.py     # earlier N = 3 evaluation (unpaired)
+python scripts/run_evaluation_paired.py 30 44   # paired N = 30 evaluation (about 5 min per item on a T4; resumable)
+python scripts/length_control.py            # re-score baselines truncated to CADENCE's length
+python scripts/analyze_paired.py            # bootstrap CIs, Wilcoxon + Holm, solver and length statistics
+python scripts/extract_published_baseline_comparison.py [--paired]   # recompute published-model metrics
 ```
 
 The committed `data/processed/` already contains the ADR records, embeddings and

@@ -43,11 +43,15 @@
 \address{British University Vietnam, Hung Yen, Vietnam}
 
 \begin{abstract}
-Large language models (LLMs) are increasingly proposed as assistants for architectural decision-making, yet most existing approaches either generate an architecture decision record (ADR) from a single unconstrained LLM call, retrieve similar precedents without reconciling the competing quality-attribute concerns a real decision must balance, or debate among multiple agents without any formal check that the resulting decision is realizable within a bounded budget of architectural tactics. We present CADENCE, a four-stage algorithm combining (1) retrieval-augmented case-based reasoning over a corpus of real, mined ADRs, (2) knowledge-graph-grounded multi-agent deliberation in which each agent advocates for one ISO/IEC~25010-derived quality attribute, (3) constraint-solver-verified feasibility, encoded as a two-phase weighted MaxSAT/SMT problem in Z3 and repaired via an LLM-driven loop targeting the solver's uncovered-attribute signal (its unsatisfiable core is reported only as a supplementary diagnostic), and (4) a separate self-critique pass blending a deterministic structural utility score with a qualitative LLM judgment. Unlike prior multi-agent architectural decision systems, whose agents occupy sequential functional roles and whose ``evaluation'' step is itself another LLM opinion, CADENCE's agents represent adversarial quality-attribute concerns and its feasibility check is a formal solver, not a second language model. We implement the full pipeline against a real corpus of 6{,}173 mined ADRs and evaluate it on two independently-sampled held-out sets ($N=3$ each, real end-to-end local-model wall-clock cost being the binding constraint on sample size) against four baselines forming an ablation ladder --- zero-shot generation, retrieval-only generation, multi-agent deliberation without solver verification, and CADENCE without self-critique --- on BERTScore, BLEU, ROUGE-1, and METEOR, plus two metrics only a solver-verified system can report: constraint-satisfaction rate and repair-loop convergence. At the one tested budget where feasibility is arithmetically possible ($B=5$), constraint satisfaction is 0\% and repair never converges even with its full design budget --- an honest negative result we diagnose mechanistically rather than soften; the tighter budgets we also test are infeasible by construction and reported only as construction checks. Against this, self-critique shows a modest but consistent positive signal: CADENCE with self-critique scores higher than without it in 7 of 8 system-budget-metric comparisons, the only ablation where adding a stage helps rather than being flat. We separately find surface n-gram metrics penalize CADENCE's deliberately terse, solver-parseable output relative to baselines prompted for open-ended prose, while BERTScore remains comparable across all systems; we argue this is an asymmetry, not a quality gap, with implications for evaluating structured multi-stage LLM pipelines generally. Beyond our own re-implemented baselines, we locate our exact held-out items within a public replication package's real, published generations from four frontier models and compare directly against them, giving an external reference point our baselines alone cannot provide.
+\textbf{Context:} Large language models (LLMs) are increasingly used to draft architecture decision records (ADRs). Existing approaches generate decisions from a prompt, retrieved precedents, or role-based agents, but none checks whether the resulting decision actually addresses the quality attributes at stake within what a team can build. Architecture optimization offers such checks, but only on design spaces that experts have specified by hand.
+\textbf{Objective:} We aim to join the two lines of work, and to find out which parts of an LLM decision pipeline improve the decision and where such a pipeline fails.
+\textbf{Method:} We present CADENCE, which retrieves precedent ADRs from a corpus of 6{,}173 mined records, lets five agents each advocate one ISO/IEC~25010 quality attribute while grounded in a tactic knowledge graph, encodes the decision's tactic commitments as a lexicographic weighted MaxSAT problem in the Z3 solver with an LLM repair loop, and scores the result. We evaluate it on 30 held-out ADRs from open-source projects in a paired ablation that adds one stage at a time, using a local 1.5B-parameter backbone, two tactic budgets, Wilcoxon tests with Holm correction, a length-controlled analysis, and a comparison with published frontier-model generations.
+\textbf{Results:} Retrieval slightly improves agreement with the recorded decisions. Multi-agent deliberation lowers it on all four metrics, by more than its shorter output explains. The solver correctly flags 29 of 30 deliberated decisions as leaving required quality attributes without a committed tactic. Repair raises mean coverage from 0.57 to 1.63 of five attributes but makes only one decision feasible. Extra budget does not help, because the committed tactics cluster on too few attributes. The critique stage does not change the decision text; its residual weaknesses, rendered as consequences, significantly increase agreement. The paired design also shows that an earlier small-sample gain attributed to critique was sampling noise.
+\textbf{Conclusion:} Formal verification is a reliable detector of quality-attribute gaps in LLM-drafted decisions, but repairing the text after the fact is not enough. Decisions should commit to tactics in a structured form, and LLM decision support should be evaluated by more than agreement with a single recorded ADR.
 \end{abstract}
 
 \begin{keyword}
-Large language models \sep architectural decision-making \sep architecture decision records \sep multi-agent systems \sep constraint solving \sep retrieval-augmented generation \sep self-critique \sep software architecture
+Software architecture \sep architectural decision-making \sep architecture decision records \sep architectural tactics \sep large language models \sep constraint solving \sep empirical evaluation
 \end{keyword}
 
 \end{frontmatter}
@@ -74,8 +78,8 @@ The paper makes four contributions to software architecture research.
 \begin{enumerate}[leftmargin=*]
 \item \emph{An approach that couples LLM-generated decision alternatives with formal design-space verification.} CADENCE links the LLM-for-ADR line of work to tactic-based reasoning~\citep{bachmann2003,bass2021saip} and to solver-based architecture optimization~\citep{aleti2013}. To our knowledge it is the first ADR-generation approach in which a decision's quality-attribute coverage is checked by a solver rather than judged by another LLM (Table~\ref{tab:relatedwork}).
 \item \emph{An encoding from free-text deliberation to a budgeted coverage problem.} We show that the encoding must be lexicographic: under a weighted sum, a large trade-off weight can outvote coverage, and a decision that leaves an attribute uncovered is then reported as optimal (Section~\ref{sec:method-stage3}).
-\item \emph{A paired ablation study on held-out ADRs from open-source projects.} In this study every system shares the same retrieval and deliberation outputs, so each comparison isolates exactly one stage. We release the per-item outputs and solver diagnostics.
-\item \emph{Evidence about measurement.} Surface-overlap metrics penalize terse, structured decision output much more than embedding-based metrics do. This bears on how LLM-for-architecture studies, including our own, should report results~\citep{evtikhiev2023,roy2021}.
+\item \emph{A paired ablation study on held-out ADRs from open-source projects.} From the deliberation onward, all systems share the same intermediate outputs, so each comparison isolates exactly one stage. The study shows that the solver reliably detects decisions that leave quality attributes uncovered (29 of 30 items), and that the binding constraint is the diversity of the tactics a decision commits to, not the tactic budget. We release the per-item outputs and solver diagnostics.
+\item \emph{Two lessons about measurement.} First, reference-based metrics penalize CADENCE's output beyond what its shorter length explains. Second, ablations of stochastic pipelines that re-sample shared stages can produce spurious stage effects. Our own earlier small-sample result for the critique stage was one such effect. Both lessons bear on how LLM-for-architecture studies should report results~\citep{evtikhiev2023,roy2021}.
 \end{enumerate}
 
 Section~\ref{sec:related} positions CADENCE in the architecture-knowledge, decision-making, optimization and LLM-for-architecture literature. Section~\ref{sec:method} presents the approach. Section~\ref{sec:evaluation} reports the evaluation by research question, Section~\ref{sec:discussion} discusses implications for practice and research and the threats to validity, and Section~\ref{sec:conclusion} concludes.
@@ -105,7 +109,7 @@ A systematic review of software architecture optimization classifies approaches 
 
 \subsection{Architectural tactics and quality attributes}
 
-Tactics were introduced as design primitives derived from quality-attribute reasoning frameworks~\citep{bachmann2003} and are catalogued in \citet{bass2021saip}. Tactics interact with architecture patterns and with one another, sometimes with negative effects on other attributes~\citep{harrison2010,harrison2007}; such relationships have been mined from developer discussions~\citep{bi2021}, detected and traced in source code~\citep{mirakhorli2012,mirakhorli2016}, mapped systematically~\citep{marquez2023}, and catalogued for specific system classes together with their trade-offs~\citep{indykov2025}. CADENCE's knowledge graph encodes one such catalog: 26 tactics, each with a \emph{supports} edge to one ISO/IEC~25010-derived attribute~\citep{iso25010} and trade-off edges to the attributes it burdens (Appendix~\ref{app:catalog}). The graph is hand-curated and deliberately small; we discuss how it could be grounded in mined tactic knowledge such as \citet{bi2021} in Section~\ref{sec:discussion}.
+Tactics were introduced as design primitives derived from quality-attribute reasoning frameworks~\citep{bachmann2003} and are catalogued in \citet{bass2021saip}. Tactics interact with architecture patterns and with one another, sometimes with negative effects on other attributes~\citep{harrison2010,harrison2007}; such relationships have been mined from developer discussions~\citep{bi2021}, detected and traced in source code~\citep{mirakhorli2012,mirakhorli2016}, mapped systematically~\citep{marquez2023}, and catalogued for specific system classes together with their trade-offs~\citep{indykov2025}. CADENCE's knowledge graph encodes one such catalog: 26 tactics, each with a \emph{supports} edge to one ISO/IEC~25010-derived attribute~\citep{iso25010} and trade-off edges to the attributes it burdens (\ref{app:catalog}). The graph is hand-curated and deliberately small; we discuss how it could be grounded in mined tactic knowledge such as \citet{bi2021} in Section~\ref{sec:discussion}.
 
 \subsection{Large language models in software architecture}
 
@@ -141,7 +145,7 @@ MAAD~\citep{zhang2025maad,maad2025} & Role-pipeline agents & LLM evaluator & No 
 
 \subsection{Problem Formulation and Overview}
 
-CADENCE takes as input a natural-language decision context $c$ (the requirements and situational description a real ADR's ``Context'' section would state) and a set of required quality attributes $Q = \{q_1, \ldots, q_5\}$ drawn from the five ISO/IEC~25010-derived quality attributes fixed for this work: performance, security, maintainability, scalability, and cost/operability. It produces a finalized, provenance-complete ADR: a decision statement, a rationale, a per-quality-attribute utility score, a feasibility verdict with selected tactics and residual gaps, and a full transcript of the precedents consulted, agent positions debated, and repair iterations taken. The four stages --- retrieval, deliberation, solver verification with repair, and self-critique finalization --- execute in sequence, each consuming the previous stage's output and addressing a distinct failure mode the others do not cover. Figure~\ref{fig:pipeline} shows the overall flow, Figure~\ref{fig:architecture} the component architecture behind it, Figure~\ref{fig:implementation} how that architecture maps onto the released code, and Algorithm~\ref{alg:cadence} gives it formally. Appendix~\ref{app:catalog} lists the full tactic catalog and Appendix~\ref{app:prompts} every prompt, so the method is fully specified in this paper.
+CADENCE takes as input a natural-language decision context $c$ (the requirements and situational description a real ADR's ``Context'' section would state) and a set of required quality attributes $Q = \{q_1, \ldots, q_5\}$ drawn from the five ISO/IEC~25010-derived quality attributes fixed for this work: performance, security, maintainability, scalability, and cost/operability. It produces a finalized, provenance-complete ADR: a decision statement, a rationale, a per-quality-attribute utility score, a feasibility verdict with selected tactics and residual gaps, and a full transcript of the precedents consulted, agent positions debated, and repair iterations taken. The four stages --- retrieval, deliberation, solver verification with repair, and self-critique finalization --- execute in sequence, each consuming the previous stage's output and addressing a distinct failure mode the others do not cover. Figure~\ref{fig:pipeline} shows the overall flow, Figure~\ref{fig:architecture} the component architecture behind it, Figure~\ref{fig:implementation} how that architecture maps onto the released code, and Algorithm~\ref{alg:cadence} gives it formally. \ref{app:catalog} lists the full tactic catalog and \ref{app:prompts} every prompt, so the method is fully specified in this paper.
 
 \begin{figure}[!htbp]
 \centering
@@ -264,7 +268,7 @@ Cost/operability & Managed cloud services (2); infrastructure as code (0); multi
 \end{tabular}
 
 \vspace{2pt}
-\footnotesize Appendix~\ref{app:catalog} gives each tactic's effect and every trade-off edge with its rationale.
+\footnotesize \ref{app:catalog} gives each tactic's effect and every trade-off edge with its rationale.
 \end{table}
 \FloatBarrier
 
@@ -358,178 +362,240 @@ Cost/Operability  & 1.0 & 6.0 & 8.0 \\
 \section{Evaluation}
 \label{sec:evaluation}
 
-\subsection{Corpus and Experimental Setup}
+\subsection{Study Design}
+\label{sec:eval-design}
 
-We evaluate against the ``Context Matters'' replication package~\citep{contextmatters-zenodo} (Zenodo, DOI:~10.5281/zenodo.18370195), derived from the same mining study that provides Stage~1's retrieval corpus~\citep{buchgeher2023adr}. The package's own index catalogs 954 repository folders with an extraction-confidence status each (750 \textit{Verified}, 96 \textit{Doubt (name sequence)}, 40 \textit{Repo Inaccessible}, 33 \textit{Doubt (no repo dir)}, 30 \textit{Doubt (missing file)}, 5 \textit{Doubt (file contents)}); after parsing, the 882 folders with at least one accessible Markdown file yield 6{,}173 individual ADR files (median 4, mean 7.00, maximum 129 per repository, confirming the corpus's documented per-repository sparsity) --- the remaining 72 catalogued folders have no accessible file and contribute nothing to either count, drawn almost, but not entirely, along status lines (39 of 40 \textit{Repo Inaccessible}, 32 of 33 \textit{Doubt (no repo dir)}, 1 of 5 \textit{Doubt (file contents)}; every folder under the remaining two statuses contributes at least one file). We restrict our held-out evaluation set to the 750 folders marked \textit{Verified}, so ground-truth quality is not itself a confound. Following this corpus's own upstream precedent (its companion sub-study is titled ``ADR Generation from Titles''), we construct each held-out query as the record's title and treat its full body as ground truth, matching the task formulation the retrieval-only baseline is drawn from.
+\paragraph{Corpus and task} We evaluate against the ``Context Matters'' replication package~\citep{contextmatters-zenodo} (Zenodo, DOI:~10.5281/zenodo.18370195), which is derived from the same mining study that provides Stage~1's retrieval corpus~\citep{buchgeher2023adr}. The package catalogs 954 repository folders, each with an extraction-confidence status: 750 \textit{Verified}, 96 \textit{Doubt (name sequence)}, 40 \textit{Repo Inaccessible}, 33 \textit{Doubt (no repo dir)}, 30 \textit{Doubt (missing file)} and 5 \textit{Doubt (file contents)}. After parsing, the 882 folders with at least one accessible Markdown file yield 6{,}173 ADR files, with a median of 4, a mean of 7.00 and a maximum of 129 per repository. Held-out items are drawn only from \textit{Verified} folders, so that the quality of the ground truth is not itself a confound. We follow the corpus's own task formulation, ``ADR generation from titles'': each query is a record's title, and the record's full body is the ground truth. A query record is always excluded from its own retrieval results.
 
-The retrieval index embeds all 6{,}173 records with a sentence-embedding model (all-MiniLM-L6-v2) into a cosine-similarity nearest-neighbor index; a held-out query record is always excluded from its own retrieval results. The local, reproducible LLM backbone used for deliberation, repair, and critique throughout is Qwen2.5-1.5B-Instruct, run through the Hugging Face Transformers library on a GPU with sampled decoding (temperature 0.7, at most 400 new tokens per call). We disclose deliberation's run-time parameters because they materially affect how Table~\ref{tab:pilot} and Table~\ref{tab:scaled} should be read: the pilot run used $k=2$ and $R=1$ (every agent's propose round executed but no agent critiqued another's candidate); the scaled run used $k=3$ and $R=2$ (one full critique round). Both runs used $K=2$ repair attempts, this work's full design default. Table~\ref{tab:pilot}'s \sysMA{} and \sysFull{} columns therefore reflect propose-only deliberation, not adversarial debate; Table~\ref{tab:scaled} does not have this limitation.
+\paragraph{Sample} We draw $N=30$ held-out records (seed 44) uniformly from the \textit{Verified} records with at least 300 characters of body text. The six records used in two earlier $N=3$ runs during development (seeds 42 and 43) are excluded, so the sample is disjoint from every item we inspected while building the system. All 30 items completed end to end, with no parse or critique failures.
 
-\subsection{Baselines and Ablation}
+\paragraph{Configuration} The LLM backbone for every system and every stage is Qwen2.5-1.5B-Instruct, run locally through Hugging Face Transformers on one NVIDIA T4 GPU. Decoding is sampled at temperature 0.7 with at most 400 new tokens per call. Retrieval returns $k=3$ precedents. Deliberation runs $R=2$ rounds (proposals, then one critique round) with the five quality-attribute agents of Section~\ref{sec:method}. The repair loop has $K=2$ attempts. All five attributes are required, with equal weights. We test two tactic budgets. $B=5$ is the smallest feasible budget: each tactic supports exactly one attribute, so five attributes need at least five tactics. $B=7$ adds two tactics of slack, which tests whether the budget, rather than the candidate's content, limits feasibility. One item took about 5 minutes end to end, and the run took 2.5 hours.
 
-We compare full CADENCE (\sysFull{}) against four systems forming an ablation ladder that isolates retrieval's, deliberation's, solver verification's, and self-critique's contributions individually --- each step adds exactly one stage over the previous one:
+\paragraph{Paired design} For each item, Stages~1 and~2 run once, and every downstream system consumes that same output. \sysMA{} is the deliberation's candidate. Stage~3 is then run on that candidate once per budget, giving \sysNC{}, and Stage~4 runs on the resulting verified decision, giving \sysFull{}. Adjacent systems therefore differ in exactly one stage on identical input, and the two budget conditions share one deliberation. The two earlier development runs did not have this property, because each system re-ran Stages~1--3 independently; Section~\ref{sec:eval-earlier} explains why this matters.
 
+\subsection{Systems Compared}
+
+The systems form an ablation ladder in which each step adds one stage:
 \begin{itemize}[leftmargin=*,itemsep=1pt,topsep=2pt,parsep=0pt]
-\item \textbf{Zero-shot} (\sysZS{}): a single LLM call given only the decision context, with no retrieval, deliberation, or verification --- the Dhar-et-al.-style baseline~\citep{dhar2024llm}.
-\item \textbf{Retrieval-only} (\sysRO{}): the decision context plus Stage~1's top-$k$ retrieved precedent titles, with no deliberation or verification --- the Context-Matters-style baseline~\citep{contextmatters2026}.
-\item \textbf{Multi-agent, no solver} (\sysMA{}): Stages~1--2 in full (retrieval and quality-attribute deliberation), but without Stage~3's solver verification or Stage~4's critique --- the system most structurally comparable to MAAD's~\citep{maad2025} multi-agent premise without its functional-role/LLM-judge design.
-\item \textbf{CADENCE without critique} (\sysNC{}, ``NC'' for no critique): Stages~1--3 (adds Stage~3's solver-verified feasibility and repair loop over \sysMA{}), but without Stage~4's self-critique finalization --- isolates solver verification's marginal contribution, and, compared against \sysFull{}, self-critique's.
+\item \sysZS{}: a single LLM call given only the decision context, the baseline style of \citet{dhar2024llm}.
+\item \sysRO{}: the context plus the titles of Stage~1's top-$k$ precedents, the retrieval-augmented style of \citet{contextmatters2026}.
+\item \sysMA{}: Stages~1--2. This is the deliberation's converged candidate and rationale, comparable to multi-agent ADR generation such as MAAD~\citep{zhang2025maad} but with quality-attribute advocates instead of functional roles.
+\item \sysNC{}: Stages~1--3. The candidate after solver verification and, where it is infeasible, repair.
+\item \sysFull{}: Stages~1--4. Stage~4 scores the verified decision; it does not rewrite it (Section~\ref{sec:method-stage4}). The decision and rationale text of \sysFull{} is therefore identical to that of \sysNC{}. What Stage~4 adds is the per-attribute utility scores and the residual weaknesses. To let the text metrics see that addition, we also score \sysFull{}+Cons., in which the residual weaknesses are appended as a ``Consequences'' section. This is the section in which an ADR conventionally records the negative effects of a decision~\citep{tyree2005}.
 \end{itemize}
-Every retrieval-using system routes through the same leakage guard, so no system ever retrieves or is scored against its own query record.
 
-\subsection{Metrics}
+\subsection{Measures and Analysis}
 
-We report the four standard generation-quality metrics used in the corpus's own upstream evaluation work, for direct comparability: BERTScore F1, sentence-level BLEU (0--100 scale, via sacreBLEU), ROUGE-1 F1, and METEOR, each computed against the held-out record's real, human-authored body text. In addition, only reportable by a solver-verified system, we report \emph{constraint-satisfaction rate} (the fraction of held-out items for which Stage~3 judged the decision feasible) and \emph{average repair iterations}.
+\paragraph{Agreement with the recorded decision} We report the four metrics used in the LLM-for-ADR studies we compare against~\citep{dhar2024llm,contextmatters2026}: BERTScore F1 (roberta-large, no baseline rescaling), sentence-level BLEU (sacreBLEU, 0--100), ROUGE-1 F1 (with stemming) and METEOR. Each output is compared with the human-authored body of the held-out ADR. These metrics measure agreement with one recorded decision, not decision quality. Their limits for software-engineering text are well documented~\citep{roy2021,evtikhiev2023,haque2022}, and RQ4 examines them directly.
 
-\subsection{Results}
+\paragraph{Feasibility} For Stage~3 we report the constraint-satisfaction rate (the share of items for which the decision covers all required attributes within $B$) and the number of attributes covered. We also report the coverage of the deliberation's candidate \emph{before} repair, by applying Stage~3's deterministic tactic extraction to it. This separates what deliberation contributes from what repair contributes.
+
+\paragraph{Statistics} Every comparison is paired by item. For each adjacent pair on the ladder we report the mean paired difference with a 95\% percentile bootstrap interval (10{,}000 resamples), the count of items on which each system wins, and a two-sided Wilcoxon signed-rank test. Within each metric, we adjust the $p$-values for the eleven comparisons with Holm's method. A difference is called significant when the Holm-adjusted $p<0.05$.
+
+\subsection{RQ1: What Does Each Stage Contribute?}
+\label{sec:rq1}
 
 \begin{table}[!htbp]
-\caption{Pilot Verification Run ($N=3$, tactic budget $B=4$, All 5 Quality Attributes Required --- $B=4$ is mathematically infeasible by construction under this catalog, so \sysFull{}'s 0\% constraint-satisfaction rate here is a construction check, not a test of achievable feasibility; see Section~\ref{sec:evaluation})\label{tab:pilot}}
+\caption{Mean agreement with the held-out human-authored ADRs ($N=30$, paired), with 95\% bootstrap intervals, and median output length in words (reference ADRs: median 163, mean 289).\label{tab:rq1-means}}
+\centering
+\begin{adjustbox}{max width=\textwidth}
+\begin{tabular}{@{}lccccr@{}}
+\toprule
+System & BERTScore F1 & BLEU & ROUGE-1 F1 & METEOR & Words \\
+\midrule
+\sysZS{}  & 0.813 {\tiny[0.809, 0.818]} & 1.90 {\tiny[1.41, 2.47]} & 0.255 {\tiny[0.232, 0.275]} & 0.223 {\tiny[0.202, 0.243]} & 301 \\
+\sysRO{}  & 0.817 {\tiny[0.813, 0.821]} & 1.90 {\tiny[1.41, 2.48]} & 0.265 {\tiny[0.246, 0.283]} & 0.227 {\tiny[0.206, 0.246]} & 300 \\
+\sysMA{}  & 0.804 {\tiny[0.799, 0.810]} & 0.56 {\tiny[0.34, 0.81]} & 0.144 {\tiny[0.122, 0.168]} & 0.084 {\tiny[0.068, 0.103]} & 90 \\
+\midrule
+\sysNC{}, $B=5$  & 0.799 {\tiny[0.794, 0.803]} & 0.58 {\tiny[0.40, 0.79]} & 0.148 {\tiny[0.132, 0.163]} & 0.093 {\tiny[0.077, 0.109]} & 120 \\
+\sysFull{}, $B=5$  & 0.799 {\tiny[0.794, 0.803]} & 0.58 {\tiny[0.40, 0.79]} & 0.148 {\tiny[0.132, 0.163]} & 0.093 {\tiny[0.077, 0.109]} & 120 \\
+\sysFull{}+Cons., $B=5$  & 0.802 {\tiny[0.798, 0.806]} & 0.66 {\tiny[0.50, 0.84]} & 0.178 {\tiny[0.161, 0.193]} & 0.134 {\tiny[0.120, 0.148]} & 233 \\
+\midrule
+\sysNC{}, $B=7$  & 0.802 {\tiny[0.797, 0.807]} & 0.58 {\tiny[0.37, 0.83]} & 0.147 {\tiny[0.128, 0.168]} & 0.089 {\tiny[0.074, 0.105]} & 107 \\
+\sysFull{}, $B=7$  & 0.802 {\tiny[0.797, 0.808]} & 0.58 {\tiny[0.37, 0.83]} & 0.147 {\tiny[0.128, 0.168]} & 0.089 {\tiny[0.074, 0.105]} & 107 \\
+\sysFull{}+Cons., $B=7$  & 0.805 {\tiny[0.800, 0.810]} & 0.66 {\tiny[0.48, 0.85]} & 0.175 {\tiny[0.157, 0.191]} & 0.124 {\tiny[0.110, 0.139]} & 209 \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\end{table}
+
+\begin{table}[!htbp]
+\caption{Paired differences along the ablation ladder ($N=30$): mean difference (later minus earlier system), with wins/losses of the later system in parentheses; ties are omitted. $^{*}$: Holm-adjusted Wilcoxon $p<0.05$ within the metric.\label{tab:rq1-paired}}
 \centering
 \begin{adjustbox}{max width=\textwidth}
 \begin{tabular}{@{}lcccc@{}}
 \toprule
-System & BERTScore F1 & BLEU & ROUGE-1 F1 & METEOR \\
+Step (stage added) & BERTScore F1 & BLEU & ROUGE-1 F1 & METEOR \\
 \midrule
-\sysZS{}            & 0.810 & 1.05 & 0.220 & 0.244 \\
-\sysRO{}       & 0.819 & 1.71 & 0.216 & 0.250 \\
-\sysMA{}& 0.805 & 1.57 & 0.143 & 0.111 \\
-\sysFull{}         & 0.801 & 0.59 & 0.138 & 0.102 \\
+\sysZS{} $\to$ \sysRO{} (retrieval) & +0.004$^{*}$ (22/8) & +0.01 (15/15) & +0.010 (21/9) & +0.004 (15/15) \\
+\sysRO{} $\to$ \sysMA{} (deliberation) & $-$0.013$^{*}$ (3/27) & $-$1.35$^{*}$ (4/26) & $-$0.120$^{*}$ (3/27) & $-$0.142$^{*}$ (0/30) \\
+\sysMA{} $\to$ \sysNC{}, $B=5$ (solver, repair) & $-$0.006$^{*}$ (0/17) & +0.02 (14/3) & +0.003 (12/5) & +0.008 (14/3) \\
+\sysMA{} $\to$ \sysNC{}, $B=7$ (solver, repair) & $-$0.002 (5/9) & +0.02 (9/4) & +0.002 (9/4) & +0.005 (10/3) \\
+\sysNC{} $\to$ \sysFull{}, both $B$ (critique) & 0 (0/0) & 0 (0/0) & 0 (0/0) & 0 (0/0) \\
+\sysNC{} $\to$ \sysFull{}+Cons., $B=5$ & +0.003$^{*}$ (22/8) & +0.07 (18/12) & +0.031$^{*}$ (21/9) & +0.041$^{*}$ (27/3) \\
+\sysNC{} $\to$ \sysFull{}+Cons., $B=7$ & +0.003$^{*}$ (26/4) & +0.08 (18/12) & +0.028$^{*}$ (22/8) & +0.035$^{*}$ (29/1) \\
+\midrule
+\sysZS{} $\to$ \sysFull{}, $B=5$ (whole pipeline) & $-$0.015$^{*}$ (3/27) & $-$1.31$^{*}$ (7/23) & $-$0.107$^{*}$ (1/29) & $-$0.130$^{*}$ (0/30) \\
 \bottomrule
 \end{tabular}
 \end{adjustbox}
-
-\vspace{2pt}
-\footnotesize \sysFull{}: constraint-satisfaction rate 0.00, average repair iterations 2.00 (see discussion below).
 \end{table}
-\FloatBarrier
-
-Table~\ref{tab:pilot} reports a small-$N$ pilot run used to verify the full pipeline and evaluation harness end-to-end before committing to a larger run; we retain it here as a sanity-checked, fully real data point. Table~\ref{tab:scaled} reports our scaled evaluation run: a separate, independent held-out sample ($N=3$, disjoint from the pilot run above) scored under two tactic-budget conditions --- an achievable budget ($B=5$, matching the number of required quality attributes) and a second, tighter one ($B=2$, included as a construction check on Stage~3's infeasibility handling rather than as a second independent test of achievable feasibility --- see the discussion immediately below) --- with the three budget-independent baselines run once and shared across both conditions (they do not use a tactic budget). Real end-to-end wall-clock cost per local-model call constrained this scaled run to $N=3$ rather than a larger sample within the time available for this submission; both runs used the same reproducible local backbone described above, and we report the result below as obtained, rather than a larger or cherry-picked sample we did not have time to run.
-
-\begin{table}[!htbp]
-\caption{Scaled Evaluation Run ($N=3$, Two Tactic-Budget Conditions, Full 5-System Ablation Ladder --- only $B=5$ is arithmetically achievable under this catalog; $B=2$ is mathematically infeasible by construction and reported as a construction check on Stage~3's infeasibility handling, not a second feasibility test; see Section~\ref{sec:evaluation})\label{tab:scaled}}
-\centering
-\begin{adjustbox}{max width=\textwidth}
-\begin{tabular}{@{}lccccc@{}}
-\toprule
-System & $B$ & BERTScore F1 & BLEU & ROUGE-1 F1 & METEOR \\
-\midrule
-\sysZS{}             & --- & 0.824 & 4.24 & 0.300 & 0.252 \\
-\sysRO{}        & --- & 0.813 & 3.76 & 0.312 & 0.238 \\
-\sysMA{} & --- & 0.812 & 0.43 & 0.179 & 0.091 \\
-\sysNC{}  & 5   & 0.797 & 0.44 & 0.174 & 0.092 \\
-\sysFull{}          & 5   & 0.806 & 1.04 & 0.198 & 0.100 \\
-\sysNC{}  & 2   & 0.805 & 0.43 & 0.174 & 0.087 \\
-\sysFull{}          & 2   & 0.802 & 1.57 & 0.186 & 0.104 \\
-\bottomrule
-\end{tabular}
-\end{adjustbox}
-
-\vspace{2pt}
-\footnotesize \sysNC{} and \sysFull{} at both $B=5$ and $B=2$: constraint-satisfaction rate 0.00, average repair iterations 2.00 (the full $K=2$ design default --- see discussion below for why this run supersedes an earlier one that used $K=1$).
-\end{table}
-\FloatBarrier
 
 \begin{figure}[!htbp]
 \centering
-\adjustbox{max width=\textwidth}{\input{results_figure.tex}}
-\caption{Scaled evaluation run ($N=3$, $B=5$ for the two solver-based systems), plotted from Table~\ref{tab:scaled}. CADENCE (blue) trails the single-pass baselines on every metric; the gap is far larger on the surface n-gram metrics than on BERTScore, and \sysFull{} improves over \sysNC{} on all four.\label{fig:results}}
+\adjustbox{max width=\textwidth}{\input{results_paired_figure.tex}}
+\caption{Mean agreement with the held-out ADRs and 95\% bootstrap intervals ($N=30$). Grey: single-pass and deliberation-only systems; blue: systems that include Stage~3. \sysFull{} is omitted because its text equals \sysNC{}'s. The BERTScore axis starts at 0.78.\label{fig:results}}
 \end{figure}
 \FloatBarrier
 
-Of the three budget conditions reported across both tables, only the scaled run's $B=5$ condition is a genuine empirical test of feasibility. With $|Q|=5$ required quality attributes and a catalog in which every tactic supports exactly one attribute, covering all five requires at least five distinct tactics, so both the pilot's $B=4$ and the scaled run's $B=2$ are mathematically guaranteed infeasible by construction, independent of what deliberation produces; their 0\% constraint-satisfaction rates are a correctness check on Stage~3's encoding, not empirical evidence about feasibility. $B=5$ is the one condition where feasibility is at least arithmetically possible (five tactics for five attributes, no slack), and it is where the result is informative: we expected this ``achievable'' budget to let \sysFull{} be judged feasible in practice. It did not, in this $N=3$ sample. The reason is a real, explicable property of the pipeline, not a bug: Stage~3's tactic-extraction step (Section~\ref{sec:method-stage3}) can only select a tactic the deliberated candidate's terse text actually \emph{names}, and reaching $B=5$ feasibility requires the candidate to name five distinct tactics collectively covering all five attributes --- budget headroom alone does not guarantee this if Stage~2's synthesis converges on a candidate naming fewer, or overlapping, tactics. This run uses $K=2$, this work's full design default, superseding an earlier version that used $K=1$ to bound wall-clock cost. Giving the repair loop its complete budget did not change the outcome: \sysFull{} still fails to reach feasibility at $B=5$, and an average of 2.00 repair iterations confirms both allowed attempts were exhausted every time. This rules out an insufficient repair budget as the explanation and narrows the diagnosis to Stage~2's tactic-naming behavior: deliberation's terse synthesis simply does not name enough distinct, budget-relevant tactics for repair to work with, regardless of how many attempts it is given --- a dependency the pilot run's single, tighter budget condition could not have distinguished.
+Tables~\ref{tab:rq1-means} and~\ref{tab:rq1-paired} and Figure~\ref{fig:results} report the results.
 
-This run also adds \sysNC{}, isolating self-critique's marginal contribution for the first time. At $B=5$, \sysFull{} scores higher than \sysNC{} on all four generation-quality metrics, but by a systematically larger margin on the three surface n-gram metrics (BLEU 1.04~vs.~0.44, ROUGE-1 0.198~vs.~0.174, METEOR 0.100~vs.~0.092) than on BERTScore (0.806~vs.~0.797, a 0.009 gap comparable in order of magnitude to the $\sim$0.018 BERTScore spread we separately observe in the pilot run, Table~\ref{tab:metric-range}, and so not distinguishable from noise on its own); at $B=2$, it scores higher on the same three n-gram metrics, with BERTScore essentially tied in the opposite direction (0.802~vs.~0.805). We therefore read the positive signal below as resting on BLEU, ROUGE-1, and METEOR's consistent agreement across both budgets, not on BERTScore. This is the first ablation comparison in this evaluation where the fuller pipeline wins consistently on the n-gram metrics rather than being roughly flat or mixed --- a genuine, if modest and small-sample, positive signal that Stage~4's self-critique finalization produces text scoring better against the held-out reference than the pre-critique candidate. Both systems show the same 0\% constraint-satisfaction rate at both budgets, as expected: feasibility is decided entirely within Stage~3, before Stage~4 ever runs.
+\emph{Retrieval} gives a small but consistent gain in BERTScore (+0.004, 22 of 30 items, significant). It does not change the surface metrics significantly.
 
-Figure~\ref{fig:results} plots Table~\ref{tab:scaled}. Table~\ref{tab:pilot} and Table~\ref{tab:scaled} draw on two genuinely disjoint held-out samples (distinct random seeds, verified to share no items), not the same three items scored twice. Across both tables, BERTScore F1 stays in a narrow 0.797--0.824 band while ROUGE-1 and METEOR are consistently, noticeably lower for the three deliberation-based systems (\sysMA{}, \sysNC{}, \sysFull{}) than for the two single-pass systems. That this pattern reproduces on an independently-sampled set of held-out items is real evidence toward it being systematic rather than a small-sample artifact of either run alone --- though with $N=3$ per sample, six items total, we stop short of calling this statistically established (Section~\ref{sec:discussion}). The constraint-satisfaction result is evidentially weaker: only $B=5$ is a genuine test of feasibility, so its 0\% result is a single data point, not yet corroborated by an independent second run at an achievable budget.
+\emph{Deliberation} is the largest effect in the study, and it is negative on every metric. Against \sysRO{}, \sysMA{} loses on BERTScore in 27 of 30 items and on METEOR in all 30. Its output is also much shorter (median 90 words against 300). This is by design: the synthesis prompt asks for a one-line decision and a short rationale that Stage~3 can parse. RQ4 tests how much of the loss is due to length alone.
 
-\subsection{Comparison Against Published Frontier-Model Results}
-\label{sec:published-comparison}
+\emph{Solver verification and repair} leave the decision text unchanged on the 13 items (at $B=5$) where repair did not improve coverage, because the loop then returns the original candidate. On the 17 changed items, repaired text is slightly closer to the reference on the surface metrics (14 of 17 items on BLEU and METEOR), but no such difference is significant. BERTScore drops slightly but significantly at $B=5$ ($-0.006$). The solver stage is thus roughly neutral for agreement with the recorded decision. Its value has to be judged on feasibility (RQ2).
 
-The evaluation above compares CADENCE only against our own baseline re-implementations. To add a genuine external reference point, we identify our three scaled-run held-out items (matched by title, unique per repository) inside the ``Context Matters'' replication package's~\citep{contextmatters-zenodo} own archive of generated ADRs, which records real generations from four frontier models --- Gemini-2.5-Pro~\citep{gemini25} (proprietary; parameter count undisclosed), GLM-4.6~\citep{glm45} ($\sim$357B total parameters, Mixture-of-Experts; per-token active-parameter count not officially disclosed for this release), Qwen3-235B~\citep{qwen3} (235B total, 22B active, Mixture-of-Experts), and Gemma3-4B~\citep{gemma3} (4B, dense) --- under its own title-only baseline and retrieval-augmented ($k=3$) generation strategies, against the same held-out ground truth we use. We deliberately do \emph{not} use the package's own precomputed scores: a close reading of its evaluation script found it computes BLEU and METEOR with the prediction/reference roles reversed relative to standard usage and to our own code, and computes ROUGE-1 without a stemmer where we use one, making its raw numbers incomparable to ours. Instead, we recompute all four metrics from the package's raw generation/ground-truth text pairs using exactly this paper's own metric computation --- the identical BERTScore checkpoint (roberta-large, English, no baseline rescaling), sacreBLEU-based BLEU, stemmed ROUGE-1, and METEOR computation on both sides of Table~\ref{tab:published} --- so every number is directly comparable. (GLM-4.6 has no dedicated technical report at the time of writing; we cite its predecessor GLM-4.5~\citep{glm45}, whose architecture GLM-4.6 is a documented incremental update over.)
+\emph{Critique} does not change the text at all, so its difference on every metric is exactly zero. Rendering Stage~4's residual weaknesses as a Consequences section improves BERTScore, ROUGE-1 and METEOR significantly at both budgets; METEOR improves on 27 and 29 of 30 items. The section roughly doubles the output length, however, so this is partly a length effect (RQ4). It does indicate that what the critique identifies overlaps with what architects actually wrote down.
 
-Two things are worth stating plainly under this harmonized recomputation. First, this is a genuine external reference point our own re-implementations cannot provide: real reported generations from models spanning roughly three orders of magnitude in scale relative to our backbone (Qwen2.5-1.5B-Instruct), not our estimate of how such models would perform. Second, the harmonized numbers give a more differentiated picture than an unharmonized comparison would suggest. Our naive baselines hold up reasonably well against the published models under the comparable strategy: \sysZS{} (BERTScore 0.824, ROUGE-1 0.300, METEOR 0.252) sits inside the published title-only-strategy range on BERTScore and METEOR and above all four published rows on ROUGE-1, despite Gemma3-4B alone being roughly $2.7\times$ larger --- a sanity check that our baselines are not artificially depressed by backbone weakness. \sysFull{}, however, is not: at $B=5$ it scores below all eight published rows on all four metrics, including BERTScore (0.806 versus a published range of 0.822--0.856). We do not read this as evidence CADENCE is a worse decision-making \emph{process}: the terseness asymmetry (Section~\ref{sec:discussion}) plausibly explains part of the BLEU/ROUGE-1/METEOR gap, since CADENCE's output is deliberately shorter than our open-ended baselines or the package's elaborate generations. But this gap also appears on BERTScore, which we argue is length-insensitive, so length alone is not a full explanation; we consider the far larger scale of the published models (up to two orders of magnitude larger) the more likely dominant factor, though $N=3$ is too small to disentangle scale from architecture from prompting elaborateness here. A substantially larger held-out sample and a stronger local backbone are needed before any claim about CADENCE's absolute competitiveness against frontier-scale systems can be supported.
+Taken as a whole, the full pipeline agrees less with the recorded ADRs than one zero-shot call does, on all four metrics.
 
-\begin{table}[!htbp]
-\caption{Published Frontier-Model Results (``Context Matters'' Package) on the Identical $N=3$ Held-Out Items, vs. This Work's Own Systems --- All Scores Recomputed by This Paper's Own Metric Code From Raw Generation/Reference Text on Both Sides (Not the Package's Own Precomputed Scores; See Text)\label{tab:published}}
+\subsection{RQ2: Does Solver Verification Make Decisions Feasible?}
+\label{sec:rq2}
+
+\begin{figure}[!htbp]
 \centering
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{@{}llcccc@{}}
-\toprule
-System & Strategy (Size) & BERTScore F1 & BLEU & ROUGE-1 F1 & METEOR \\
-\midrule
-\sysZS{} (this work)      & --- (1.5B)                    & 0.824 & 4.24  & 0.300 & 0.252 \\
-Gemini-2.5-Pro                       & Baseline (undisclosed)        & 0.826 & 3.27  & 0.251 & 0.292 \\
-Gemma3-4B                            & Baseline (4B)                 & 0.822 & 3.51  & 0.277 & 0.249 \\
-GLM-4.6                              & Baseline ($\sim$357B MoE)     & 0.828 & 5.59  & 0.291 & 0.268 \\
-Qwen3-235B                           & Baseline (235B/22B-active MoE)& 0.837 & 6.84  & 0.317 & 0.285 \\
-\midrule
-\sysRO{} (this work) & --- (1.5B)                    & 0.813 & 3.76  & 0.312 & 0.238 \\
-Gemini-2.5-Pro                       & RAG $k$=3 (undisclosed)       & 0.846 & 11.59 & 0.399 & 0.354 \\
-Gemma3-4B                            & RAG $k$=3 (4B)                & 0.841 & 11.66 & 0.338 & 0.318 \\
-GLM-4.6                              & RAG $k$=3 ($\sim$357B MoE)    & 0.856 & 12.24 & 0.381 & 0.357 \\
-Qwen3-235B                           & RAG $k$=3 (235B/22B-active MoE)& 0.846 & 9.05 & 0.343 & 0.327 \\
-\midrule
-\sysFull{} ($B$=5, this work) & --- (1.5B)               & 0.806 & 1.04  & 0.198 & 0.100 \\
-\bottomrule
-\end{tabular}%
-}
-
-\vspace{2pt}
-\footnotesize Size: parameter counts as publicly reported by each model's developer (Section~\ref{sec:published-comparison}); ``undisclosed'' means the developer has not published a parameter count. BERTScore: roberta-large checkpoint, no baseline rescaling, identical on both sides. \sysFull{} scores below every published row on every metric; see discussion above for why we do not read this as a decision-quality gap on its own.
-\end{table}
-\FloatBarrier
-
-\section{Discussion}
-\label{sec:discussion}
-
-\subsection{The BERTScore-versus-Surface-Overlap Asymmetry}
-
-Stage~2's synthesis prompt deliberately asks for a terse, one-or-two-sentence decision plus a one-paragraph rationale, so Stages~3 and 4 can parse it reliably --- not because a terse decision is better, but because a downstream constraint solver cannot reason about open-ended prose. The \sysZS{} and \sysRO{} baselines, by contrast, are prompted for open-ended ``write an ADR'' output, closer in length and register to the real, often substantially longer, reference ADR bodies that ROUGE-1 and METEOR reward via n-gram overlap. This length/register mismatch stems from our own prompt design, not decision quality, and Table~\ref{tab:pilot}'s numbers show it plainly: BERTScore, computed over contextual embeddings rather than surface overlap, remains within 0.02 across all four systems, while ROUGE-1 and METEOR diverge by as much as 0.08 and 0.14 between the shortest- and longest-output systems. Table~\ref{tab:metric-range} makes this explicit, reducing Table~\ref{tab:pilot} to the spread between each metric's lowest- and highest-scoring system: BERTScore's spread is an order of magnitude smaller. We consider BERTScore the fairer metric here, and flag this rather than let a reader infer a quality gap from ROUGE/METEOR that the underlying decisions do not exhibit.
+\adjustbox{max width=\textwidth}{\input{coverage_figure.tex}}
+\caption{Number of required quality attributes (of five) covered by the decision's tactic commitments, per item ($N=30$): the deliberation's candidate before repair, and the best candidate after up to $K=2$ repairs at each budget. Feasibility requires all five.\label{fig:coverage}}
+\end{figure}
 
 \begin{table}[!htbp]
-\caption{Metric Spread Across the Four Pilot-Run Systems (Table~\ref{tab:pilot}), Lowest to Highest Score\label{tab:metric-range}}
+\caption{Solver outcomes ($N=30$). Coverage is the number of required quality attributes (of five) covered within the budget.\label{tab:rq2}}
 \centering
 \begin{adjustbox}{max width=\textwidth}
 \begin{tabular}{@{}lccc@{}}
 \toprule
-Metric & Min & Max & Spread \\
+ & Before repair & After repair, $B=5$ & After repair, $B=7$ \\
 \midrule
-BERTScore F1 & 0.801 & 0.819 & 0.018 \\
-BLEU$^\dagger$ & 0.59 & 1.71 & 1.12 \\
-ROUGE-1 F1   & 0.138 & 0.220 & 0.082 \\
-METEOR       & 0.102 & 0.244 & 0.142 \\
+Feasible items & 0/30 & 1/30 & 0/30 \\
+Mean attributes covered & 0.57 & 1.63 & 1.23 \\
+Items with zero coverage & 14 & 6 & 8 \\
+Items whose coverage repair improved & --- & 17 & 13 \\
+Mean repair attempts used & --- & 2.00 & 2.00 \\
 \bottomrule
 \end{tabular}
 \end{adjustbox}
-
-\vspace{2pt}
-\footnotesize $^\dagger$BLEU is reported on a 0--100 scale (versus 0--1 for the other three metrics), so its absolute spread is not directly comparable in raw units to the others; proportionally (spread relative to the metric's own scale), it is comparable to ROUGE-1 and METEOR, not to BERTScore.
 \end{table}
 \FloatBarrier
 
-We believe this asymmetry is not specific to CADENCE: any structured, multi-stage LLM pipeline whose intermediate representation is deliberately concise --- for parseability, for solver-compatibility, or for any reason other than matching a free-text reference's length --- will be penalized by surface n-gram metrics relative to a single-pass system prompted for open-ended prose, independent of whether the structured pipeline's underlying decision is better, worse, or equivalent. Evaluations of future solver-verified or otherwise structured-output LLM pipelines should report a semantic-similarity metric alongside, not instead of, surface overlap metrics for exactly this reason.
+Table~\ref{tab:rq2} and Figure~\ref{fig:coverage} report the solver's view of the same 30 decisions.
+
+\emph{Deliberated decisions rarely commit to catalog tactics, and when they do, the tactics cluster on one attribute.} Before repair, 14 of 30 candidates name no tactic from the catalog, and 15 cover a single attribute. The mean is 0.57 of five. This holds even though every agent's prompt lists the tactics for its attribute (\ref{app:p-agent}). The converged decision often keeps only the decision's subject; one candidate reads in full ``Akka Persistence''. When a candidate does name several tactics, they tend to come from one group. ``Use asynchronous processing via message queues, caching, connection pooling, and data denormalization'' names four tactics, all of which support performance. The advocates for the other four attributes argued during the rounds, but their concerns did not survive into the synthesized decision.
+
+\emph{Repair helps, but not enough.} Repair raises mean coverage to 1.63 attributes at $B=5$ and improves 17 of 30 items. It reaches full coverage once: on one item, the second repair produced a decision naming five tactics, one per attribute. Every other item exhausted both repair attempts.
+
+\emph{Slack does not help.} At $B=7$, no item is feasible, and coverage is lower than at $B=5$ (1.23; 12 items are better at $B=5$, 7 at $B=7$). The candidates and solver encoding are identical across budgets, so the difference comes entirely from the stochastic repair calls. The number of tactics is not what binds. Repaired candidates often name more tactics than either budget allows, up to 18 in one case. What binds is \emph{diversity}: the named tactics support too few distinct attributes. A larger budget cannot fix a decision that is silent on security.
+
+This is the answer to RQ2 for this backbone: formal verification works as a \emph{detector}. On all 30 items it correctly reports that the decision leaves required attributes unaddressed, and it names which ones. Bounded repair through the same small model does not turn that detection into feasible decisions. Section~\ref{sec:discussion} discusses what this implies for the design.
+
+\subsection{RQ3: Comparison with Published Frontier-Model Generations}
+\label{sec:published-comparison}
+
+%%RQ3%%
+
+\subsection{RQ4: How Well Do Reference-Based Metrics Capture the Difference?}
+\label{sec:rq4}
+
+\begin{table}[!htbp]
+\caption{Length-controlled comparison ($N=30$). Each baseline's output is truncated, per item, to the word count of \sysNC{} ($B=5$) on that item. Differences are \sysNC{} minus the truncated baseline; wins/losses of \sysNC{} in parentheses; $^{*}$: Holm-adjusted $p<0.05$.\label{tab:rq4}}
+\centering
+\begin{adjustbox}{max width=\textwidth}
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+ & BERTScore F1 & BLEU & ROUGE-1 F1 & METEOR \\
+\midrule
+\sysZS{}, full length & 0.813 & 1.90 & 0.255 & 0.223 \\
+\sysZS{}, truncated  & 0.812 & 1.80 & 0.234 & 0.177 \\
+\sysRO{}, truncated  & 0.814 & 1.81 & 0.246 & 0.178 \\
+\sysNC{}, $B=5$ & 0.799 & 0.58 & 0.148 & 0.093 \\
+\midrule
+\sysNC{} vs.\ \sysZS{}, truncated & $-$0.013$^{*}$ (2/28) & $-$1.22$^{*}$ (1/29) & $-$0.087$^{*}$ (0/30) & $-$0.085$^{*}$ (0/30) \\
+\sysNC{} vs.\ \sysRO{}, truncated & $-$0.015$^{*}$ (3/27) & $-$1.23$^{*}$ (0/30) & $-$0.098$^{*}$ (0/30) & $-$0.086$^{*}$ (0/30) \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\end{table}
+\FloatBarrier
+
+CADENCE's outputs are 2.5--3 times shorter than the baselines' (Table~\ref{tab:rq1-means}). Length does track the surface metrics: across all systems and items, the ratio of output length to reference length correlates with ROUGE-1 (Spearman $\rho=0.26$, $p<10^{-4}$, 270 system--item pairs). To isolate length, Table~\ref{tab:rq4} truncates each baseline's output to \sysNC{}'s length on the same item.
+
+Truncation closes only part of the gap. Against \sysZS{}, length accounts for about a fifth of the ROUGE-1 gap (from 0.107 to 0.087) and a third of the METEOR gap (from 0.130 to 0.085). At equal length, the baselines still win on every metric and on nearly every item, BERTScore included. In the earlier, $N=3$ version of this work, we read the gap between surface metrics and BERTScore as an artifact of output length. That reading does not survive the length control.
+
+The remaining gap reflects what the text says. An ADR as architects write it has a context, a decision, and consequences, in project-specific vocabulary. The single-pass baselines imitate that form. CADENCE's output is a decision statement plus a rationale phrased in quality-attribute and tactic terms, and the reference ADRs rarely use that vocabulary. A metric based on similarity to the reference cannot distinguish ``different from what this team wrote'' from ``worse'', and so cannot credit the stages whose purpose is to change the decision's content: making trade-offs explicit, and checking coverage. Measuring those stages calls for instruments other than reference agreement, such as expert assessment of whether the decision addresses the stated quality concerns.
+
+\subsection{Earlier Development Runs}
+\label{sec:eval-earlier}
+
+During development we ran two smaller evaluations, each with $N=3$ items (seeds 42 and 43). Unlike the paired run, each system there re-ran Stages~1--3 independently. In the second of those runs, \sysFull{} scored above \sysNC{} on 7 of 8 budget--metric comparisons, and we reported this as a positive signal for self-critique. The paired design shows that this was not a critique effect. Stage~4 never changes the decision text, so the difference came entirely from two independent samples of the same stochastic deliberation. This is why the paired design is necessary for ablating stochastic multi-stage pipelines. The other patterns from those runs do reproduce at $N=30$: zero feasible items at $B=5$, deliberation-based systems far below the single-pass baselines on ROUGE-1 and METEOR, and a narrower gap on BERTScore.
+
+\section{Discussion}
+\label{sec:discussion}
+
+\subsection{Verification as a Detector: Where the Pipeline Loses Quality-Attribute Commitments}
+
+The central result is a mismatch between two stages. The quality-attribute advocates do raise their concerns, and Stage~3 checks precisely whether the decision addresses those concerns. Between the two, however, Stage~2's synthesis compresses the debate into a one-line decision, and the concerns of four of the five advocates rarely survive the compression (Section~\ref{sec:rq2}). Stage~3 then reports this correctly on 29 of 30 items. Repairing the text afterwards, with the same 1.5B model, recovers coverage only partially.
+
+This locates the problem at the interface between language and formal model, not in the solver. The architecture-optimization literature assumes a design space that experts specify in a formal model~\citep{aleti2013,martens2010,koziolek2011peropteryx}. CADENCE instead extracts the design space from generated text, and the extraction is only as rich as the text. Three design changes follow from the data, and each can be tested with the same paired protocol:
+\begin{enumerate}[leftmargin=*]
+\item \emph{Make the decision structured.} Instead of matching tactic names in free text, the synthesis step could emit an explicit commitment per attribute, for example ``security: least-privilege service boundaries''. Constrained decoding could keep it inside the catalog. Coverage then becomes a property of the output format, and the solver's job reduces to checking budget and trade-offs.
+\item \emph{Repair at the deliberation, not after it.} The uncovered attributes reported by Stage~3 could be returned to the corresponding advocate agents for another round, rather than to a stand-alone repair prompt that sees only the synthesized decision.
+\item \emph{Let the solver choose and the LLM explain.} With a given catalog and the stated requirements, the solver can select a feasible, minimal-trade-off tactic set on its own. Deliberation would then argue about which feasible set fits the context and write the rationale. This reverses the roles, and moves CADENCE closer to search-based design-space exploration with an LLM front end.
+\end{enumerate}
+Each change also benefits from a richer, empirically grounded tactic model. The 26-tactic catalog, with one supported attribute per tactic, could be checked and extended against mined tactic--quality-attribute knowledge~\citep{bi2021} and tactic--pattern interaction models~\citep{harrison2010,marquez2023}.
+
+\subsection{Implications for Practitioners}
+
+For teams that already use LLMs to draft ADRs, the results support two practical steps. First, a draft that reads well does not necessarily address the team's quality concerns. In our sample, the deliberated drafts left on average more than four of five required attributes without a named tactic. Second, the check that exposes this is cheap. Stage~3's tactic extraction is deterministic, the solver instance is tiny, and neither needs a large model. A coverage report that names which required attributes a draft leaves unaddressed is a useful review aid even when no automatic repair follows. Stage~4's residual weaknesses, rendered as a Consequences section, are a second inexpensive addition. They make the draft agree significantly more with what architects recorded (Section~\ref{sec:rq1}). The final decision remains a human responsibility. The influence factors that dominate real decisions, such as team expertise, organizational constraints and existing commitments~\citep{weinreich2015}, are not in the title-only task context CADENCE receives here.
+
+\subsection{Implications for Research on LLM-Assisted Architecture}
+
+Two methodological lessons apply beyond CADENCE.
+
+The first concerns \emph{reference-based metrics}. They measure imitation of one recorded decision. The length-controlled analysis (Section~\ref{sec:rq4}) shows that a system can trail on every such metric for reasons other than output length, simply because it writes in a different vocabulary than the recorded ADR. This matches findings for code summarization and code generation~\citep{roy2021,evtikhiev2023,haque2022}. Small metric differences between LLM-for-ADR systems should therefore not be read as differences in decision quality. Stages that are meant to change content, such as trade-off reasoning and coverage checking, need instruments that measure that content: expert ratings against the stated quality concerns, or task-based evaluation with practitioners. LLM judges are a tempting substitute. Their agreement with human raters in software-engineering tasks varies, however, and same-family judging adds self-preference bias~\citep{wang2025judge,he2026judge}. Stage~4's critique is itself an LLM judge of this kind, which is why we do not report its scores as evidence of quality.
+
+The second concerns \emph{ablating stochastic pipelines}. When each system variant re-samples the shared upstream stages, differences between variants mix stage effects with sampling noise. On three items this noise was large enough to look like a consistent critique effect (Section~\ref{sec:eval-earlier}). Sharing upstream outputs across variants, and testing paired differences, is a simple remedy, and we recommend it for any multi-stage LLM evaluation.
 
 \subsection{Threats to Validity}
 
-Most importantly, both evaluation runs reported in Section~\ref{sec:evaluation} are small-$N$ ($N=3$ each): real end-to-end wall-clock cost per local-model call, not a design choice, was the binding constraint for this submission. We report exactly what these small samples show, including the negative constraint-satisfaction result at the one budget condition ($B=5$) where feasibility was arithmetically possible, rather than withholding it or generalizing beyond what $N=3$ can support; giving the repair loop its full design budget did not change this result, so a larger held-out sample targeting Stage~2's tactic-naming behavior is this work's most direct extension. Our held-out set is also drawn from a single corpus (open-source ADR adoption); results may not transfer to proprietary practice, where decision drivers and documentation discipline differ substantially. The local LLM backbone (Qwen2.5-1.5B-Instruct) is small by current standards, chosen for reproducibility over peak capability; stronger backbones would likely shift the absolute numbers, though whether they would also change the metric-asymmetry pattern is an open question this small sample cannot settle. Our tactic catalog (26 tactics across 5 quality attributes) is deliberately small and each tactic supports exactly one attribute, setting a hard ceiling on achievable coverage under a tight budget by construction; a larger or multiply-supporting catalog would relax this and merits future work. Finally, our qualitative critique score (Stage~4) is itself LLM-generated; we take seriously the documented finding that LLMs asked to self-correct without external grounding often fail to improve, or even degrade, an already-correct answer~\citep{huang2024selfcorrect}, which is precisely why Stage~4's qualitative component is blended with a deterministic structural component from Stage~3's already solver-verified output rather than trusted alone. Even so, this blending is a mitigation, not proof of reliability, and not a substitute for human expert judgment, which we did not collect here.
+\paragraph{Construct validity} Agreement with one human-authored ADR is a proxy for decision quality. A decision can differ from the recorded one and still be sound, and the recorded one may itself be poor. We address this by reporting feasibility separately and by analyzing the metrics directly (RQ4), but we collected no expert judgments. Stage~3's coverage measure depends on matching tactic names in text. A decision that addresses an attribute in words not in the catalog is counted as not covering it. Some of the low coverage may be due to this, although the agents' prompts list the exact tactic names.
+
+\paragraph{Internal validity} All systems share one backbone, decoding configuration and prompt set (\ref{app:prompts}). Results may depend on these choices, in particular on the 1.5B backbone, whose limited instruction following plausibly contributes to the compression problem. Generation is sampled, and each item ran once. The paired design removes sampling variance from the comparisons between Stage~2 and later stages, but not from the comparisons among the first three systems, which use independent calls.
+
+\paragraph{External validity} The items come from open-source projects that publish ADRs, and the task gives only the ADR's title as context. Decisions in industrial settings, with richer context and different documentation practices, may behave differently. The five quality attributes and 26 tactics are a deliberately small subset of published catalogs~\citep{marquez2023}.
+
+\paragraph{Conclusion validity} With $N=30$, small effects such as retrieval's +0.004 BERTScore are detectable only because pairing removes between-item variance. We adjust for multiple comparisons within each metric. The feasibility result (1 of 30 at $B=5$) is clear-cut. A rate close to zero is consistent with these data, but a moderate rate under a stronger backbone is not ruled out.
 
 \subsection{Engineering Lessons for Solver-Verified LLM Pipelines}
 
-Two implementation-level findings generalize beyond this specific system. First, the lexicographic-versus-weighted-sum distinction in Stage~3's optimizer (Section~\ref{sec:method-stage3}) is not a minor tuning detail: any multi-objective encoding letting a caller supply unbounded weights for a secondary objective must either bound those weights or use a priority mechanism immune to being outvoted by scale, or it risks silently failing to enforce what the caller believed was a hard requirement. Second, the retry-on-parse-failure pattern (Section~\ref{sec:method-robustness}) generalizes to any pipeline stage where a deterministic downstream component consumes LLM-authored structured output: parser tolerance alone does not converge, since real models produce genuinely novel wording deviations no amount of a priori regex generalization anticipates, while a bounded retry of the identical prompt exploits generation's inherent stochasticity to route around such deviations without enumerating them in advance.
+Two implementation findings generalize. First, the lexicographic encoding in Stage~3 (Section~\ref{sec:method-stage3}) is required whenever callers can set weights on a secondary objective: under a weighted sum, a large enough trade-off weight silently overrides a requirement the caller believed was hard. Second, when a deterministic component consumes structured LLM output, a tolerant parser alone does not converge. Models produce novel format deviations that no regular expression anticipates. A bounded retry of the same prompt (Section~\ref{sec:method-robustness}) avoids these deviations by exploiting sampling variability, without enumerating them in advance.
 
 \section{Conclusion}
 \label{sec:conclusion}
 
-We presented CADENCE, a four-stage algorithm for LLM-assisted architectural decision-making combining retrieval-augmented case-based reasoning, knowledge-graph-grounded adversarial multi-agent deliberation across ISO/IEC~25010-derived quality attributes, constraint-solver-verified feasibility with an LLM repair loop targeting the solver's uncovered-attribute signal, and a separately-scored self-critique finalization stage. Unlike prior work, CADENCE's deliberation represents competing quality-attribute concerns adversarially rather than as sequential functional roles, and its feasibility check is a formal solver rather than a second LLM opinion --- differences that matter conceptually for any system informing decisions with real operational consequences. Our $N=3$ ablations give a mixed but informative picture: \sysMA{} against \sysFull{} shows no measurable difference in generation-quality metrics, consistent with the metric asymmetry discussed above but also a real limit on how strongly this evaluation can support the claim; \sysNC{} against \sysFull{}, by contrast, shows the fuller pipeline scoring higher consistently (all four metrics at $B=5$, three of four at $B=2$) --- the first ablation where adding a stage helps rather than being flat, a modest positive signal for Stage~4 specifically. We implemented the complete pipeline against a real corpus of 6{,}173 mined ADRs, evaluated it against four baselines isolating retrieval's, deliberation's, solver verification's, and self-critique's contributions individually, and reported both standard generation-quality metrics and two metrics only a solver-verified system can report --- finding constraint satisfaction to be a diagnosed negative result at this sample size (0\% at the one arithmetically achievable budget tested, unchanged even with the repair loop's full design budget) rather than a validated success, reported plainly rather than omitted. We further surfaced and explained a BERTScore-versus-surface-overlap metric asymmetry we believe applies generally to structured, multi-stage LLM pipelines, and reported two implementation-level findings --- lexicographic multi-objective optimization under unbounded caller-supplied weights, and bounded retry as the general fix for unenumerable LLM output-format deviations --- that generalize to solver-verified LLM systems beyond this one. Beyond our own re-implemented baselines, we located our exact held-out items within a public replication package's real, published generations from four frontier models and compared directly against them under harmonized metric code (Section~\ref{sec:published-comparison}): our naive baselines held up reasonably well, but \sysFull{} scored below every published model on every metric, a gap we attribute more plausibly to the roughly two-orders-of-magnitude scale difference between our 1.5B-parameter backbone and these systems than to CADENCE's algorithmic design, though our small sample cannot fully separate the two. Future work includes a substantially larger held-out sample to determine whether CADENCE can reach solver-verified feasibility at an achievable budget --- narrowed by this study specifically to Stage~2's tactic-naming behavior --- alongside a tactic catalog permitting multi-attribute coverage per tactic, stronger LLM backbones, and human expert judgments of decision quality to complement the automatic and solver-verified metrics reported here.
+We presented CADENCE, an approach to LLM-assisted architectural decision-making that combines precedent retrieval from mined ADRs, deliberation among quality-attribute advocates grounded in a tactic knowledge graph, verification of the decision's tactic commitments with an SMT solver, and a scored critique. Its aim is to join two lines of software architecture research that have developed separately: LLM-based ADR generation, which produces fluent decisions without checking them, and tactic-based and search-based architecture design, which checks decisions but needs a formal model specified by hand.
+
+A paired evaluation on 30 held-out ADRs from open-source projects gives a clear picture for a small local backbone. Retrieval helps slightly. Multi-agent deliberation lowers agreement with the recorded decisions, by more than output length explains. Solver verification is a reliable detector: it reports, correctly, that 29 of 30 deliberated decisions leave required quality attributes without a committed tactic. Repair improves coverage but makes only one decision feasible, and budget slack does not help, because the binding constraint is the diversity of the committed tactics, not their number. Stage~4 does not change the decision text. Its residual weaknesses, rendered as consequences, do bring the text closer to what architects wrote. The paired design also corrected an earlier small-sample finding that had credited the critique stage with gains caused by sampling noise.
+
+Future work follows from these findings: structured, catalog-constrained decision output; feedback of uncovered attributes to the advocate agents; solver-first selection of tactic sets; an empirically grounded tactic model; stronger backbones; and evaluation by architects of whether decisions address their quality concerns, rather than by agreement with a single recorded text.
 
 \section*{Data and Code Availability}
-This paper is self-contained: the tactic catalog and every prompt are given in Appendices~\ref{app:catalog} and~\ref{app:prompts}, and all reported numbers appear in the tables. For reproduction, the implementation, the processed corpus, the evaluation harness, and the per-system results behind Tables~\ref{tab:worked-example}, \ref{tab:scaled} and~\ref{tab:published} are publicly available at:
+This paper is self-contained: the tactic catalog and every prompt are given in \ref{app:catalog} and~\ref{app:prompts}, and all reported numbers appear in the tables. The implementation, the processed corpus, the evaluation scripts, the per-item outputs and solver diagnostics of the paired evaluation, and the statistical analysis are available at:
 
 \begin{center}
 \footnotesize\url{https://github.com/vinhqdang/Large-Language-Models-in-Service-Oriented-Ecosystems-Design}
 \end{center}
 
-The pilot run (Table~\ref{tab:pilot}) predates the current results layout of that repository; its numbers are reported in the table itself, and no separate per-run results file is committed for it. The underlying ADR corpus is the public ``Context Matters'' replication package~\citep{contextmatters-zenodo}.
+The underlying ADR corpus is the public ``Context Matters'' replication package~\citep{contextmatters-zenodo}.
 
 \section*{Acknowledgments}
 The author thanks the maintainers of the ``Context Matters'' ADR replication package for making a real, richly annotated ADR corpus publicly available, without which this work's retrieval stage and evaluation would not have been possible.

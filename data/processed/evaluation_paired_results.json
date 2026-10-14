@@ -1,0 +1,3069 @@
+{
+  "config": {
+    "n_requested": 30,
+    "seed": 44,
+    "k": 3,
+    "max_rounds": 2,
+    "max_repair_iterations": 2,
+    "tactic_budgets": [
+      5,
+      7
+    ],
+    "excluded_earlier_items": [
+      "api_docs_docs_adr/0002-use-jekyll-to-serve-documentation.md",
+      "architecture_nan/0005-provide-test-builders.md",
+      "compliantkubernetes_docs_compliantkubernetes_adr/0015-we-believe-in-community-driven-open-source.md",
+      "datalab_architecture_decisions/0038-yarn-workspaces-for-monorepo.md",
+      "io_pagopa_proxy_doc_adr/0001-record-architecture-decisions.md",
+      "jabref_docs_adr/0045-use-input-flag-always-for-input-files.md"
+    ]
+  },
+  "n_items_run": 30,
+  "n_items_ok": 30,
+  "failed_items": [],
+  "per_item_metrics": {
+    "zero_shot": {
+      "portfolio_docs_architecture_decisions/0012-remove-custom-json-serialization.md": {
+        "bertscore_f1": 0.8194215297698975,
+        "bleu": 1.0940244855376642,
+        "rouge1_f": 0.25499999999999995,
+        "meteor": 0.27228060903840856
+      },
+      "up_fiscal_data_decisions/003-selnium.md": {
+        "bertscore_f1": 0.8378321528434753,
+        "bleu": 1.7035779555914372,
+        "rouge1_f": 0.26979472140762467,
+        "meteor": 0.31419678636595894
+      },
+      "WorkoutLog_docs_adr/0002_remove_state.md": {
+        "bertscore_f1": 0.8277629017829895,
+        "bleu": 1.5071425951369328,
+        "rouge1_f": 0.25252525252525254,
+        "meteor": 0.3231969050242957
+      },
+      "Conduit_doc_adr/0002-solve-the-xunit-msbuild-problem-with-assembly-merging.md": {
+        "bertscore_f1": 0.825672447681427,
+        "bleu": 1.9869273969327121,
+        "rouge1_f": 0.22751322751322756,
+        "meteor": 0.2592617172706547
+      },
+      "drt_v2_doc_architecture_decisions/0010-use-akka-persistence.md": {
+        "bertscore_f1": 0.8174689412117004,
+        "bleu": 0.8595182606522865,
+        "rouge1_f": 0.1827956989247312,
+        "meteor": 0.3001747372075445
+      },
+      "opg_data_docs_architecture_decisions/0007-error-handling-and-status-codes.md": {
+        "bertscore_f1": 0.8223361968994141,
+        "bleu": 0.1513717718298831,
+        "rouge1_f": 0.24689826302729528,
+        "meteor": 0.10794400890492074
+      },
+      "galaxy_zoo_touch_table_docs_arch/adr-6.md": {
+        "bertscore_f1": 0.8225313425064087,
+        "bleu": 6.052348292544949,
+        "rouge1_f": 0.3567073170731707,
+        "meteor": 0.2368367387149825
+      },
+      "k8s_vagrant_centos_cluster_doc_architecture_decisions/0001-record-architecture-decisions.md": {
+        "bertscore_f1": 0.7970818281173706,
+        "bleu": 0.4613997922341674,
+        "rouge1_f": 0.16847826086956522,
+        "meteor": 0.16994080212771828
+      },
+      "apply_for_teacher_training_adr/0018-public-ids-for-qualifications.md": {
+        "bertscore_f1": 0.8098387718200684,
+        "bleu": 0.4225103195681308,
+        "rouge1_f": 0.2520231213872832,
+        "meteor": 0.1359802210587551
+      },
+      "galaxy_zoo_touch_table_docs_arch/adr-2.md": {
+        "bertscore_f1": 0.8273814916610718,
+        "bleu": 6.299103899536957,
+        "rouge1_f": 0.3181818181818182,
+        "meteor": 0.22933943377537153
+      },
+      "adr_tools_doc_adr/0006-packaging-and-distribution-in-other-version-control-repositories.md": {
+        "bertscore_f1": 0.8237361907958984,
+        "bleu": 1.7673399920480422,
+        "rouge1_f": 0.33832976445396146,
+        "meteor": 0.28746670947729935
+      },
+      "cloud_sdk_js_knowledge_base_implementation_documentation/0010-release-version-1-vdm.md": {
+        "bertscore_f1": 0.809035062789917,
+        "bleu": 1.7194415532477079,
+        "rouge1_f": 0.29292929292929293,
+        "meteor": 0.2365716201880038
+      },
+      "dl4j_dev_tools_codegen_adr/0004-auto_initialization_for_inplace_operations.md": {
+        "bertscore_f1": 0.8159487247467041,
+        "bleu": 1.9177494316775932,
+        "rouge1_f": 0.3090277777777778,
+        "meteor": 0.21128476370044677
+      },
+      "TruBudget_docs_developer_architecture/0003-project-data-model.md": {
+        "bertscore_f1": 0.8131299018859863,
+        "bleu": 2.889223658649279,
+        "rouge1_f": 0.27228915662650605,
+        "meteor": 0.18219029382000013
+      },
+      "lenses_jdbc_doc_adr/0001-use-the-Value-projection-only.md": {
+        "bertscore_f1": 0.796257734298706,
+        "bleu": 1.272304809892146,
+        "rouge1_f": 0.26105263157894737,
+        "meteor": 0.24727761654996136
+      },
+      "opg_data_deputy_reporting_docs_architecture_decisions/0001-record-architecture-decisions.md": {
+        "bertscore_f1": 0.7948556542396545,
+        "bleu": 0.7029700040212588,
+        "rouge1_f": 0.1084010840108401,
+        "meteor": 0.15693112467306014
+      },
+      "PlaceCal_doc_adr/0005-create-secretary-permissions.md": {
+        "bertscore_f1": 0.8192564845085144,
+        "bleu": 1.602429888786956,
+        "rouge1_f": 0.28329809725158567,
+        "meteor": 0.16096405617167747
+      },
+      "mercury_platform_doc_adr/0001-record-architecture-decisions.md": {
+        "bertscore_f1": 0.7986385822296143,
+        "bleu": 0.49385129655513454,
+        "rouge1_f": 0.13953488372093023,
+        "meteor": 0.19775148909328993
+      },
+      "old_web_frontend_docs_adr/0001-use-react-with-typescript.md": {
+        "bertscore_f1": 0.8182178139686584,
+        "bleu": 1.5082601875762291,
+        "rouge1_f": 0.2783018867924528,
+        "meteor": 0.2767166399906092
+      },
+      "casa_doc_architecture_decisions/0001-record-architecture-decisions.md": {
+        "bertscore_f1": 0.7936314344406128,
+        "bleu": 1.5389943861141664,
+        "rouge1_f": 0.13953488372093023,
+        "meteor": 0.25748977011004714
+      },
+      "monitoring_doc_documentation_architecture_decisions/0004-cloudwatch-metrics.md": {
+        "bertscore_f1": 0.8035610914230347,
+        "bleu": 0.48604988738282184,
+        "rouge1_f": 0.23203463203463204,
+        "meteor": 0.11570581685336696
+      },
+      "jabref_docs_adr/0023-localized-preferences.md": {
+        "bertscore_f1": 0.813323438167572,
+        "bleu": 3.685450620169836,
+        "rouge1_f": 0.29829545454545453,
+        "meteor": 0.20411118510958104
+      },
+      "docker_texlive_docs_adr/0000-use-markdown-architectural-decision-records.md": {
+        "bertscore_f1": 0.8006221055984497,
+        "bleu": 1.4103731155965056,
+        "rouge1_f": 0.23849372384937242,
+        "meteor": 0.21516837647625667
+      },
+      "compliantkubernetes_docs_compliantkubernetes_adr/0023-allow-snippets-annotations.md": {
+        "bertscore_f1": 0.8242346048355103,
+        "bleu": 2.6661159486710266,
+        "rouge1_f": 0.3443557582668188,
+        "meteor": 0.18192505272608436
+      },
+      "TOSCAna_docs_dev_adr/0015-persist-to-filesystem.md": {
+        "bertscore_f1": 0.8235679268836975,
+        "bleu": 3.734201892614043,
+        "rouge1_f": 0.2978723404255319,
+        "meteor": 0.27089031605579517
+      },
+      "cafebabelcom_docs_architecture_decisions/0004-deal-with-translations.md": {
+        "bertscore_f1": 0.8143386244773865,
+        "bleu": 2.0738164364265717,
+        "rouge1_f": 0.24170616113744076,
+        "meteor": 0.25307308970099673
+      },
+      "cloud_controller_ng_decisions/0004-adding-key-prefix-to-annotations.md": {
+        "bertscore_f1": 0.7897804975509644,
+        "bleu": 0.5142615106717878,
+        "rouge1_f": 0.19017094017094016,
+        "meteor": 0.1298572285876434
+      },
+      "information_manipulation_analyzer_decision_records/0001-folder-structure.md": {
+        "bertscore_f1": 0.7891743779182434,
+        "bleu": 1.4157410851228478,
+        "rouge1_f": 0.281524926686217,
+        "meteor": 0.21790292938798056
+      },
+      "manage_frontend_docs/03-typescript.md": {
+        "bertscore_f1": 0.8364678621292114,
+        "bleu": 1.198543523918208,
+        "rouge1_f": 0.24512534818941503,
+        "meteor": 0.3009475910754864
+      },
+      "community_sigs_and_wgs_archive_sig_core_decisions/dr-009-ServiceBinding_in_Kyma.md": {
+        "bertscore_f1": 0.8197526931762695,
+        "bleu": 3.785352107756589,
+        "rouge1_f": 0.31432973805855163,
+        "meteor": 0.22953567554624968
+      }
+    },
+    "retrieval_only": {
+      "portfolio_docs_architecture_decisions/0012-remove-custom-json-serialization.md": {
+        "bertscore_f1": 0.8198375701904297,
+        "bleu": 1.5048444732324362,
+        "rouge1_f": 0.2606635071090047,
+        "meteor": 0.24478397509184402
+      },
+      "up_fiscal_data_decisions/003-selnium.md": {
+        "bertscore_f1": 0.8302568197250366,
+        "bleu": 0.775757416671175,
+        "rouge1_f": 0.24725274725274726,
+        "meteor": 0.2396166134185304
+      },
+      "WorkoutLog_docs_adr/0002_remove_state.md": {
+        "bertscore_f1": 0.8322181701660156,
+        "bleu": 1.3492098724215085,
+        "rouge1_f": 0.2660098522167488,
+        "meteor": 0.3175708285505582
+      },
+      "Conduit_doc_adr/0002-solve-the-xunit-msbuild-problem-with-assembly-merging.md": {
+        "bertscore_f1": 0.8224576115608215,
+        "bleu": 0.8098180551452938,
+        "rouge1_f": 0.24128686327077747,
+        "meteor": 0.21357715441231254
+      },
+      "drt_v2_doc_architecture_decisions/0010-use-akka-persistence.md": {
+        "bertscore_f1": 0.8288550972938538,
+        "bleu": 1.3329988118469414,
+        "rouge1_f": 0.2448979591836735,
+        "meteor": 0.2911767644482556
+      },
+      "opg_data_docs_architecture_decisions/0007-error-handling-and-status-codes.md": {
+        "bertscore_f1": 0.8280404806137085,
+        "bleu": 0.16011695555298625,
+        "rouge1_f": 0.2610294117647059,
+        "meteor": 0.10837960666828479
+      },
+      "galaxy_zoo_touch_table_docs_arch/adr-6.md": {
+        "bertscore_f1": 0.8293783068656921,
+        "bleu": 5.11985419107862,
+        "rouge1_f": 0.36148148148148146,
+        "meteor": 0.2600201294083624
+      },
+      "k8s_vagrant_centos_cluster_doc_architecture_decisions/0001-record-architecture-decisions.md": {
+        "bertscore_f1": 0.8130974173545837,
+        "bleu": 0.9334771229389793,
+        "rouge1_f": 0.21848739495798322,
+        "meteor": 0.29996627854926283
+      },
+      "apply_for_teacher_training_adr/0018-public-ids-for-qualifications.md": {
+        "bertscore_f1": 0.8206297755241394,
+        "bleu": 0.9013512517237814,
+        "rouge1_f": 0.29954954954954954,
+        "meteor": 0.1505209153007191
+      },
+      "galaxy_zoo_touch_table_docs_arch/adr-2.md": {
+        "bertscore_f1": 0.835130512714386,
+        "bleu": 7.286280705775772,
+        "rouge1_f": 0.3501577287066246,
+        "meteor": 0.249025639632859
+      },
+      "adr_tools_doc_adr/0006-packaging-and-distribution-in-other-version-control-repositories.md": {
+        "bertscore_f1": 0.8252296447753906,
+        "bleu": 1.3307762005776846,
+        "rouge1_f": 0.36170212765957444,
+        "meteor": 0.27008572776845646
+      },
+      "cloud_sdk_js_knowledge_base_implementation_documentation/0010-release-version-1-vdm.md": {
+        "bertscore_f1": 0.813027024269104,
+        "bleu": 1.304258158051844,
+        "rouge1_f": 0.2493887530562347,
+        "meteor": 0.216631355747545
+      },
+      "dl4j_dev_tools_codegen_adr/0004-auto_initialization_for_inplace_operations.md": {
+        "bertscore_f1": 0.813709557056427,
+        "bleu": 1.8054213981690634,
+        "rouge1_f": 0.3209459459459459,
+        "meteor": 0.21291190524293088
+      },
+      "TruBudget_docs_developer_architecture/0003-project-data-model.md": {
+        "bertscore_f1": 0.8150248527526855,
+        "bleu": 2.8614596925761338,
+        "rouge1_f": 0.2564705882352941,
+        "meteor": 0.1850671438309475
+      },
+      "lenses_jdbc_doc_adr/0001-use-the-Value-projection-only.md": {
+        "bertscore_f1": 0.799532413482666,
+        "bleu": 1.3307998630574192,
+        "rouge1_f": 0.21231422505307854,
+        "meteor": 0.21961598715398584
+      },
+      "opg_data_deputy_reporting_docs_architecture_decisions/0001-record-architecture-decisions.md": {
+        "bertscore_f1": 0.7996364235877991,
+        "bleu": 1.389555588639524,
+        "rouge1_f": 0.15384615384615383,
+        "meteor": 0.262214252067461
+      },
+      "PlaceCal_doc_adr/0005-create-secretary-permissions.md": {
+        "bertscore_f1": 0.8278030753135681,
+        "bleu": 1.9375442166521946,
+        "rouge1_f": 0.31645569620253167,
+        "meteor": 0.1949687615856281
+      },
+      "mercury_platform_doc_adr/0001-record-architecture-decisions.md": {
+        "bertscore_f1": 0.806598424911499,
+        "bleu": 1.402692607362532,
+        "rouge1_f": 0.16045845272206305,
+        "meteor": 0.1706036745406824
+      },
+      "old_web_frontend_docs_adr/0001-use-react-with-typescript.md": {
+        "bertscore_f1": 0.8108635544776917,
+        "bleu": 4.616710983476992,
+        "rouge1_f": 0.2402088772845953,
+        "meteor": 0.2629820650516227
+      },
+      "casa_doc_architecture_decisions/0001-record-architecture-decisions.md": {
+        "bertscore_f1": 0.802205502986908,
+        "bleu": 0.5925553427865446,
+        "rouge1_f": 0.17804154302670622,
+        "meteor": 0.25753843383286434
+      },
+      "monitoring_doc_documentation_architecture_decisions/0004-cloudwatch-metrics.md": {
+        "bertscore_f1": 0.8030010461807251,
+        "bleu": 0.19892069393426703,
+        "rouge1_f": 0.212618841832325,
+        "meteor": 0.10232926277702396
+      },
+      "jabref_docs_adr/0023-localized-preferences.md": {
+        "bertscore_f1": 0.8127655386924744,
+        "bleu": 2.5680097077856505,
+        "rouge1_f": 0.2805049088359046,
+        "meteor": 0.19154834692202383
+      },
+      "docker_texlive_docs_adr/0000-use-markdown-architectural-decision-records.md": {
+        "bertscore_f1": 0.814727246761322,
+        "bleu": 3.354558233594543,
+        "rouge1_f": 0.3076923076923077,
+        "meteor": 0.2575559188844345
+      },
+      "compliantkubernetes_docs_compliantkubernetes_adr/0023-allow-snippets-annotations.md": {
+        "bertscore_f1": 0.8248150944709778,
+        "bleu": 2.6919019519606935,
+        "rouge1_f": 0.3247058823529411,
+        "meteor": 0.16686188813920314
+      },
+      "TOSCAna_docs_dev_adr/0015-persist-to-filesystem.md": {
+        "bertscore_f1": 0.8278676867485046,
+        "bleu": 2.1182082782743357,
+        "rouge1_f": 0.31130063965884863,
+        "meteor": 0.2893228089446842
+      },
+      "cafebabelcom_docs_architecture_decisions/0004-deal-with-translations.md": {
+        "bertscore_f1": 0.8168495297431946,
+        "bleu": 1.5198275371772643,
+        "rouge1_f": 0.2576112412177986,
+        "meteor": 0.2858438532429142
+      },
+      "cloud_controller_ng_decisions/0004-adding-key-prefix-to-annotations.md": {
+        "bertscore_f1": 0.7896735668182373,
+        "bleu": 0.8257722136632004,
+        "rouge1_f": 0.2443064182194617,
+        "meteor": 0.1488830918712698
+      },
+      "information_manipulation_analyzer_decision_records/0001-folder-structure.md": {
+        "bertscore_f1": 0.8098207116127014,
+        "bleu": 0.6498375937072847,
+        "rouge1_f": 0.28314606741573034,
+        "meteor": 0.25030578512396695
+      },
+      "manage_frontend_docs/03-typescript.md": {
+        "bertscore_f1": 0.8377603888511658,
+        "bleu": 1.7135184602687072,
+        "rouge1_f": 0.2582417582417582,
+        "meteor": 0.29892067519803245
+      },
+      "community_sigs_and_wgs_archive_sig_core_decisions/dr-009-ServiceBinding_in_Kyma.md": {
+        "bertscore_f1": 0.8097068667411804,
+        "bleu": 2.7586008854857687,
+        "rouge1_f": 0.2543171114599686,
+        "meteor": 0.17960305135851717
+      }
+    },
+    "multiagent_no_solver": {
+      "portfolio_docs_architecture_decisions/0012-remove-custom-json-serialization.md": {
+        "bertscore_f1": 0.8135707378387451,
+        "bleu": 1.5789763361869804,
+        "rouge1_f": 0.17355371900826447,
+        "meteor": 0.11992407328715227
+      },
+      "up_fiscal_data_decisions/003-selnium.md": {
+        "bertscore_f1": 0.8099393248558044,
+        "bleu": 0.7168092384471004,
+        "rouge1_f": 0.20242914979757087,
+        "meteor": 0.16346153846153846
+      },
+      "WorkoutLog_docs_adr/0002_remove_state.md": {
+        "bertscore_f1": 0.8264181017875671,
+        "bleu": 1.9815642098983872,
+        "rouge1_f": 0.2375,
+        "meteor": 0.14439280278321376
+      },
+      "Conduit_doc_adr/0002-solve-the-xunit-msbuild-problem-with-assembly-merging.md": {
+        "bertscore_f1": 0.8033676147460938,
+        "bleu": 0.9786459174058599,
+        "rouge1_f": 0.15686274509803919,
+        "meteor": 0.09391771019677998
+      },
+      "drt_v2_doc_architecture_decisions/0010-use-akka-persistence.md": {
+        "bertscore_f1": 0.8255107998847961,
+        "bleu": 0.7143779675436569,
+        "rouge1_f": 0.2592592592592593,
+        "meteor": 0.22503023955018772
+      },
+      "opg_data_docs_architecture_decisions/0007-error-handling-and-status-codes.md": {
+        "bertscore_f1": 0.8005608916282654,
+        "bleu": 5.592992837857083e-09,
+        "rouge1_f": 0.060344827586206906,
+        "meteor": 0.01848808545603944
+      },
+      "galaxy_zoo_touch_table_docs_arch/adr-6.md": {
+        "bertscore_f1": 0.8083124160766602,
+        "bleu": 0.06033219155653469,
+        "rouge1_f": 0.11136890951276102,
+        "meteor": 0.05715561315086445
+      },
+      "k8s_vagrant_centos_cluster_doc_architecture_decisions/0001-record-architecture-decisions.md": {
+        "bertscore_f1": 0.8028773665428162,
+        "bleu": 0.603147184136682,
+        "rouge1_f": 0.11392405063291139,
+        "meteor": 0.068259385665529
+      },
+      "apply_for_teacher_training_adr/0018-public-ids-for-qualifications.md": {
+        "bertscore_f1": 0.7983982563018799,
+        "bleu": 0.0036500373642919183,
+        "rouge1_f": 0.10935251798561149,
+        "meteor": 0.0388246041412911
+      },
+      "galaxy_zoo_touch_table_docs_arch/adr-2.md": {
+        "bertscore_f1": 0.8135078549385071,
+        "bleu": 0.10218109552664005,
+        "rouge1_f": 0.15458937198067635,
+        "meteor": 0.06630925507900678
+      },
+      "adr_tools_doc_adr/0006-packaging-and-distribution-in-other-version-control-repositories.md": {
+        "bertscore_f1": 0.8072137236595154,
+        "bleu": 0.49591271919467067,
+        "rouge1_f": 0.2097902097902098,
+        "meteor": 0.10456273764258554
+      },
+      "cloud_sdk_js_knowledge_base_implementation_documentation/0010-release-version-1-vdm.md": {
+        "bertscore_f1": 0.8173263669013977,
+        "bleu": 0.41323289752365383,
+        "rouge1_f": 0.06666666666666667,
+        "meteor": 0.04737609329446064
+      },
+      "dl4j_dev_tools_codegen_adr/0004-auto_initialization_for_inplace_operations.md": {
+        "bertscore_f1": 0.8036561012268066,
+        "bleu": 0.3002177530248321,
+        "rouge1_f": 0.16145833333333334,
+        "meteor": 0.06545535986581276
+      },
+      "TruBudget_docs_developer_architecture/0003-project-data-model.md": {
+        "bertscore_f1": 0.7847067713737488,
+        "bleu": 0.0017987271610738116,
+        "rouge1_f": 0.10759493670886075,
+        "meteor": 0.032692820923405384
+      },
+      "lenses_jdbc_doc_adr/0001-use-the-Value-projection-only.md": {
+        "bertscore_f1": 0.792976975440979,
+        "bleu": 0.6093881619817871,
+        "rouge1_f": 0.14935064935064937,
+        "meteor": 0.09889176327808118
+      },
+      "opg_data_deputy_reporting_docs_architecture_decisions/0001-record-architecture-decisions.md": {
+        "bertscore_f1": 0.796614944934845,
+        "bleu": 0.4668335267583569,
+        "rouge1_f": 0.06862745098039216,
+        "meteor": 0.08465011286681716
+      },
+      "PlaceCal_doc_adr/0005-create-secretary-permissions.md": {
+        "bertscore_f1": 0.8004576563835144,
+        "bleu": 0.0037550685922558974,
+        "rouge1_f": 0.0905349794238683,
+        "meteor": 0.03599712023038157
+      },
+      "mercury_platform_doc_adr/0001-record-architecture-decisions.md": {
+        "bertscore_f1": 0.7991409301757812,
+        "bleu": 0.5179792984017223,
+        "rouge1_f": 0.06201550387596899,
+        "meteor": 0.06218905472636816
+      },
+      "old_web_frontend_docs_adr/0001-use-react-with-typescript.md": {
+        "bertscore_f1": 0.7994391918182373,
+        "bleu": 2.0605793970199215,
+        "rouge1_f": 0.2448979591836735,
+        "meteor": 0.10787172011661808
+      },
+      "casa_doc_architecture_decisions/0001-record-architecture-decisions.md": {
+        "bertscore_f1": 0.788663923740387,
+        "bleu": 0.5571504587835393,
+        "rouge1_f": 0.09195402298850575,
+        "meteor": 0.09953161592505855
+      },
+      "monitoring_doc_documentation_architecture_decisions/0004-cloudwatch-metrics.md": {
+        "bertscore_f1": 0.7871342897415161,
+        "bleu": 0.0009762710609400437,
+        "rouge1_f": 0.10429447852760737,
+        "meteor": 0.04138976332050834
+      },
+      "jabref_docs_adr/0023-localized-preferences.md": {
+        "bertscore_f1": 0.7863094806671143,
+        "bleu": 0.38173375320691,
+        "rouge1_f": 0.14814814814814814,
+        "meteor": 0.0900562851782364
+      },
+      "docker_texlive_docs_adr/0000-use-markdown-architectural-decision-records.md": {
+        "bertscore_f1": 0.7836734056472778,
+        "bleu": 0.1488270267963599,
+        "rouge1_f": 0.11808118081180813,
+        "meteor": 0.05825734549138804
+      },
+      "compliantkubernetes_docs_compliantkubernetes_adr/0023-allow-snippets-annotations.md": {
+        "bertscore_f1": 0.8147156238555908,
+        "bleu": 0.0018526349270939675,
+        "rouge1_f": 0.1263823064770932,
+        "meteor": 0.04763659643631634
+      },
+      "TOSCAna_docs_dev_adr/0015-persist-to-filesystem.md": {
+        "bertscore_f1": 0.8040659427642822,
+        "bleu": 0.5753078040847042,
+        "rouge1_f": 0.22878228782287824,
+        "meteor": 0.1051641666531238
+      },
+      "cafebabelcom_docs_architecture_decisions/0004-deal-with-translations.md": {
+        "bertscore_f1": 0.8026461005210876,
+        "bleu": 0.504693554411927,
+        "rouge1_f": 0.15384615384615385,
+        "meteor": 0.1122112211221122
+      },
+      "cloud_controller_ng_decisions/0004-adding-key-prefix-to-annotations.md": {
+        "bertscore_f1": 0.7824476957321167,
+        "bleu": 0.00026321732130369984,
+        "rouge1_f": 0.08,
+        "meteor": 0.03316301327871637
+      },
+      "information_manipulation_analyzer_decision_records/0001-folder-structure.md": {
+        "bertscore_f1": 0.8144524693489075,
+        "bleu": 0.24307781624344915,
+        "rouge1_f": 0.10679611650485436,
+        "meteor": 0.045931758530183726
+      },
+      "manage_frontend_docs/03-typescript.md": {
+        "bertscore_f1": 0.8590435981750488,
+        "bleu": 2.718973609837507,
+        "rouge1_f": 0.3178807947019867,
+        "meteor": 0.20977900578425482
+      },
+      "community_sigs_and_wgs_archive_sig_core_decisions/dr-009-ServiceBinding_in_Kyma.md": {
+        "bertscore_f1": 0.7974196672439575,
+        "bleu": 0.045031012532588476,
+        "rouge1_f": 0.11403508771929824,
+        "meteor": 0.047281323877068564
+      }
+    },
+    "cadence_no_critique@B=5": {
+      "portfolio_docs_architecture_decisions/0012-remove-custom-json-serialization.md": {
+        "bertscore_f1": 0.8135707378387451,
+        "bleu": 1.5789763361869804,
+        "rouge1_f": 0.17355371900826447,
+        "meteor": 0.11992407328715227
+      },
+      "up_fiscal_data_decisions/003-selnium.md": {
+        "bertscore_f1": 0.8099393248558044,
+        "bleu": 0.7168092384471004,
+        "rouge1_f": 0.20242914979757087,
+        "meteor": 0.16346153846153846
+      },
+      "WorkoutLog_docs_adr/0002_remove_state.md": {
+        "bertscore_f1": 0.8264181017875671,
+        "bleu": 1.9815642098983872,
+        "rouge1_f": 0.2375,
+        "meteor": 0.14439280278321376
+      },
+      "Conduit_doc_adr/0002-solve-the-xunit-msbuild-problem-with-assembly-merging.md": {
+        "bertscore_f1": 0.8033676147460938,
+        "bleu": 0.9786459174058599,
+        "rouge1_f": 0.15686274509803919,
+        "meteor": 0.09391771019677998
+      },
+      "drt_v2_doc_architecture_decisions/0010-use-akka-persistence.md": {
+        "bertscore_f1": 0.8025658130645752,
+        "bleu": 0.4212536850830833,
+        "rouge1_f": 0.1580547112462006,
+        "meteor": 0.2066140776699029
+      },
+      "opg_data_docs_architecture_decisions/0007-error-handling-and-status-codes.md": {
+        "bertscore_f1": 0.7962964177131653,
+        "bleu": 2.9081365746264076e-08,
+        "rouge1_f": 0.06789250353606789,
+        "meteor": 0.01935370359509706
+      },
+      "galaxy_zoo_touch_table_docs_arch/adr-6.md": {
+        "bertscore_f1": 0.7896421551704407,
+        "bleu": 0.4643890803485099,
+        "rouge1_f": 0.15413533834586465,
+        "meteor": 0.08128016256032512
+      },
+      "k8s_vagrant_centos_cluster_doc_architecture_decisions/0001-record-architecture-decisions.md": {
+        "bertscore_f1": 0.7949222922325134,
+        "bleu": 0.6550675426027491,
+        "rouge1_f": 0.14525139664804468,
+        "meteor": 0.08879023307436182
+      },
+      "apply_for_teacher_training_adr/0018-public-ids-for-qualifications.md": {
+        "bertscore_f1": 0.7983982563018799,
+        "bleu": 0.0036500373642919183,
+        "rouge1_f": 0.10935251798561149,
+        "meteor": 0.0388246041412911
+      },
+      "galaxy_zoo_touch_table_docs_arch/adr-2.md": {
+        "bertscore_f1": 0.8083906173706055,
+        "bleu": 0.3946491559141672,
+        "rouge1_f": 0.1981981981981982,
+        "meteor": 0.09351029209584497
+      },
+      "adr_tools_doc_adr/0006-packaging-and-distribution-in-other-version-control-repositories.md": {
+        "bertscore_f1": 0.7956855297088623,
+        "bleu": 0.6679241576365521,
+        "rouge1_f": 0.17363344051446947,
+        "meteor": 0.10793054903801035
+      },
+      "cloud_sdk_js_knowledge_base_implementation_documentation/0010-release-version-1-vdm.md": {
+        "bertscore_f1": 0.8173263669013977,
+        "bleu": 0.41323289752365383,
+        "rouge1_f": 0.06666666666666667,
+        "meteor": 0.04737609329446064
+      },
+      "dl4j_dev_tools_codegen_adr/0004-auto_initialization_for_inplace_operations.md": {
+        "bertscore_f1": 0.7918497920036316,
+        "bleu": 0.4405051104065533,
+        "rouge1_f": 0.1635514018691589,
+        "meteor": 0.081203007518797
+      },
+      "TruBudget_docs_developer_architecture/0003-project-data-model.md": {
+        "bertscore_f1": 0.7760934233665466,
+        "bleu": 0.04375702111354157,
+        "rouge1_f": 0.12356321839080461,
+        "meteor": 0.045592705167173245
+      },
+      "lenses_jdbc_doc_adr/0001-use-the-Value-projection-only.md": {
+        "bertscore_f1": 0.7892273664474487,
+        "bleu": 0.8636636752330399,
+        "rouge1_f": 0.1691842900302115,
+        "meteor": 0.1029336078229542
+      },
+      "opg_data_deputy_reporting_docs_architecture_decisions/0001-record-architecture-decisions.md": {
+        "bertscore_f1": 0.7959537506103516,
+        "bleu": 0.7165547658700852,
+        "rouge1_f": 0.125,
+        "meteor": 0.11551155115511554
+      },
+      "PlaceCal_doc_adr/0005-create-secretary-permissions.md": {
+        "bertscore_f1": 0.78844153881073,
+        "bleu": 0.1556415233263606,
+        "rouge1_f": 0.14953271028037382,
+        "meteor": 0.07253458720766413
+      },
+      "mercury_platform_doc_adr/0001-record-architecture-decisions.md": {
+        "bertscore_f1": 0.7909048199653625,
+        "bleu": 1.235033701499594,
+        "rouge1_f": 0.1322314049586777,
+        "meteor": 0.1717176989097657
+      },
+      "old_web_frontend_docs_adr/0001-use-react-with-typescript.md": {
+        "bertscore_f1": 0.7994391918182373,
+        "bleu": 2.0605793970199215,
+        "rouge1_f": 0.2448979591836735,
+        "meteor": 0.10787172011661808
+      },
+      "casa_doc_architecture_decisions/0001-record-architecture-decisions.md": {
+        "bertscore_f1": 0.788663923740387,
+        "bleu": 0.5571504587835393,
+        "rouge1_f": 0.09195402298850575,
+        "meteor": 0.09953161592505855
+      },
+      "monitoring_doc_documentation_architecture_decisions/0004-cloudwatch-metrics.md": {
+        "bertscore_f1": 0.7871342897415161,
+        "bleu": 0.0009762710609400437,
+        "rouge1_f": 0.10429447852760737,
+        "meteor": 0.04138976332050834
+      },
+      "jabref_docs_adr/0023-localized-preferences.md": {
+        "bertscore_f1": 0.7863094806671143,
+        "bleu": 0.38173375320691,
+        "rouge1_f": 0.14814814814814814,
+        "meteor": 0.0900562851782364
+      },
+      "docker_texlive_docs_adr/0000-use-markdown-architectural-decision-records.md": {
+        "bertscore_f1": 0.7824857234954834,
+        "bleu": 0.24335393773886604,
+        "rouge1_f": 0.14556962025316456,
+        "meteor": 0.0817641228939544
+      },
+      "compliantkubernetes_docs_compliantkubernetes_adr/0023-allow-snippets-annotations.md": {
+        "bertscore_f1": 0.8147156238555908,
+        "bleu": 0.0018526349270939675,
+        "rouge1_f": 0.1263823064770932,
+        "meteor": 0.04763659643631634
+      },
+      "TOSCAna_docs_dev_adr/0015-persist-to-filesystem.md": {
+        "bertscore_f1": 0.7969847917556763,
+        "bleu": 0.33383870858420484,
+        "rouge1_f": 0.18823529411764708,
+        "meteor": 0.07082779991146525
+      },
+      "cafebabelcom_docs_architecture_decisions/0004-deal-with-translations.md": {
+        "bertscore_f1": 0.7963593006134033,
+        "bleu": 0.5182520601402786,
+        "rouge1_f": 0.13043478260869565,
+        "meteor": 0.11437908496732026
+      },
+      "cloud_controller_ng_decisions/0004-adding-key-prefix-to-annotations.md": {
+        "bertscore_f1": 0.7824476957321167,
+        "bleu": 0.00026321732130369984,
+        "rouge1_f": 0.08,
+        "meteor": 0.03316301327871637
+      },
+      "information_manipulation_analyzer_decision_records/0001-folder-structure.md": {
+        "bertscore_f1": 0.8144524693489075,
+        "bleu": 0.24307781624344915,
+        "rouge1_f": 0.10679611650485436,
+        "meteor": 0.045931758530183726
+      },
+      "manage_frontend_docs/03-typescript.md": {
+        "bertscore_f1": 0.8286483883857727,
+        "bleu": 1.2629744625002086,
+        "rouge1_f": 0.21719457013574658,
+        "meteor": 0.17640573318632857
+      },
+      "community_sigs_and_wgs_archive_sig_core_decisions/dr-009-ServiceBinding_in_Kyma.md": {
+        "bertscore_f1": 0.7924416065216064,
+        "bleu": 0.14380276731206698,
+        "rouge1_f": 0.13682092555331993,
+        "meteor": 0.0713914849428868
+      }
+    },
+    "cadence_full@B=5": {
+      "portfolio_docs_architecture_decisions/0012-remove-custom-json-serialization.md": {
+        "bertscore_f1": 0.8135707378387451,
+        "bleu": 1.5789763361869804,
+        "rouge1_f": 0.17355371900826447,
+        "meteor": 0.11992407328715227
+      },
+      "up_fiscal_data_decisions/003-selnium.md": {
+        "bertscore_f1": 0.8099393248558044,
+        "bleu": 0.7168092384471004,
+        "rouge1_f": 0.20242914979757087,
+        "meteor": 0.16346153846153846
+      },
+      "WorkoutLog_docs_adr/0002_remove_state.md": {
+        "bertscore_f1": 0.8264181017875671,
+        "bleu": 1.9815642098983872,
+        "rouge1_f": 0.2375,
+        "meteor": 0.14439280278321376
+      },
+      "Conduit_doc_adr/0002-solve-the-xunit-msbuild-problem-with-assembly-merging.md": {
+        "bertscore_f1": 0.8033676147460938,
+        "bleu": 0.9786459174058599,
+        "rouge1_f": 0.15686274509803919,
+        "meteor": 0.09391771019677998
+      },
+      "drt_v2_doc_architecture_decisions/0010-use-akka-persistence.md": {
+        "bertscore_f1": 0.8025658130645752,
+        "bleu": 0.4212536850830833,
+        "rouge1_f": 0.1580547112462006,
+        "meteor": 0.2066140776699029
+      },
+      "opg_data_docs_architecture_decisions/0007-error-handling-and-status-codes.md": {
+        "bertscore_f1": 0.7962964177131653,
+        "bleu": 2.9081365746264076e-08,
+        "rouge1_f": 0.06789250353606789,
+        "meteor": 0.01935370359509706
+      },
+      "galaxy_zoo_touch_table_docs_arch/adr-6.md": {
+        "bertscore_f1": 0.7896421551704407,
+        "bleu": 0.4643890803485099,
+        "rouge1_f": 0.15413533834586465,
+        "meteor": 0.08128016256032512
+      },
+      "k8s_vagrant_centos_cluster_doc_architecture_decisions/0001-record-architecture-decisions.md": {
+        "bertscore_f1": 0.7949222922325134,
+        "bleu": 0.6550675426027491,
+        "rouge1_f": 0.14525139664804468,
+        "meteor": 0.08879023307436182
+      },
+      "apply_for_teacher_training_adr/0018-public-ids-for-qualifications.md": {
+        "bertscore_f1": 0.7983982563018799,
+        "bleu": 0.0036500373642919183,
+        "rouge1_f": 0.10935251798561149,
+        "meteor": 0.0388246041412911
+      },
+      "galaxy_zoo_touch_table_docs_arch/adr-2.md": {
+        "bertscore_f1": 0.8083906173706055,
+        "bleu": 0.3946491559141672,
+        "rouge1_f": 0.1981981981981982,
+        "meteor": 0.09351029209584497
+      },
+      "adr_tools_doc_adr/0006-packaging-and-distribution-in-other-version-control-repositories.md": {
+        "bertscore_f1": 0.7956855297088623,
+        "bleu": 0.6679241576365521,
+        "rouge1_f": 0.17363344051446947,
+        "meteor": 0.10793054903801035
+      },
+      "cloud_sdk_js_knowledge_base_implementation_documentation/0010-release-version-1-vdm.md": {
+        "bertscore_f1": 0.8173263669013977,
+        "bleu": 0.41323289752365383,
+        "rouge1_f": 0.06666666666666667,
+        "meteor": 0.04737609329446064
+      },
+      "dl4j_dev_tools_codegen_adr/0004-auto_initialization_for_inplace_operations.md": {
+        "bertscore_f1": 0.7918497920036316,
+        "bleu": 0.4405051104065533,
+        "rouge1_f": 0.1635514018691589,
+        "meteor": 0.081203007518797
+      },
+      "TruBudget_docs_developer_architecture/0003-project-data-model.md": {
+        "bertscore_f1": 0.7760934233665466,
+        "bleu": 0.04375702111354157,
+        "rouge1_f": 0.12356321839080461,
+        "meteor": 0.045592705167173245
+      },
+      "lenses_jdbc_doc_adr/0001-use-the-Value-projection-only.md": {
+        "bertscore_f1": 0.7892273664474487,
+        "bleu": 0.8636636752330399,
+        "rouge1_f": 0.1691842900302115,
+        "meteor": 0.1029336078229542
+      },
+      "opg_data_deputy_reporting_docs_architecture_decisions/0001-record-architecture-decisions.md": {
+        "bertscore_f1": 0.7959537506103516,
+        "bleu": 0.7165547658700852,
+        "rouge1_f": 0.125,
+        "meteor": 0.11551155115511554
+      },
+      "PlaceCal_doc_adr/0005-create-secretary-permissions.md": {
+        "bertscore_f1": 0.78844153881073,
+        "bleu": 0.1556415233263606,
+        "rouge1_f": 0.14953271028037382,
+        "meteor": 0.07253458720766413
+      },
+      "mercury_platform_doc_adr/0001-record-architecture-decisions.md": {
+        "bertscore_f1": 0.7909048199653625,
+        "bleu": 1.235033701499594,
+        "rouge1_f": 0.1322314049586777,
+        "meteor": 0.1717176989097657
+      },
+      "old_web_frontend_docs_adr/0001-use-react-with-typescript.md": {
+        "bertscore_f1": 0.7994391918182373,
+        "bleu": 2.0605793970199215,
+        "rouge1_f": 0.2448979591836735,
+        "meteor": 0.10787172011661808
+      },
+      "casa_doc_architecture_decisions/0001-record-architecture-decisions.md": {
+        "bertscore_f1": 0.788663923740387,
+        "bleu": 0.5571504587835393,
+        "rouge1_f": 0.09195402298850575,
+        "meteor": 0.09953161592505855
+      },
+      "monitoring_doc_documentation_architecture_decisions/0004-cloudwatch-metrics.md": {
+        "bertscore_f1": 0.7871342897415161,
+        "bleu": 0.0009762710609400437,
+        "rouge1_f": 0.10429447852760737,
+        "meteor": 0.04138976332050834
+      },
+      "jabref_docs_adr/0023-localized-preferences.md": {
+        "bertscore_f1": 0.7863094806671143,
+        "bleu": 0.38173375320691,
+        "rouge1_f": 0.14814814814814814,
+        "meteor": 0.0900562851782364
+      },
+      "docker_texlive_docs_adr/0000-use-markdown-architectural-decision-records.md": {
+        "bertscore_f1": 0.7824857234954834,
+        "bleu": 0.24335393773886604,
+        "rouge1_f": 0.14556962025316456,
+        "meteor": 0.0817641228939544
+      },
+      "compliantkubernetes_docs_compliantkubernetes_adr/0023-allow-snippets-annotations.md": {
+        "bertscore_f1": 0.8147156238555908,
+        "bleu": 0.0018526349270939675,
+        "rouge1_f": 0.1263823064770932,
+        "meteor": 0.04763659643631634
+      },
+      "TOSCAna_docs_dev_adr/0015-persist-to-filesystem.md": {
+        "bertscore_f1": 0.7969847917556763,
+        "bleu": 0.33383870858420484,
+        "rouge1_f": 0.18823529411764708,
+        "meteor": 0.07082779991146525
+      },
+      "cafebabelcom_docs_architecture_decisions/0004-deal-with-translations.md": {
+        "bertscore_f1": 0.7963593006134033,
+        "bleu": 0.5182520601402786,
+        "rouge1_f": 0.13043478260869565,
+        "meteor": 0.11437908496732026
+      },
+      "cloud_controller_ng_decisions/0004-adding-key-prefix-to-annotations.md": {
+        "bertscore_f1": 0.7824476957321167,
+        "bleu": 0.00026321732130369984,
+        "rouge1_f": 0.08,
+        "meteor": 0.03316301327871637
+      },
+      "information_manipulation_analyzer_decision_records/0001-folder-structure.md": {
+        "bertscore_f1": 0.8144524693489075,
+        "bleu": 0.24307781624344915,
+        "rouge1_f": 0.10679611650485436,
+        "meteor": 0.045931758530183726
+      },
+      "manage_frontend_docs/03-typescript.md": {
+        "bertscore_f1": 0.8286483883857727,
+        "bleu": 1.2629744625002086,
+        "rouge1_f": 0.21719457013574658,
+        "meteor": 0.17640573318632857
+      },
+      "community_sigs_and_wgs_archive_sig_core_decisions/dr-009-ServiceBinding_in_Kyma.md": {
+        "bertscore_f1": 0.7924416065216064,
+        "bleu": 0.14380276731206698,
+        "rouge1_f": 0.13682092555331993,
+        "meteor": 0.0713914849428868
+      }
+    },
+    "cadence_full_consequences@B=5": {
+      "portfolio_docs_architecture_decisions/0012-remove-custom-json-serialization.md": {
+        "bertscore_f1": 0.8186490535736084,
+        "bleu": 1.2704075269594215,
+        "rouge1_f": 0.2152230971128609,
+        "meteor": 0.18295758953380029
+      },
+      "up_fiscal_data_decisions/003-selnium.md": {
+        "bertscore_f1": 0.8118661046028137,
+        "bleu": 0.5616640718521622,
+        "rouge1_f": 0.16477272727272727,
+        "meteor": 0.19399455234022225
+      },
+      "WorkoutLog_docs_adr/0002_remove_state.md": {
+        "bertscore_f1": 0.8254389762878418,
+        "bleu": 1.5330839370107745,
+        "rouge1_f": 0.2388059701492537,
+        "meteor": 0.1862195434432593
+      },
+      "Conduit_doc_adr/0002-solve-the-xunit-msbuild-problem-with-assembly-merging.md": {
+        "bertscore_f1": 0.8085145950317383,
+        "bleu": 0.9476187032115968,
+        "rouge1_f": 0.22310756972111553,
+        "meteor": 0.16472169576098894
+      },
+      "drt_v2_doc_architecture_decisions/0010-use-akka-persistence.md": {
+        "bertscore_f1": 0.8014890551567078,
+        "bleu": 0.31982475591217024,
+        "rouge1_f": 0.1336405529953917,
+        "meteor": 0.20435717140295737
+      },
+      "opg_data_docs_architecture_decisions/0007-error-handling-and-status-codes.md": {
+        "bertscore_f1": 0.8006195425987244,
+        "bleu": 0.0027136180918441856,
+        "rouge1_f": 0.13636363636363638,
+        "meteor": 0.046685611552514064
+      },
+      "galaxy_zoo_touch_table_docs_arch/adr-6.md": {
+        "bertscore_f1": 0.7967907786369324,
+        "bleu": 0.613645066281872,
+        "rouge1_f": 0.17288135593220338,
+        "meteor": 0.10362047440699128
+      },
+      "k8s_vagrant_centos_cluster_doc_architecture_decisions/0001-record-architecture-decisions.md": {
+        "bertscore_f1": 0.8008609414100647,
+        "bleu": 0.7041045471257118,
+        "rouge1_f": 0.14234875444839856,
+        "meteor": 0.14187669290057078
+      },
+      "apply_for_teacher_training_adr/0018-public-ids-for-qualifications.md": {
+        "bertscore_f1": 0.8031919002532959,
+        "bleu": 0.11767168303220076,
+        "rouge1_f": 0.1865671641791045,
+        "meteor": 0.0814194464381736
+      },
+      "galaxy_zoo_touch_table_docs_arch/adr-2.md": {
+        "bertscore_f1": 0.8128103613853455,
+        "bleu": 1.1096121608201392,
+        "rouge1_f": 0.24334600760456274,
+        "meteor": 0.13468815801162823
+      },
+      "adr_tools_doc_adr/0006-packaging-and-distribution-in-other-version-control-repositories.md": {
+        "bertscore_f1": 0.7994756698608398,
+        "bleu": 0.7187466756994837,
+        "rouge1_f": 0.19114219114219114,
+        "meteor": 0.15030946065428824
+      },
+      "cloud_sdk_js_knowledge_base_implementation_documentation/0010-release-version-1-vdm.md": {
+        "bertscore_f1": 0.8133515119552612,
+        "bleu": 0.8920208307922299,
+        "rouge1_f": 0.1437125748502994,
+        "meteor": 0.1801136950904393
+      },
+      "dl4j_dev_tools_codegen_adr/0004-auto_initialization_for_inplace_operations.md": {
+        "bertscore_f1": 0.8016798496246338,
+        "bleu": 1.1276231693400531,
+        "rouge1_f": 0.24365482233502536,
+        "meteor": 0.1499143346659052
+      },
+      "TruBudget_docs_developer_architecture/0003-project-data-model.md": {
+        "bertscore_f1": 0.7891200184822083,
+        "bleu": 0.22240076622832036,
+        "rouge1_f": 0.2012422360248447,
+        "meteor": 0.0812532501300052
+      },
+      "lenses_jdbc_doc_adr/0001-use-the-Value-projection-only.md": {
+        "bertscore_f1": 0.7876584529876709,
+        "bleu": 0.6213510886115194,
+        "rouge1_f": 0.16344086021505377,
+        "meteor": 0.1312649164677804
+      },
+      "opg_data_deputy_reporting_docs_architecture_decisions/0001-record-architecture-decisions.md": {
+        "bertscore_f1": 0.7939574122428894,
+        "bleu": 0.5140788881899812,
+        "rouge1_f": 0.12080536912751677,
+        "meteor": 0.14127144298688193
+      },
+      "PlaceCal_doc_adr/0005-create-secretary-permissions.md": {
+        "bertscore_f1": 0.7928260564804077,
+        "bleu": 0.612351715133839,
+        "rouge1_f": 0.21114369501466274,
+        "meteor": 0.12076769995329878
+      },
+      "mercury_platform_doc_adr/0001-record-architecture-decisions.md": {
+        "bertscore_f1": 0.7825221419334412,
+        "bleu": 0.6195534121539822,
+        "rouge1_f": 0.07929515418502203,
+        "meteor": 0.16674874427363756
+      },
+      "old_web_frontend_docs_adr/0001-use-react-with-typescript.md": {
+        "bertscore_f1": 0.8082618713378906,
+        "bleu": 2.3589360984150334,
+        "rouge1_f": 0.22653721682847897,
+        "meteor": 0.12038073908174692
+      },
+      "casa_doc_architecture_decisions/0001-record-architecture-decisions.md": {
+        "bertscore_f1": 0.7932177186012268,
+        "bleu": 0.402195804233917,
+        "rouge1_f": 0.07079646017699116,
+        "meteor": 0.09868421052631579
+      },
+      "monitoring_doc_documentation_architecture_decisions/0004-cloudwatch-metrics.md": {
+        "bertscore_f1": 0.791417121887207,
+        "bleu": 0.15393907437975884,
+        "rouge1_f": 0.19675090252707578,
+        "meteor": 0.09323987052942025
+      },
+      "jabref_docs_adr/0023-localized-preferences.md": {
+        "bertscore_f1": 0.7918483018875122,
+        "bleu": 0.5858574270682055,
+        "rouge1_f": 0.17264276228419653,
+        "meteor": 0.12150557281198611
+      },
+      "docker_texlive_docs_adr/0000-use-markdown-architectural-decision-records.md": {
+        "bertscore_f1": 0.7871755957603455,
+        "bleu": 0.24202283581012518,
+        "rouge1_f": 0.1706864564007421,
+        "meteor": 0.13698630136986303
+      },
+      "compliantkubernetes_docs_compliantkubernetes_adr/0023-allow-snippets-annotations.md": {
+        "bertscore_f1": 0.8173090219497681,
+        "bleu": 0.39819115394139537,
+        "rouge1_f": 0.24710424710424714,
+        "meteor": 0.11799456515916056
+      },
+      "TOSCAna_docs_dev_adr/0015-persist-to-filesystem.md": {
+        "bertscore_f1": 0.8072161078453064,
+        "bleu": 0.7046498234864448,
+        "rouge1_f": 0.1990049751243781,
+        "meteor": 0.1215492377420684
+      },
+      "cafebabelcom_docs_architecture_decisions/0004-deal-with-translations.md": {
+        "bertscore_f1": 0.8022144436836243,
+        "bleu": 0.3766686773502797,
+        "rouge1_f": 0.13333333333333333,
+        "meteor": 0.13975155279503107
+      },
+      "cloud_controller_ng_decisions/0004-adding-key-prefix-to-annotations.md": {
+        "bertscore_f1": 0.7844278216362,
+        "bleu": 0.023500369685229366,
+        "rouge1_f": 0.13333333333333333,
+        "meteor": 0.05489804648509911
+      },
+      "information_manipulation_analyzer_decision_records/0001-folder-structure.md": {
+        "bertscore_f1": 0.8089601993560791,
+        "bleu": 0.7157234875576274,
+        "rouge1_f": 0.1893491124260355,
+        "meteor": 0.13822115384615385
+      },
+      "manage_frontend_docs/03-typescript.md": {
+        "bertscore_f1": 0.823156476020813,
+        "bleu": 0.7915346865435342,
+        "rouge1_f": 0.20245398773006132,
+        "meteor": 0.20078354554358474
+      },
+      "community_sigs_and_wgs_archive_sig_core_decisions/dr-009-ServiceBinding_in_Kyma.md": {
+        "bertscore_f1": 0.8006760478019714,
+        "bleu": 0.41440676716244707,
+        "rouge1_f": 0.1898066783831283,
+        "meteor": 0.11308767471410418
+      }
+    },
+    "cadence_no_critique@B=7": {
+      "portfolio_docs_architecture_decisions/0012-remove-custom-json-serialization.md": {
+        "bertscore_f1": 0.8069986701011658,
+        "bleu": 0.8493288280770209,
+        "rouge1_f": 0.19531250000000003,
+        "meteor": 0.1226597805035507
+      },
+      "up_fiscal_data_decisions/003-selnium.md": {
+        "bertscore_f1": 0.8101643323898315,
+        "bleu": 0.6303479377849355,
+        "rouge1_f": 0.13793103448275862,
+        "meteor": 0.08368200836820083
+      },
+      "WorkoutLog_docs_adr/0002_remove_state.md": {
+        "bertscore_f1": 0.8264179825782776,
+        "bleu": 1.9815642098983872,
+        "rouge1_f": 0.2375,
+        "meteor": 0.14439280278321376
+      },
+      "Conduit_doc_adr/0002-solve-the-xunit-msbuild-problem-with-assembly-merging.md": {
+        "bertscore_f1": 0.8033676147460938,
+        "bleu": 0.9786459174058599,
+        "rouge1_f": 0.15686274509803919,
+        "meteor": 0.09391771019677998
+      },
+      "drt_v2_doc_architecture_decisions/0010-use-akka-persistence.md": {
+        "bertscore_f1": 0.8001576066017151,
+        "bleu": 0.5554485149876268,
+        "rouge1_f": 0.12799999999999997,
+        "meteor": 0.16174938561812158
+      },
+      "opg_data_docs_architecture_decisions/0007-error-handling-and-status-codes.md": {
+        "bertscore_f1": 0.8005608916282654,
+        "bleu": 5.592992837857083e-09,
+        "rouge1_f": 0.060344827586206906,
+        "meteor": 0.01848808545603944
+      },
+      "galaxy_zoo_touch_table_docs_arch/adr-6.md": {
+        "bertscore_f1": 0.8092043995857239,
+        "bleu": 0.23976139852498624,
+        "rouge1_f": 0.1308016877637131,
+        "meteor": 0.07469897769474065
+      },
+      "k8s_vagrant_centos_cluster_doc_architecture_decisions/0001-record-architecture-decisions.md": {
+        "bertscore_f1": 0.7966192960739136,
+        "bleu": 0.619458274889606,
+        "rouge1_f": 0.11538461538461538,
+        "meteor": 0.07352941176470587
+      },
+      "apply_for_teacher_training_adr/0018-public-ids-for-qualifications.md": {
+        "bertscore_f1": 0.7983982563018799,
+        "bleu": 0.0036500373642919183,
+        "rouge1_f": 0.10935251798561149,
+        "meteor": 0.0388246041412911
+      },
+      "galaxy_zoo_touch_table_docs_arch/adr-2.md": {
+        "bertscore_f1": 0.8171433210372925,
+        "bleu": 0.4691935598048033,
+        "rouge1_f": 0.21011673151750973,
+        "meteor": 0.11223651793046809
+      },
+      "adr_tools_doc_adr/0006-packaging-and-distribution-in-other-version-control-repositories.md": {
+        "bertscore_f1": 0.8072137236595154,
+        "bleu": 0.49591271919467067,
+        "rouge1_f": 0.2097902097902098,
+        "meteor": 0.10456273764258554
+      },
+      "cloud_sdk_js_knowledge_base_implementation_documentation/0010-release-version-1-vdm.md": {
+        "bertscore_f1": 0.8076581954956055,
+        "bleu": 1.2145121268348726,
+        "rouge1_f": 0.15151515151515152,
+        "meteor": 0.1403352028544395
+      },
+      "dl4j_dev_tools_codegen_adr/0004-auto_initialization_for_inplace_operations.md": {
+        "bertscore_f1": 0.8036561012268066,
+        "bleu": 0.3002177530248321,
+        "rouge1_f": 0.16145833333333334,
+        "meteor": 0.06545535986581276
+      },
+      "TruBudget_docs_developer_architecture/0003-project-data-model.md": {
+        "bertscore_f1": 0.7847067713737488,
+        "bleu": 0.0017987271610738116,
+        "rouge1_f": 0.10759493670886075,
+        "meteor": 0.032692820923405384
+      },
+      "lenses_jdbc_doc_adr/0001-use-the-Value-projection-only.md": {
+        "bertscore_f1": 0.792976975440979,
+        "bleu": 0.6093881619817871,
+        "rouge1_f": 0.14935064935064937,
+        "meteor": 0.09889176327808118
+      },
+      "opg_data_deputy_reporting_docs_architecture_decisions/0001-record-architecture-decisions.md": {
+        "bertscore_f1": 0.796614944934845,
+        "bleu": 0.4668335267583569,
+        "rouge1_f": 0.06862745098039216,
+        "meteor": 0.08465011286681716
+      },
+      "PlaceCal_doc_adr/0005-create-secretary-permissions.md": {
+        "bertscore_f1": 0.7998707890510559,
+        "bleu": 0.021621854678672583,
+        "rouge1_f": 0.12549019607843137,
+        "meteor": 0.05282288173695688
+      },
+      "mercury_platform_doc_adr/0001-record-architecture-decisions.md": {
+        "bertscore_f1": 0.7863015532493591,
+        "bleu": 0.5538129129674,
+        "rouge1_f": 0.07329842931937174,
+        "meteor": 0.09205983889528194
+      },
+      "old_web_frontend_docs_adr/0001-use-react-with-typescript.md": {
+        "bertscore_f1": 0.7994391918182373,
+        "bleu": 2.0605793970199215,
+        "rouge1_f": 0.2448979591836735,
+        "meteor": 0.10787172011661808
+      },
+      "casa_doc_architecture_decisions/0001-record-architecture-decisions.md": {
+        "bertscore_f1": 0.788663923740387,
+        "bleu": 0.5571504587835393,
+        "rouge1_f": 0.09195402298850575,
+        "meteor": 0.09953161592505855
+      },
+      "monitoring_doc_documentation_architecture_decisions/0004-cloudwatch-metrics.md": {
+        "bertscore_f1": 0.7871342897415161,
+        "bleu": 0.0009762710609400437,
+        "rouge1_f": 0.10429447852760737,
+        "meteor": 0.04138976332050834
+      },
+      "jabref_docs_adr/0023-localized-preferences.md": {
+        "bertscore_f1": 0.7863094806671143,
+        "bleu": 0.38173375320691,
+        "rouge1_f": 0.14814814814814814,
+        "meteor": 0.0900562851782364
+      },
+      "docker_texlive_docs_adr/0000-use-markdown-architectural-decision-records.md": {
+        "bertscore_f1": 0.7853605151176453,
+        "bleu": 0.3047934141539256,
+        "rouge1_f": 0.19718309859154928,
+        "meteor": 0.1117589893100097
+      },
+      "compliantkubernetes_docs_compliantkubernetes_adr/0023-allow-snippets-annotations.md": {
+        "bertscore_f1": 0.8147156238555908,
+        "bleu": 0.0018526349270939675,
+        "rouge1_f": 0.1263823064770932,
+        "meteor": 0.04763659643631634
+      },
+      "TOSCAna_docs_dev_adr/0015-persist-to-filesystem.md": {
+        "bertscore_f1": 0.7977044582366943,
+        "bleu": 0.4141368023647778,
+        "rouge1_f": 0.17037037037037037,
+        "meteor": 0.08485663114960038
+      },
+      "cafebabelcom_docs_architecture_decisions/0004-deal-with-translations.md": {
+        "bertscore_f1": 0.7907105088233948,
+        "bleu": 0.6189723215626279,
+        "rouge1_f": 0.14463840399002492,
+        "meteor": 0.1486013986013986
+      },
+      "cloud_controller_ng_decisions/0004-adding-key-prefix-to-annotations.md": {
+        "bertscore_f1": 0.7827613353729248,
+        "bleu": 0.002178407446916688,
+        "rouge1_f": 0.10608020698576973,
+        "meteor": 0.0395797351755901
+      },
+      "information_manipulation_analyzer_decision_records/0001-folder-structure.md": {
+        "bertscore_f1": 0.8144524693489075,
+        "bleu": 0.24307781624344915,
+        "rouge1_f": 0.10679611650485436,
+        "meteor": 0.045931758530183726
+      },
+      "manage_frontend_docs/03-typescript.md": {
+        "bertscore_f1": 0.8590435981750488,
+        "bleu": 2.718973609837507,
+        "rouge1_f": 0.3178807947019867,
+        "meteor": 0.20977900578425482
+      },
+      "community_sigs_and_wgs_archive_sig_core_decisions/dr-009-ServiceBinding_in_Kyma.md": {
+        "bertscore_f1": 0.7974196672439575,
+        "bleu": 0.045031012532588476,
+        "rouge1_f": 0.11403508771929824,
+        "meteor": 0.047281323877068564
+      }
+    },
+    "cadence_full@B=7": {
+      "portfolio_docs_architecture_decisions/0012-remove-custom-json-serialization.md": {
+        "bertscore_f1": 0.8069986701011658,
+        "bleu": 0.8493288280770209,
+        "rouge1_f": 0.19531250000000003,
+        "meteor": 0.1226597805035507
+      },
+      "up_fiscal_data_decisions/003-selnium.md": {
+        "bertscore_f1": 0.8101643323898315,
+        "bleu": 0.6303479377849355,
+        "rouge1_f": 0.13793103448275862,
+        "meteor": 0.08368200836820083
+      },
+      "WorkoutLog_docs_adr/0002_remove_state.md": {
+        "bertscore_f1": 0.8264179825782776,
+        "bleu": 1.9815642098983872,
+        "rouge1_f": 0.2375,
+        "meteor": 0.14439280278321376
+      },
+      "Conduit_doc_adr/0002-solve-the-xunit-msbuild-problem-with-assembly-merging.md": {
+        "bertscore_f1": 0.8033676147460938,
+        "bleu": 0.9786459174058599,
+        "rouge1_f": 0.15686274509803919,
+        "meteor": 0.09391771019677998
+      },
+      "drt_v2_doc_architecture_decisions/0010-use-akka-persistence.md": {
+        "bertscore_f1": 0.8001576066017151,
+        "bleu": 0.5554485149876268,
+        "rouge1_f": 0.12799999999999997,
+        "meteor": 0.16174938561812158
+      },
+      "opg_data_docs_architecture_decisions/0007-error-handling-and-status-codes.md": {
+        "bertscore_f1": 0.8005608916282654,
+        "bleu": 5.592992837857083e-09,
+        "rouge1_f": 0.060344827586206906,
+        "meteor": 0.01848808545603944
+      },
+      "galaxy_zoo_touch_table_docs_arch/adr-6.md": {
+        "bertscore_f1": 0.8092043995857239,
+        "bleu": 0.23976139852498624,
+        "rouge1_f": 0.1308016877637131,
+        "meteor": 0.07469897769474065
+      },
+      "k8s_vagrant_centos_cluster_doc_architecture_decisions/0001-record-architecture-decisions.md": {
+        "bertscore_f1": 0.7966192960739136,
+        "bleu": 0.619458274889606,
+        "rouge1_f": 0.11538461538461538,
+        "meteor": 0.07352941176470587
+      },
+      "apply_for_teacher_training_adr/0018-public-ids-for-qualifications.md": {
+        "bertscore_f1": 0.7983982563018799,
+        "bleu": 0.0036500373642919183,
+        "rouge1_f": 0.10935251798561149,
+        "meteor": 0.0388246041412911
+      },
+      "galaxy_zoo_touch_table_docs_arch/adr-2.md": {
+        "bertscore_f1": 0.8171433210372925,
+        "bleu": 0.4691935598048033,
+        "rouge1_f": 0.21011673151750973,
+        "meteor": 0.11223651793046809
+      },
+      "adr_tools_doc_adr/0006-packaging-and-distribution-in-other-version-control-repositories.md": {
+        "bertscore_f1": 0.8072137236595154,
+        "bleu": 0.49591271919467067,
+        "rouge1_f": 0.2097902097902098,
+        "meteor": 0.10456273764258554
+      },
+      "cloud_sdk_js_knowledge_base_implementation_documentation/0010-release-version-1-vdm.md": {
+        "bertscore_f1": 0.8076581954956055,
+        "bleu": 1.2145121268348726,
+        "rouge1_f": 0.15151515151515152,
+        "meteor": 0.1403352028544395
+      },
+      "dl4j_dev_tools_codegen_adr/0004-auto_initialization_for_inplace_operations.md": {
+        "bertscore_f1": 0.8036561012268066,
+        "bleu": 0.3002177530248321,
+        "rouge1_f": 0.16145833333333334,
+        "meteor": 0.06545535986581276
+      },
+      "TruBudget_docs_developer_architecture/0003-project-data-model.md": {
+        "bertscore_f1": 0.7847067713737488,
+        "bleu": 0.0017987271610738116,
+        "rouge1_f": 0.10759493670886075,
+        "meteor": 0.032692820923405384
+      },
+      "lenses_jdbc_doc_adr/0001-use-the-Value-projection-only.md": {
+        "bertscore_f1": 0.792976975440979,
+        "bleu": 0.6093881619817871,
+        "rouge1_f": 0.14935064935064937,
+        "meteor": 0.09889176327808118
+      },
+      "opg_data_deputy_reporting_docs_architecture_decisions/0001-record-architecture-decisions.md": {
+        "bertscore_f1": 0.796614944934845,
+        "bleu": 0.4668335267583569,
+        "rouge1_f": 0.06862745098039216,
+        "meteor": 0.08465011286681716
+      },
+      "PlaceCal_doc_adr/0005-create-secretary-permissions.md": {
+        "bertscore_f1": 0.7998707890510559,
+        "bleu": 0.021621854678672583,
+        "rouge1_f": 0.12549019607843137,
+        "meteor": 0.05282288173695688
+      },
+      "mercury_platform_doc_adr/0001-record-architecture-decisions.md": {
+        "bertscore_f1": 0.7863015532493591,
+        "bleu": 0.5538129129674,
+        "rouge1_f": 0.07329842931937174,
+        "meteor": 0.09205983889528194
+      },
+      "old_web_frontend_docs_adr/0001-use-react-with-typescript.md": {
+        "bertscore_f1": 0.7994391918182373,
+        "bleu": 2.0605793970199215,
+        "rouge1_f": 0.2448979591836735,
+        "meteor": 0.10787172011661808
+      },
+      "casa_doc_architecture_decisions/0001-record-architecture-decisions.md": {
+        "bertscore_f1": 0.788663923740387,
+        "bleu": 0.5571504587835393,
+        "rouge1_f": 0.09195402298850575,
+        "meteor": 0.09953161592505855
+      },
+      "monitoring_doc_documentation_architecture_decisions/0004-cloudwatch-metrics.md": {
+        "bertscore_f1": 0.7871342897415161,
+        "bleu": 0.0009762710609400437,
+        "rouge1_f": 0.10429447852760737,
+        "meteor": 0.04138976332050834
+      },
+      "jabref_docs_adr/0023-localized-preferences.md": {
+        "bertscore_f1": 0.7863094806671143,
+        "bleu": 0.38173375320691,
+        "rouge1_f": 0.14814814814814814,
+        "meteor": 0.0900562851782364
+      },
+      "docker_texlive_docs_adr/0000-use-markdown-architectural-decision-records.md": {
+        "bertscore_f1": 0.7853605151176453,
+        "bleu": 0.3047934141539256,
+        "rouge1_f": 0.19718309859154928,
+        "meteor": 0.1117589893100097
+      },
+      "compliantkubernetes_docs_compliantkubernetes_adr/0023-allow-snippets-annotations.md": {
+        "bertscore_f1": 0.8147156238555908,
+        "bleu": 0.0018526349270939675,
+        "rouge1_f": 0.1263823064770932,
+        "meteor": 0.04763659643631634
+      },
+      "TOSCAna_docs_dev_adr/0015-persist-to-filesystem.md": {
+        "bertscore_f1": 0.7977044582366943,
+        "bleu": 0.4141368023647778,
+        "rouge1_f": 0.17037037037037037,
+        "meteor": 0.08485663114960038
+      },
+      "cafebabelcom_docs_architecture_decisions/0004-deal-with-translations.md": {
+        "bertscore_f1": 0.7907105088233948,
+        "bleu": 0.6189723215626279,
+        "rouge1_f": 0.14463840399002492,
+        "meteor": 0.1486013986013986
+      },
+      "cloud_controller_ng_decisions/0004-adding-key-prefix-to-annotations.md": {
+        "bertscore_f1": 0.7827613353729248,
+        "bleu": 0.002178407446916688,
+        "rouge1_f": 0.10608020698576973,
+        "meteor": 0.0395797351755901
+      },
+      "information_manipulation_analyzer_decision_records/0001-folder-structure.md": {
+        "bertscore_f1": 0.8144524693489075,
+        "bleu": 0.24307781624344915,
+        "rouge1_f": 0.10679611650485436,
+        "meteor": 0.045931758530183726
+      },
+      "manage_frontend_docs/03-typescript.md": {
+        "bertscore_f1": 0.8590435981750488,
+        "bleu": 2.718973609837507,
+        "rouge1_f": 0.3178807947019867,
+        "meteor": 0.20977900578425482
+      },
+      "community_sigs_and_wgs_archive_sig_core_decisions/dr-009-ServiceBinding_in_Kyma.md": {
+        "bertscore_f1": 0.7974196672439575,
+        "bleu": 0.045031012532588476,
+        "rouge1_f": 0.11403508771929824,
+        "meteor": 0.047281323877068564
+      }
+    },
+    "cadence_full_consequences@B=7": {
+      "portfolio_docs_architecture_decisions/0012-remove-custom-json-serialization.md": {
+        "bertscore_f1": 0.8159675598144531,
+        "bleu": 0.8302715748384081,
+        "rouge1_f": 0.15929203539823006,
+        "meteor": 0.1581508515815085
+      },
+      "up_fiscal_data_decisions/003-selnium.md": {
+        "bertscore_f1": 0.8139622211456299,
+        "bleu": 0.5957887355879148,
+        "rouge1_f": 0.15770609318996415,
+        "meteor": 0.15813953488372096
+      },
+      "WorkoutLog_docs_adr/0002_remove_state.md": {
+        "bertscore_f1": 0.8272718787193298,
+        "bleu": 1.8232523052664462,
+        "rouge1_f": 0.22895622895622897,
+        "meteor": 0.20155640454421736
+      },
+      "Conduit_doc_adr/0002-solve-the-xunit-msbuild-problem-with-assembly-merging.md": {
+        "bertscore_f1": 0.8078870177268982,
+        "bleu": 0.8464974538450143,
+        "rouge1_f": 0.16793893129770993,
+        "meteor": 0.11794439764111204
+      },
+      "drt_v2_doc_architecture_decisions/0010-use-akka-persistence.md": {
+        "bertscore_f1": 0.8005096912384033,
+        "bleu": 0.3932098603070273,
+        "rouge1_f": 0.11143695014662756,
+        "meteor": 0.15992578485461287
+      },
+      "opg_data_docs_architecture_decisions/0007-error-handling-and-status-codes.md": {
+        "bertscore_f1": 0.8060569167137146,
+        "bleu": 0.00032164131547828293,
+        "rouge1_f": 0.12357286769644056,
+        "meteor": 0.03819228539545
+      },
+      "galaxy_zoo_touch_table_docs_arch/adr-6.md": {
+        "bertscore_f1": 0.8116852641105652,
+        "bleu": 1.0325817518741234,
+        "rouge1_f": 0.2185430463576159,
+        "meteor": 0.127366723707347
+      },
+      "k8s_vagrant_centos_cluster_doc_architecture_decisions/0001-record-architecture-decisions.md": {
+        "bertscore_f1": 0.8005961179733276,
+        "bleu": 0.7332129159869256,
+        "rouge1_f": 0.15584415584415584,
+        "meteor": 0.1288659793814433
+      },
+      "apply_for_teacher_training_adr/0018-public-ids-for-qualifications.md": {
+        "bertscore_f1": 0.7998568415641785,
+        "bleu": 0.1437646365606826,
+        "rouge1_f": 0.17809867629362217,
+        "meteor": 0.080393032603841
+      },
+      "galaxy_zoo_touch_table_docs_arch/adr-2.md": {
+        "bertscore_f1": 0.8158283233642578,
+        "bleu": 0.7664536190539163,
+        "rouge1_f": 0.24413145539906103,
+        "meteor": 0.1556317594302295
+      },
+      "adr_tools_doc_adr/0006-packaging-and-distribution-in-other-version-control-repositories.md": {
+        "bertscore_f1": 0.8117656707763672,
+        "bleu": 0.8475557857542935,
+        "rouge1_f": 0.21138211382113822,
+        "meteor": 0.13882567137005006
+      },
+      "cloud_sdk_js_knowledge_base_implementation_documentation/0010-release-version-1-vdm.md": {
+        "bertscore_f1": 0.8095417618751526,
+        "bleu": 0.8979899614406167,
+        "rouge1_f": 0.16618911174785098,
+        "meteor": 0.1773049645390071
+      },
+      "dl4j_dev_tools_codegen_adr/0004-auto_initialization_for_inplace_operations.md": {
+        "bertscore_f1": 0.8091380596160889,
+        "bleu": 1.1547324364335387,
+        "rouge1_f": 0.20866141732283466,
+        "meteor": 0.11706175007316359
+      },
+      "TruBudget_docs_developer_architecture/0003-project-data-model.md": {
+        "bertscore_f1": 0.7898918986320496,
+        "bleu": 0.0794224863246618,
+        "rouge1_f": 0.16076294277929154,
+        "meteor": 0.0611439842209073
+      },
+      "lenses_jdbc_doc_adr/0001-use-the-Value-projection-only.md": {
+        "bertscore_f1": 0.7918993234634399,
+        "bleu": 0.520830420212385,
+        "rouge1_f": 0.16129032258064516,
+        "meteor": 0.13113161728994657
+      },
+      "opg_data_deputy_reporting_docs_architecture_decisions/0001-record-architecture-decisions.md": {
+        "bertscore_f1": 0.7923423647880554,
+        "bleu": 0.423585277068337,
+        "rouge1_f": 0.07038123167155426,
+        "meteor": 0.1105769230769231
+      },
+      "PlaceCal_doc_adr/0005-create-secretary-permissions.md": {
+        "bertscore_f1": 0.8037394881248474,
+        "bleu": 0.13193419331906603,
+        "rouge1_f": 0.17339667458432304,
+        "meteor": 0.07769679946354054
+      },
+      "mercury_platform_doc_adr/0001-record-architecture-decisions.md": {
+        "bertscore_f1": 0.7865978479385376,
+        "bleu": 0.33229346453444536,
+        "rouge1_f": 0.09187279151943462,
+        "meteor": 0.12320328542094457
+      },
+      "old_web_frontend_docs_adr/0001-use-react-with-typescript.md": {
+        "bertscore_f1": 0.8081117272377014,
+        "bleu": 2.268648980657295,
+        "rouge1_f": 0.22085889570552145,
+        "meteor": 0.12700165654334622
+      },
+      "casa_doc_architecture_decisions/0001-record-architecture-decisions.md": {
+        "bertscore_f1": 0.7913232445716858,
+        "bleu": 0.34169736691754116,
+        "rouge1_f": 0.06896551724137931,
+        "meteor": 0.09958071278825996
+      },
+      "monitoring_doc_documentation_architecture_decisions/0004-cloudwatch-metrics.md": {
+        "bertscore_f1": 0.7918622493743896,
+        "bleu": 0.09138141203388192,
+        "rouge1_f": 0.1711131554737811,
+        "meteor": 0.0781300276610726
+      },
+      "jabref_docs_adr/0023-localized-preferences.md": {
+        "bertscore_f1": 0.7926750183105469,
+        "bleu": 0.6054355703435975,
+        "rouge1_f": 0.19815059445178335,
+        "meteor": 0.1295856908194926
+      },
+      "docker_texlive_docs_adr/0000-use-markdown-architectural-decision-records.md": {
+        "bertscore_f1": 0.7919689416885376,
+        "bleu": 0.3287390713422842,
+        "rouge1_f": 0.18090452261306533,
+        "meteor": 0.11627906976744187
+      },
+      "compliantkubernetes_docs_compliantkubernetes_adr/0023-allow-snippets-annotations.md": {
+        "bertscore_f1": 0.818763792514801,
+        "bleu": 0.39176131857356666,
+        "rouge1_f": 0.2309711286089239,
+        "meteor": 0.11014960838858784
+      },
+      "TOSCAna_docs_dev_adr/0015-persist-to-filesystem.md": {
+        "bertscore_f1": 0.8106572031974792,
+        "bleu": 0.7028044855929687,
+        "rouge1_f": 0.2088607594936709,
+        "meteor": 0.1114096782568253
+      },
+      "cafebabelcom_docs_architecture_decisions/0004-deal-with-translations.md": {
+        "bertscore_f1": 0.7920301556587219,
+        "bleu": 0.49350517649664216,
+        "rouge1_f": 0.14428857715430862,
+        "meteor": 0.16420361247947457
+      },
+      "cloud_controller_ng_decisions/0004-adding-key-prefix-to-annotations.md": {
+        "bertscore_f1": 0.7856559753417969,
+        "bleu": 0.12003104677065488,
+        "rouge1_f": 0.18872017353579174,
+        "meteor": 0.08223221816137194
+      },
+      "information_manipulation_analyzer_decision_records/0001-folder-structure.md": {
+        "bertscore_f1": 0.8165130019187927,
+        "bleu": 0.7618237812198501,
+        "rouge1_f": 0.19076923076923075,
+        "meteor": 0.13309134906231096
+      },
+      "manage_frontend_docs/03-typescript.md": {
+        "bertscore_f1": 0.8503668308258057,
+        "bleu": 1.4651230862042193,
+        "rouge1_f": 0.2597402597402597,
+        "meteor": 0.22191835765918963
+      },
+      "community_sigs_and_wgs_archive_sig_core_decisions/dr-009-ServiceBinding_in_Kyma.md": {
+        "bertscore_f1": 0.7986791133880615,
+        "bleu": 0.5748868798285426,
+        "rouge1_f": 0.18538324420677363,
+        "meteor": 0.09559010960999237
+      }
+    }
+  },
+  "solver": {
+    "5": [
+      {
+        "record_id": "portfolio_docs_architecture_decisions/0012-remove-custom-json-serialization.md",
+        "is_feasible": false,
+        "repair_iterations": 2,
+        "selected_tactics": [],
+        "covered": [],
+        "uncovered": [
+          "cost_operability",
+          "maintainability",
+          "performance",
+          "scalability",
+          "security"
+        ],
+        "critique_error": null
+      },
+      {
+        "record_id": "up_fiscal_data_decisions/003-selnium.md",
+        "is_feasible": false,
+        "repair_iterations": 2,
+        "selected_tactics": [
+          "Caching"
+        ],
+        "covered": [
+          "performance"
+        ],
+        "uncovered": [
+          "cost_operability",
+          "maintainability",
+          "scalability",
+          "security"
+        ],
+        "critique_error": null
+      },
+      {
+        "record_id": "WorkoutLog_docs_adr/0002_remove_state.md",
+        "is_feasible": false,
+        "repair_iterations": 2,
+        "selected_tactics": [],
+        "covered": [],
+        "uncovered": [
+          "cost_operability",
+          "maintainability",
+          "performance",
+          "scalability",
+          "security"
+        ],
+        "critique_error": null
+      },
+      {
+        "record_id": "Conduit_doc_adr/0002-solve-the-xunit-msbuild-problem-with-assembly-merging.md",
+        "is_feasible": false,
+        "repair_iterations": 2,
+        "selected_tactics": [],
+        "covered": [],
+        "uncovered": [
+          "cost_operability",
+          "maintainability",
+          "performance",
+          "scalability",
+          "security"
+        ],
+        "critique_error": null
+      },
+      {
+        "record_id": "drt_v2_doc_architecture_decisions/0010-use-akka-persistence.md",
+        "is_feasible": false,
+        "repair_iterations": 2,
+        "selected_tactics": [
+          "Serverless / function-as-a-service deployment"
+        ],
+        "covered": [
+          "cost_operability"
+        ],
+        "uncovered": [
+          "maintainability",
+          "performance",
+          "scalability",
+          "security"
+        ],
+        "critique_error": null
+      },
+      {
+        "record_id": "opg_data_docs_architecture_decisions/0007-error-handling-and-status-codes.md",
+        "is_feasible": false,
+        "repair_iterations": 2,
+        "selected_tactics": [
+          "Event-driven architecture"
+        ],
+        "covered": [
+          "scalability"
+        ],
+        "uncovered": [
+          "cost_operability",
+          "maintainability",
+          "performance",
+          "security"
+        ],
+        "critique_error": null
+      },
+      {
+        "record_id": "galaxy_zoo_touch_table_docs_arch/adr-6.md",
+        "is_feasible": true,
+        "repair_iterations": 2,
+        "selected_tactics": [
+          "Dependency injection / inversion of control",
+          "Input validation at trust boundaries",
+          "Managed cloud services over self-hosted infrastructure",
+          "Read replicas",
+          "Read-through/write-behind data access"
+        ],
+        "covered": [
+          "cost_operability",
+          "maintainability",
+          "performance",
+          "scalability",
+          "security"
+        ],
+        "uncovered": [],
+        "critique_error": null
+      },
+      {
+        "record_id": "k8s_vagrant_centos_cluster_doc_architecture_decisions/0001-record-architecture-decisions.md",
+        "is_feasible": false,
+        "repair_iterations": 2,
+        "selected_tactics": [
+          "Caching",
+          "Event-driven architecture",
+          "Serverless / function-as-a-service deployment"
+        ],
+        "covered": [
+          "cost_operability",
+          "performance",
+          "scalability"
+        ],
+        "uncovered": [
+          "maintainability",
+          "security"
+        ],
+        "critique_error": null
+      },
+      {
+        "record_id": "apply_for_teacher_training_adr/0018-public-ids-for-qualifications.md",
+        "is_feasible": false,
+        "repair_iterations": 2,
+        "selected_tactics": [],
+        "covered": [],
+        "uncovered": [
+          "cost_operability",
+          "maintainability",
+          "performance",
+          "scalability",
+          "security"
+        ],
+        "critique_error": null
+      },
+      {
+        "record_id": "galaxy_zoo_touch_table_docs_arch/adr-2.md",
+        "is_feasible": false,
+        "repair_iterations": 2,
+        "selected_tactics": [
+          "Multi-tenancy"
+        ],
+        "covered": [
+          "cost_operability"
+        ],
+        "uncovered": [
+          "maintainability",
+          "performance",
+          "scalability",
+          "security"
+        ],
+        "critique_error": null
+      },
+      {
+        "record_id": "adr_tools_doc_adr/0006-packaging-and-distribution-in-other-version-control-repositories.md",
+        "is_feasible": false,
+        "repair_iterations": 2,
+        "selected_tactics": [
+          "Auto-scaling infrastructure",
+          "Caching",
+          "Fine-grained authorization / access control",
+          "Serverless / function-as-a-service deployment"
+        ],
+        "covered": [
+          "cost_operability",
+          "performance",
+          "scalability",
+          "security"
+        ],
+        "uncovered": [
+          "maintainability"
+        ],
+        "critique_error": null
+      },
+      {
+        "record_id": "cloud_sdk_js_knowledge_base_implementation_documentation/0010-release-version-1-vdm.md",
+        "is_feasible": false,
+        "repair_iterations": 2,
+        "selected_tactics": [
+          "Automated regression test suite"
+        ],
+        "covered": [
+          "maintainability"
+        ],
+        "uncovered": [
+          "cost_operability",
+          "performance",
+          "scalability",
+          "security"
+        ],
+        "critique_error": null
+      },
+      {
+        "record_id": "dl4j_dev_tools_codegen_adr/0004-auto_initialization_for_inplace_operations.md",
+        "is_feasible": false,
+        "repair_iterations": 2,
+        "selected_tactics": [
+          "Caching",
+          "Event-driven architecture",
+          "Serverless / function-as-a-service deployment"
+        ],
+        "covered": [
+          "cost_operability",
+          "performance",
+          "scalability"
+        ],
+        "uncovered": [
+          "maintainability",
+          "security"
+        ],
+        "critique_error": null
+      },
+      {
+        "record_id": "TruBudget_docs_developer_architecture/0003-project-data-model.md",
+        "is_feasible": false,
+        "repair_iterations": 2,
+        "selected_tactics": [
+          "Connection pooling",
+          "Fine-grained authorization / access control",
+          "Horizontal scaling with stateless instances"
+        ],
+        "covered": [
+          "performance",
+          "scalability",
+          "security"
+        ],
+        "uncovered": [
+          "cost_operability",
+          "maintainability"
+        ],
+        "critique_error": null
+      },
+      {
+        "record_id": "lenses_jdbc_doc_adr/0001-use-the-Value-projection-only.md",
+        "is_feasible": false,
+        "repair_iterations": 2,
+        "selected_tactics": [
+          "Auto-scaling infrastructure",
+          "Caching",
+          "Serverless / function-as-a-service deployment"
+        ],
+        "covered": [
+          "cost_operability",
+          "performance",
+          "scalability"
+        ],
+        "uncovered": [
+          "maintainability",
+          "security"
+        ],
+        "critique_error": null
+      },
+      {
+        "record_id": "opg_data_deputy_reporting_docs_architecture_decisions/0001-record-architecture-decisions.md",
+        "is_feasible": false,
+        "repair_iterations": 2,
+        "selected_tactics": [
+          "Caching",
+          "Infrastructure as code"
+        ],
+        "covered": [
+          "cost_operability",
+          "performance"
+        ],
+        "uncovered": [
+          "maintainability",
+          "scalability",
+          "security"
+        ],
+        "critique_error": null
+      },
+      {
+        "record_id": "PlaceCal_doc_adr/0005-create-secretary-permissions.md",
+        "is_feasible": false,
+        "repair_iterations": 2,
+        "selected_tactics": [
+          "Auto-scaling infrastructure",
+          "Automated regression test suite",
+          "Multi-tenancy",
+          "Rate limiting / throttling"
+        ],
+        "covered": [
+          "cost_operability",
+          "maintainability",
+          "scalability",
+          "security"
+        ],
+        "uncovered": [
+          "performance"
+        ],
+        "critique_error": null
+      },
+      {
+        "record_id": "mercury_platform_doc_adr/0001-record-architecture-decisions.md",
+        "is_feasible": false,
+        "repair_iterations": 2,
+        "selected_tactics": [
+          "Centralized structured logging and observability",
+          "Serverless / function-as-a-service deployment"
+        ],
+        "covered": [
+          "cost_operability",
+          "maintainability"
+        ],
+        "uncovered": [
+          "performance",
+          "scalability",
+          "security"
+        ],
+        "critique_error": null
+      },
+      {
+        "record_id": "old_web_frontend_docs_adr/0001-use-react-with-typescript.md",
+        "is_feasible": false,
+        "repair_iterations": 2,
+        "selected_tactics": [],
+        "covered": [],
+        "uncovered": [
+          "cost_operability",
+          "maintainability",
+          "performance",
+          "scalability",
+          "security"
+        ],
+        "critique_error": null
+      },
+      {
+        "record_id": "casa_doc_architecture_decisions/0001-record-architecture-decisions.md",
+        "is_feasible": false,
+        "repair_iterations": 2,
+        "selected_tactics": [
+          "Asynchronous processing via message queues"
+        ],
+        "covered": [
+          "performance"
+        ],
+        "uncovered": [
+          "cost_operability",
+          "maintainability",
+          "scalability",
+          "security"
+        ],
+        "critique_error": null
+      },
+      {
+        "record_id": "monitoring_doc_documentation_architecture_decisions/0004-cloudwatch-metrics.md",
+        "is_feasible": false,
+        "repair_iterations": 2,
+        "selected_tactics": [
+          "Connection pooling"
+        ],
+        "covered": [
+          "performance"
+        ],
+        "uncovered": [
+          "cost_operability",
+          "maintainability",
+          "scalability",
+          "security"
+        ],
+        "critique_error": null
+      },
+      {
+        "record_id": "jabref_docs_adr/0023-localized-preferences.md",
+        "is_feasible": false,
+        "repair_iterations": 2,
+        "selected_tactics": [
+          "Auto-scaling infrastructure"
+        ],
+        "covered": [
+          "scalability"
+        ],
+        "uncovered": [
+          "cost_operability",
+          "maintainability",
+          "performance",
+          "security"
+        ],
+        "critique_error": null
+      },
+      {
+        "record_id": "docker_texlive_docs_adr/0000-use-markdown-architectural-decision-records.md",
+        "is_feasible": false,
+        "repair_iterations": 2,
+        "selected_tactics": [
+          "Caching",
+          "Event-driven architecture",
+          "Serverless / function-as-a-service deployment"
+        ],
+        "covered": [
+          "cost_operability",
+          "performance",
+          "scalability"
+        ],
+        "uncovered": [
+          "maintainability",
+          "security"
+        ],
+        "critique_error": null
+      },
+      {
+        "record_id": "compliantkubernetes_docs_compliantkubernetes_adr/0023-allow-snippets-annotations.md",
+        "is_feasible": false,
+        "repair_iterations": 2,
+        "selected_tactics": [],
+        "covered": [],
+        "uncovered": [
+          "cost_operability",
+          "maintainability",
+          "performance",
+          "scalability",
+          "security"
+        ],
+        "critique_error": null
+      },
+      {
+        "record_id": "TOSCAna_docs_dev_adr/0015-persist-to-filesystem.md",
+        "is_feasible": false,
+        "repair_iterations": 2,
+        "selected_tactics": [
+          "Automated regression test suite"
+        ],
+        "covered": [
+          "maintainability"
+        ],
+        "uncovered": [
+          "cost_operability",
+          "performance",
+          "scalability",
+          "security"
+        ],
+        "critique_error": null
+      },
+      {
+        "record_id": "cafebabelcom_docs_architecture_decisions/0004-deal-with-translations.md",
+        "is_feasible": false,
+        "repair_iterations": 2,
+        "selected_tactics": [
+          "Connection pooling",
+          "Versioned, well-defined API contracts"
+        ],
+        "covered": [
+          "maintainability",
+          "performance"
+        ],
+        "uncovered": [
+          "cost_operability",
+          "scalability",
+          "security"
+        ],
+        "critique_error": null
+      },
+      {
+        "record_id": "cloud_controller_ng_decisions/0004-adding-key-prefix-to-annotations.md",
+        "is_feasible": false,
+        "repair_iterations": 2,
+        "selected_tactics": [
+          "Asynchronous processing via message queues"
+        ],
+        "covered": [
+          "performance"
+        ],
+        "uncovered": [
+          "cost_operability",
+          "maintainability",
+          "scalability",
+          "security"
+        ],
+        "critique_error": null
+      },
+      {
+        "record_id": "information_manipulation_analyzer_decision_records/0001-folder-structure.md",
+        "is_feasible": false,
+        "repair_iterations": 2,
+        "selected_tactics": [
+          "Auto-scaling infrastructure",
+          "Multi-tenancy"
+        ],
+        "covered": [
+          "cost_operability",
+          "scalability"
+        ],
+        "uncovered": [
+          "maintainability",
+          "performance",
+          "security"
+        ],
+        "critique_error": null
+      },
+      {
+        "record_id": "manage_frontend_docs/03-typescript.md",
+        "is_feasible": false,
+        "repair_iterations": 2,
+        "selected_tactics": [
+          "Modular decomposition by business capability"
+        ],
+        "covered": [
+          "maintainability"
+        ],
+        "uncovered": [
+          "cost_operability",
+          "performance",
+          "scalability",
+          "security"
+        ],
+        "critique_error": null
+      },
+      {
+        "record_id": "community_sigs_and_wgs_archive_sig_core_decisions/dr-009-ServiceBinding_in_Kyma.md",
+        "is_feasible": false,
+        "repair_iterations": 2,
+        "selected_tactics": [
+          "Auto-scaling infrastructure",
+          "Managed cloud services over self-hosted infrastructure"
+        ],
+        "covered": [
+          "cost_operability",
+          "scalability"
+        ],
+        "uncovered": [
+          "maintainability",
+          "performance",
+          "security"
+        ],
+        "critique_error": null
+      }
+    ],
+    "7": [
+      {
+        "record_id": "portfolio_docs_architecture_decisions/0012-remove-custom-json-serialization.md",
+        "is_feasible": false,
+        "repair_iterations": 2,
+        "selected_tactics": [
+          "Auto-scaling infrastructure"
+        ],
+        "covered": [
+          "scalability"
+        ],
+        "uncovered": [
+          "cost_operability",
+          "maintainability",
+          "performance",
+          "security"
+        ],
+        "critique_error": null
+      },
+      {
+        "record_id": "up_fiscal_data_decisions/003-selnium.md",
+        "is_feasible": false,
+        "repair_iterations": 2,
+        "selected_tactics": [
+          "Auto-scaling infrastructure",
+          "Serverless / function-as-a-service deployment"
+        ],
+        "covered": [
+          "cost_operability",
+          "scalability"
+        ],
+        "uncovered": [
+          "maintainability",
+          "performance",
+          "security"
+        ],
+        "critique_error": null
+      },
+      {
+        "record_id": "WorkoutLog_docs_adr/0002_remove_state.md",
+        "is_feasible": false,
+        "repair_iterations": 2,
+        "selected_tactics": [],
+        "covered": [],
+        "uncovered": [
+          "cost_operability",
+          "maintainability",
+          "performance",
+          "scalability",
+          "security"
+        ],
+        "critique_error": null
+      },
+      {
+        "record_id": "Conduit_doc_adr/0002-solve-the-xunit-msbuild-problem-with-assembly-merging.md",
+        "is_feasible": false,
+        "repair_iterations": 2,
+        "selected_tactics": [],
+        "covered": [],
+        "uncovered": [
+          "cost_operability",
+          "maintainability",
+          "performance",
+          "scalability",
+          "security"
+        ],
+        "critique_error": null
+      },
+      {
+        "record_id": "drt_v2_doc_architecture_decisions/0010-use-akka-persistence.md",
+        "is_feasible": false,
+        "repair_iterations": 2,
+        "selected_tactics": [
+          "Auto-scaling infrastructure",
+          "Caching",
+          "Infrastructure as code",
+          "Rate limiting / throttling"
+        ],
+        "covered": [
+          "cost_operability",
+          "performance",
+          "scalability",
+          "security"
+        ],
+        "uncovered": [
+          "maintainability"
+        ],
+        "critique_error": null
+      },
+      {
+        "record_id": "opg_data_docs_architecture_decisions/0007-error-handling-and-status-codes.md",
+        "is_feasible": false,
+        "repair_iterations": 2,
+        "selected_tactics": [],
+        "covered": [],
+        "uncovered": [
+          "cost_operability",
+          "maintainability",
+          "performance",
+          "scalability",
+          "security"
+        ],
+        "critique_error": null
+      },
+      {
+        "record_id": "galaxy_zoo_touch_table_docs_arch/adr-6.md",
+        "is_feasible": false,
+        "repair_iterations": 2,
+        "selected_tactics": [
+          "Multi-tenancy"
+        ],
+        "covered": [
+          "cost_operability"
+        ],
+        "uncovered": [
+          "maintainability",
+          "performance",
+          "scalability",
+          "security"
+        ],
+        "critique_error": null
+      },
+      {
+        "record_id": "k8s_vagrant_centos_cluster_doc_architecture_decisions/0001-record-architecture-decisions.md",
+        "is_feasible": false,
+        "repair_iterations": 2,
+        "selected_tactics": [
+          "Event-driven architecture",
+          "Serverless / function-as-a-service deployment"
+        ],
+        "covered": [
+          "cost_operability",
+          "scalability"
+        ],
+        "uncovered": [
+          "maintainability",
+          "performance",
+          "security"
+        ],
+        "critique_error": null
+      },
+      {
+        "record_id": "apply_for_teacher_training_adr/0018-public-ids-for-qualifications.md",
+        "is_feasible": false,
+        "repair_iterations": 2,
+        "selected_tactics": [],
+        "covered": [],
+        "uncovered": [
+          "cost_operability",
+          "maintainability",
+          "performance",
+          "scalability",
+          "security"
+        ],
+        "critique_error": null
+      },
+      {
+        "record_id": "galaxy_zoo_touch_table_docs_arch/adr-2.md",
+        "is_feasible": false,
+        "repair_iterations": 2,
+        "selected_tactics": [
+          "Event-driven architecture"
+        ],
+        "covered": [
+          "scalability"
+        ],
+        "uncovered": [
+          "cost_operability",
+          "maintainability",
+          "performance",
+          "security"
+        ],
+        "critique_error": null
+      },
+      {
+        "record_id": "adr_tools_doc_adr/0006-packaging-and-distribution-in-other-version-control-repositories.md",
+        "is_feasible": false,
+        "repair_iterations": 2,
+        "selected_tactics": [],
+        "covered": [],
+        "uncovered": [
+          "cost_operability",
+          "maintainability",
+          "performance",
+          "scalability",
+          "security"
+        ],
+        "critique_error": null
+      },
+      {
+        "record_id": "cloud_sdk_js_knowledge_base_implementation_documentation/0010-release-version-1-vdm.md",
+        "is_feasible": false,
+        "repair_iterations": 2,
+        "selected_tactics": [
+          "Auto-scaling infrastructure",
+          "Automated regression test suite",
+          "Managed cloud services over self-hosted infrastructure"
+        ],
+        "covered": [
+          "cost_operability",
+          "maintainability",
+          "scalability"
+        ],
+        "uncovered": [
+          "performance",
+          "security"
+        ],
+        "critique_error": null
+      },
+      {
+        "record_id": "dl4j_dev_tools_codegen_adr/0004-auto_initialization_for_inplace_operations.md",
+        "is_feasible": false,
+        "repair_iterations": 2,
+        "selected_tactics": [
+          "Caching"
+        ],
+        "covered": [
+          "performance"
+        ],
+        "uncovered": [
+          "cost_operability",
+          "maintainability",
+          "scalability",
+          "security"
+        ],
+        "critique_error": null
+      },
+      {
+        "record_id": "TruBudget_docs_developer_architecture/0003-project-data-model.md",
+        "is_feasible": false,
+        "repair_iterations": 2,
+        "selected_tactics": [
+          "Multi-tenancy"
+        ],
+        "covered": [
+          "cost_operability"
+        ],
+        "uncovered": [
+          "maintainability",
+          "performance",
+          "scalability",
+          "security"
+        ],
+        "critique_error": null
+      },
+      {
+        "record_id": "lenses_jdbc_doc_adr/0001-use-the-Value-projection-only.md",
+        "is_feasible": false,
+        "repair_iterations": 2,
+        "selected_tactics": [
+          "Connection pooling"
+        ],
+        "covered": [
+          "performance"
+        ],
+        "uncovered": [
+          "cost_operability",
+          "maintainability",
+          "scalability",
+          "security"
+        ],
+        "critique_error": null
+      },
+      {
+        "record_id": "opg_data_deputy_reporting_docs_architecture_decisions/0001-record-architecture-decisions.md",
+        "is_feasible": false,
+        "repair_iterations": 2,
+        "selected_tactics": [
+          "Circuit breaker for downstream dependencies"
+        ],
+        "covered": [
+          "cost_operability"
+        ],
+        "uncovered": [
+          "maintainability",
+          "performance",
+          "scalability",
+          "security"
+        ],
+        "critique_error": null
+      },
+      {
+        "record_id": "PlaceCal_doc_adr/0005-create-secretary-permissions.md",
+        "is_feasible": false,
+        "repair_iterations": 2,
+        "selected_tactics": [
+          "Event-driven architecture",
+          "Multi-tenancy"
+        ],
+        "covered": [
+          "cost_operability",
+          "scalability"
+        ],
+        "uncovered": [
+          "maintainability",
+          "performance",
+          "security"
+        ],
+        "critique_error": null
+      },
+      {
+        "record_id": "mercury_platform_doc_adr/0001-record-architecture-decisions.md",
+        "is_feasible": false,
+        "repair_iterations": 2,
+        "selected_tactics": [
+          "Caching",
+          "Multi-tenancy"
+        ],
+        "covered": [
+          "cost_operability",
+          "performance"
+        ],
+        "uncovered": [
+          "maintainability",
+          "scalability",
+          "security"
+        ],
+        "critique_error": null
+      },
+      {
+        "record_id": "old_web_frontend_docs_adr/0001-use-react-with-typescript.md",
+        "is_feasible": false,
+        "repair_iterations": 2,
+        "selected_tactics": [],
+        "covered": [],
+        "uncovered": [
+          "cost_operability",
+          "maintainability",
+          "performance",
+          "scalability",
+          "security"
+        ],
+        "critique_error": null
+      },
+      {
+        "record_id": "casa_doc_architecture_decisions/0001-record-architecture-decisions.md",
+        "is_feasible": false,
+        "repair_iterations": 2,
+        "selected_tactics": [
+          "Asynchronous processing via message queues"
+        ],
+        "covered": [
+          "performance"
+        ],
+        "uncovered": [
+          "cost_operability",
+          "maintainability",
+          "scalability",
+          "security"
+        ],
+        "critique_error": null
+      },
+      {
+        "record_id": "monitoring_doc_documentation_architecture_decisions/0004-cloudwatch-metrics.md",
+        "is_feasible": false,
+        "repair_iterations": 2,
+        "selected_tactics": [
+          "Data denormalization"
+        ],
+        "covered": [
+          "performance"
+        ],
+        "uncovered": [
+          "cost_operability",
+          "maintainability",
+          "scalability",
+          "security"
+        ],
+        "critique_error": null
+      },
+      {
+        "record_id": "jabref_docs_adr/0023-localized-preferences.md",
+        "is_feasible": false,
+        "repair_iterations": 2,
+        "selected_tactics": [
+          "Auto-scaling infrastructure"
+        ],
+        "covered": [
+          "scalability"
+        ],
+        "uncovered": [
+          "cost_operability",
+          "maintainability",
+          "performance",
+          "security"
+        ],
+        "critique_error": null
+      },
+      {
+        "record_id": "docker_texlive_docs_adr/0000-use-markdown-architectural-decision-records.md",
+        "is_feasible": false,
+        "repair_iterations": 2,
+        "selected_tactics": [
+          "Asynchronous processing via message queues",
+          "Multi-tenancy"
+        ],
+        "covered": [
+          "cost_operability",
+          "performance"
+        ],
+        "uncovered": [
+          "maintainability",
+          "scalability",
+          "security"
+        ],
+        "critique_error": null
+      },
+      {
+        "record_id": "compliantkubernetes_docs_compliantkubernetes_adr/0023-allow-snippets-annotations.md",
+        "is_feasible": false,
+        "repair_iterations": 2,
+        "selected_tactics": [],
+        "covered": [],
+        "uncovered": [
+          "cost_operability",
+          "maintainability",
+          "performance",
+          "scalability",
+          "security"
+        ],
+        "critique_error": null
+      },
+      {
+        "record_id": "TOSCAna_docs_dev_adr/0015-persist-to-filesystem.md",
+        "is_feasible": false,
+        "repair_iterations": 2,
+        "selected_tactics": [
+          "Caching",
+          "Serverless / function-as-a-service deployment"
+        ],
+        "covered": [
+          "cost_operability",
+          "performance"
+        ],
+        "uncovered": [
+          "maintainability",
+          "scalability",
+          "security"
+        ],
+        "critique_error": null
+      },
+      {
+        "record_id": "cafebabelcom_docs_architecture_decisions/0004-deal-with-translations.md",
+        "is_feasible": false,
+        "repair_iterations": 2,
+        "selected_tactics": [
+          "Auto-scaling infrastructure",
+          "Automated regression test suite",
+          "Serverless / function-as-a-service deployment"
+        ],
+        "covered": [
+          "cost_operability",
+          "maintainability",
+          "scalability"
+        ],
+        "uncovered": [
+          "performance",
+          "security"
+        ],
+        "critique_error": null
+      },
+      {
+        "record_id": "cloud_controller_ng_decisions/0004-adding-key-prefix-to-annotations.md",
+        "is_feasible": false,
+        "repair_iterations": 2,
+        "selected_tactics": [
+          "Asynchronous processing via message queues",
+          "Serverless / function-as-a-service deployment"
+        ],
+        "covered": [
+          "cost_operability",
+          "performance"
+        ],
+        "uncovered": [
+          "maintainability",
+          "scalability",
+          "security"
+        ],
+        "critique_error": null
+      },
+      {
+        "record_id": "information_manipulation_analyzer_decision_records/0001-folder-structure.md",
+        "is_feasible": false,
+        "repair_iterations": 2,
+        "selected_tactics": [
+          "Auto-scaling infrastructure",
+          "Multi-tenancy"
+        ],
+        "covered": [
+          "cost_operability",
+          "scalability"
+        ],
+        "uncovered": [
+          "maintainability",
+          "performance",
+          "security"
+        ],
+        "critique_error": null
+      },
+      {
+        "record_id": "manage_frontend_docs/03-typescript.md",
+        "is_feasible": false,
+        "repair_iterations": 2,
+        "selected_tactics": [],
+        "covered": [],
+        "uncovered": [
+          "cost_operability",
+          "maintainability",
+          "performance",
+          "scalability",
+          "security"
+        ],
+        "critique_error": null
+      },
+      {
+        "record_id": "community_sigs_and_wgs_archive_sig_core_decisions/dr-009-ServiceBinding_in_Kyma.md",
+        "is_feasible": false,
+        "repair_iterations": 2,
+        "selected_tactics": [
+          "Caching"
+        ],
+        "covered": [
+          "performance"
+        ],
+        "uncovered": [
+          "cost_operability",
+          "maintainability",
+          "scalability",
+          "security"
+        ],
+        "critique_error": null
+      }
+    ]
+  },
+  "output_words": {
+    "zero_shot": [
+      298,
+      284,
+      316,
+      305,
+      308,
+      318,
+      304,
+      286,
+      273,
+      294,
+      288,
+      285,
+      295,
+      301,
+      318,
+      304,
+      322,
+      272,
+      308,
+      284,
+      291,
+      304,
+      305,
+      317,
+      302,
+      301,
+      277,
+      217,
+      305,
+      295
+    ],
+    "retrieval_only": [
+      300,
+      296,
+      324,
+      281,
+      277,
+      329,
+      322,
+      291,
+      291,
+      312,
+      280,
+      285,
+      299,
+      319,
+      312,
+      303,
+      317,
+      279,
+      276,
+      291,
+      288,
+      308,
+      318,
+      298,
+      314,
+      309,
+      314,
+      299,
+      304,
+      267
+    ],
+    "multiagent_no_solver": [
+      112,
+      172,
+      68,
+      112,
+      87,
+      83,
+      67,
+      69,
+      95,
+      85,
+      99,
+      53,
+      93,
+      87,
+      132,
+      132,
+      87,
+      60,
+      120,
+      101,
+      110,
+      194,
+      88,
+      69,
+      107,
+      123,
+      85,
+      56,
+      82,
+      92
+    ],
+    "cadence_no_critique@B=5": [
+      112,
+      172,
+      68,
+      112,
+      248,
+      103,
+      156,
+      89,
+      95,
+      114,
+      120,
+      53,
+      134,
+      148,
+      162,
+      151,
+      207,
+      161,
+      120,
+      101,
+      110,
+      194,
+      127,
+      69,
+      88,
+      142,
+      85,
+      56,
+      149,
+      128
+    ],
+    "cadence_full@B=5": [
+      112,
+      172,
+      68,
+      112,
+      248,
+      103,
+      156,
+      89,
+      95,
+      114,
+      120,
+      53,
+      134,
+      148,
+      162,
+      151,
+      207,
+      161,
+      120,
+      101,
+      110,
+      194,
+      127,
+      69,
+      88,
+      142,
+      85,
+      56,
+      149,
+      128
+    ],
+    "cadence_no_critique@B=7": [
+      129,
+      99,
+      68,
+      112,
+      172,
+      83,
+      109,
+      68,
+      95,
+      180,
+      99,
+      132,
+      93,
+      87,
+      132,
+      132,
+      122,
+      116,
+      120,
+      101,
+      110,
+      194,
+      162,
+      69,
+      103,
+      263,
+      105,
+      56,
+      82,
+      92
+    ],
+    "cadence_full@B=7": [
+      129,
+      99,
+      68,
+      112,
+      172,
+      83,
+      109,
+      68,
+      95,
+      180,
+      99,
+      132,
+      93,
+      87,
+      132,
+      132,
+      122,
+      116,
+      120,
+      101,
+      110,
+      194,
+      162,
+      69,
+      103,
+      263,
+      105,
+      56,
+      82,
+      92
+    ],
+    "cadence_full_consequences@B=5": [
+      253,
+      279,
+      181,
+      162,
+      354,
+      274,
+      218,
+      195,
+      207,
+      199,
+      240,
+      211,
+      297,
+      256,
+      297,
+      226,
+      371,
+      375,
+      185,
+      158,
+      245,
+      324,
+      349,
+      215,
+      240,
+      215,
+      164,
+      181,
+      254,
+      202
+    ],
+    "cadence_full_consequences@B=7": [
+      214,
+      207,
+      208,
+      175,
+      267,
+      183,
+      234,
+      145,
+      231,
+      305,
+      185,
+      218,
+      219,
+      188,
+      260,
+      274,
+      199,
+      211,
+      204,
+      191,
+      221,
+      329,
+      210,
+      199,
+      152,
+      359,
+      253,
+      173,
+      163,
+      201
+    ],
+    "reference": [
+      126,
+      78,
+      90,
+      87,
+      60,
+      1264,
+      350,
+      76,
+      588,
+      313,
+      178,
+      123,
+      290,
+      579,
+      169,
+      53,
+      671,
+      53,
+      115,
+      53,
+      804,
+      429,
+      156,
+      507,
+      189,
+      134,
+      588,
+      152,
+      72,
+      324
+    ]
+  }
+}

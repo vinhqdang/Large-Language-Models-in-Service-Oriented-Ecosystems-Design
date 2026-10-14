@@ -1,0 +1,21 @@
+\begin{tikzpicture}
+\pgfplotsset{every axis/.append style={
+  width=6.6cm, height=4.6cm, xbar, bar width=6pt, enlarge y limits=0.1,
+  symbolic y coords={Zero-Shot,Retrieval-Only,Multi-Agent,Cadence-NC B=5,Cadence-NC B=7,+Consequences B=5},
+  ytick={Zero-Shot,Retrieval-Only,Multi-Agent,Cadence-NC B=5,Cadence-NC B=7,+Consequences B=5}, y dir=reverse, font=\scriptsize, y tick label style={font=\tiny},
+  title style={font=\scriptsize\bfseries}, xmajorgrids, grid style={gray!25}, x tick label style={/pgf/number format/fixed}}}
+\begin{groupplot}[group style={group size=2 by 2, horizontal sep=1.2cm, vertical sep=1.4cm, yticklabels at=edge left}]
+\nextgroupplot[title={BERTScore F1}, xmin=0.78, xmax=0.83, xtick={0.78,0.80,0.82}]
+\addplot[fill=gray!55, draw=gray!70, bar shift=0pt, error bars/.cd, x dir=both, x explicit, error bar style={black}] coordinates {(0.8135,Zero-Shot) += (0.0046,0) -= (0.0048,0) (0.8174,Retrieval-Only) += (0.0040,0) -= (0.0042,0) (0.8042,Multi-Agent) += (0.0057,0) -= (0.0052,0)};
+\addplot[fill=blue!65, draw=blue!80!black, bar shift=0pt, error bars/.cd, x dir=both, x explicit, error bar style={black}] coordinates {(0.7986,Cadence-NC B=5) += (0.0047,0) -= (0.0044,0) (0.8017,Cadence-NC B=7) += (0.0058,0) -= (0.0050,0) (0.8019,+Consequences B=5) += (0.0040,0) -= (0.0040,0)};
+\nextgroupplot[title={BLEU (0--100)}, xmin=0, xmax=3, xtick={0,1,2,3}]
+\addplot[fill=gray!55, draw=gray!70, bar shift=0pt, error bars/.cd, x dir=both, x explicit, error bar style={black}] coordinates {(1.8973,Zero-Shot) += (0.5702,0) -= (0.4901,0) (1.9048,Retrieval-Only) += (0.5775,0) -= (0.4972,0) (0.5596,Multi-Agent) += (0.2552,0) -= (0.2229,0)};
+\addplot[fill=blue!65, draw=blue!80!black, bar shift=0pt, error bars/.cd, x dir=both, x explicit, error bar style={black}] coordinates {(0.5826,Cadence-NC B=5) += (0.2069,0) -= (0.1826,0) (0.5780,Cadence-NC B=7) += (0.2515,0) -= (0.2130,0) (0.6559,+Consequences B=5) += (0.1835,0) -= (0.1593,0)};
+\nextgroupplot[title={ROUGE-1 F1}, xmin=0, xmax=0.32, xtick={0,0.1,0.2,0.3}]
+\addplot[fill=gray!55, draw=gray!70, bar shift=0pt, error bars/.cd, x dir=both, x explicit, error bar style={black}] coordinates {(0.2546,Zero-Shot) += (0.0209,0) -= (0.0224,0) (0.2645,Retrieval-Only) += (0.0184,0) -= (0.0187,0) (0.1443,Multi-Agent) += (0.0238,0) -= (0.0224,0)};
+\addplot[fill=blue!65, draw=blue!80!black, bar shift=0pt, error bars/.cd, x dir=both, x explicit, error bar style={black}] coordinates {(0.1476,Cadence-NC B=5) += (0.0158,0) -= (0.0157,0) (0.1467,Cadence-NC B=7) += (0.0210,0) -= (0.0192,0) (0.1781,+Consequences B=5) += (0.0153,0) -= (0.0167,0)};
+\nextgroupplot[title={METEOR}, xmin=0, xmax=0.28, xtick={0,0.1,0.2}]
+\addplot[fill=gray!55, draw=gray!70, bar shift=0pt, error bars/.cd, x dir=both, x explicit, error bar style={black}] coordinates {(0.2228,Zero-Shot) += (0.0199,0) -= (0.0210,0) (0.2266,Retrieval-Only) += (0.0196,0) -= (0.0203,0) (0.0842,Multi-Agent) += (0.0184,0) -= (0.0165,0)};
+\addplot[fill=blue!65, draw=blue!80!black, bar shift=0pt, error bars/.cd, x dir=both, x explicit, error bar style={black}] coordinates {(0.0925,Cadence-NC B=5) += (0.0162,0) -= (0.0159,0) (0.0890,Cadence-NC B=7) += (0.0159,0) -= (0.0148,0) (0.1340,+Consequences B=5) += (0.0140,0) -= (0.0144,0)};
+\end{groupplot}
+\end{tikzpicture}

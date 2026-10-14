@@ -764,3 +764,60 @@ abstract is 433 words. `cadence_jss.tex` still carries the 433-word abstract.
 Nothing is pending on our side. Next action only when JSS responds: if reviewers
 ask for revisions, the likely asks are a larger held-out sample (N=3 is the main
 weakness) and a stronger local backbone — see "Next step" above.
+
+## Status: JSS desk-rejected; revising for Information and Software Technology (2026-10-14)
+
+JSS desk-rejected the paper (JSSOFTWARE-D-26-02620). The editor found that it
+did not engage enough with the SE literature, did not position its
+contributions, and did not show how it advances the state of the art in SE.
+The response has two parts, both in progress here.
+
+**(a) Repositioning.** `manuscript/cadence_ist.tex` (and `cadence_ist.bib`,
+which extends `cadence_jss.bib` with about 50 verified SE references):
+- The Related Work is rebuilt around architecture knowledge and ADRs,
+  decision-making in practice, trade-off analysis (ATAM and CBAM),
+  architecture optimization, tactics, and LLMs for architecture. MAAD,
+  Diaz-Pace et al. and LLM-assisted ATAM are named as the closest work and set
+  apart explicitly, with a comparison table.
+- The Introduction is reframed in SE terms, with RQ1 to RQ4 and four
+  contributions.
+- The abstract is now structured (Context, Objective, Method, Results,
+  Conclusion), as IST requires.
+
+**(b) Larger evaluation.** `scripts/run_evaluation_paired.py 30 44` ran on a
+Colab T4 (about 5 min per item, 2.5 h in total). The sample is 30 Verified
+items, disjoint from the earlier seed-42 and seed-43 items, with B in {5, 7}.
+The design is paired: Stages 1 and 2 run once per item and are shared by
+Multi-Agent, NC and Full, and by both budgets.
+
+Outputs:
+- `data/processed/evaluation_paired_items.jsonl`: raw outputs and solver
+  diagnostics per item.
+- `evaluation_paired_results.json`: per-item metrics.
+- `evaluation_length_control.json`: baselines truncated to NC's length, from
+  `scripts/length_control.py`.
+- `evaluation_paired_stats.json`: from `scripts/analyze_paired.py`.
+
+Findings that change the paper:
+- **Stage 4 never rewrites the decision text.** `finalize_decision` returns
+  the verified candidate and rationale unchanged, so Full equals NC on every
+  text metric by construction. The JSS claim that self-critique scored higher
+  in 7 of 8 comparisons came from unpaired runs that re-sampled Stages 1 to 3,
+  so it was sampling noise. That claim is retracted in the IST paper (section
+  "Earlier Development Runs").
+- Supplementary variant: Full+Consequences appends Stage 4's residual
+  weaknesses as a Consequences section. It gives significant gains in
+  BERTScore, ROUGE-1 and METEOR (with a length confound).
+- **The length-asymmetry claim does not survive the length control.** At equal
+  length, the baselines still beat NC on all four metrics, BERTScore
+  included.
+- Feasibility: 1 of 30 items at B=5 and 0 of 30 at B=7. Mean coverage is
+  0.57 of 5 before repair, 1.63 after repair at B=5, and 1.23 at B=7. The
+  bottleneck is the diversity of committed tactics, which cluster on one
+  attribute, not the budget.
+
+Remaining steps:
+- RQ3: re-run `extract_published_baseline_comparison.py --paired` on the 30
+  items (the Zenodo archive is 460 MB and slow to fetch).
+- Final compile and visual check.
+- The user should confirm the IST transfer and then submit.

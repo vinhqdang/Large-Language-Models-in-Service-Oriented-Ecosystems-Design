@@ -21,6 +21,7 @@ _PROJECT_ROOT = Path(__file__).resolve().parent.parent
 PROCESSED = _PROJECT_ROOT / "data" / "processed"
 RESULTS_PATH = PROCESSED / "evaluation_paired_results.json"
 STATS_PATH = PROCESSED / "evaluation_paired_stats.json"
+LENGTH_CONTROL_PATH = PROCESSED / "evaluation_length_control.json"  # from scripts/length_control.py
 
 METRICS = ("bertscore_f1", "bleu", "rouge1_f", "meteor")
 N_BOOT = 10_000
@@ -34,13 +35,16 @@ def boot_ci(values):
     return [float(np.percentile(means, 2.5)), float(np.percentile(means, 97.5))]
 
 
-def ladder(budgets):
+def ladder(budgets, length_control=False):
     steps = [("zero_shot", "retrieval_only"), ("retrieval_only", "multiagent_no_solver")]
     for b in budgets:
         steps.append(("multiagent_no_solver", f"cadence_no_critique@B={b}"))
         steps.append((f"cadence_no_critique@B={b}", f"cadence_full@B={b}"))
         steps.append((f"cadence_no_critique@B={b}", f"cadence_full_consequences@B={b}"))
     steps.append(("zero_shot", f"cadence_full@B={budgets[0]}"))
+    if length_control:
+        steps.append(("zero_shot_truncated", f"cadence_no_critique@B={budgets[0]}"))
+        steps.append(("retrieval_only_truncated", f"cadence_no_critique@B={budgets[0]}"))
     return steps
 
 
@@ -58,6 +62,9 @@ def main():
     res = json.loads(RESULTS_PATH.read_text(encoding="utf-8"))
     per_item = res["per_item_metrics"]
     budgets = res["config"]["tactic_budgets"]
+    length_control = LENGTH_CONTROL_PATH.exists()
+    if length_control:
+        per_item.update(json.loads(LENGTH_CONTROL_PATH.read_text(encoding="utf-8"))["per_item_metrics"])
     out = {"n_items_ok": res["n_items_ok"], "systems": {}, "paired": {}, "solver": {}, "length": {}}
 
     for system, rows in per_item.items():
@@ -68,7 +75,7 @@ def main():
 
     for m in METRICS:
         entries = []
-        for a, b in ladder(budgets):
+        for a, b in ladder(budgets, length_control):
             common = sorted(set(per_item[a]) & set(per_item[b]))
             diff = np.array([per_item[b][i][m] - per_item[a][i][m] for i in common])
             p = float(wilcoxon(diff).pvalue) if np.any(diff != 0) else 1.0
@@ -99,6 +106,8 @@ def main():
     # item, the length ratio to the reference with ROUGE-1.
     ratios, rouge = [], []
     for system, rows in per_item.items():
+        if system not in words:
+            continue
         lengths = words[system]
         for (rid, r), n in zip(rows.items(), lengths):
             ratios.append(n / ref[list(per_item["zero_shot"]).index(rid)])

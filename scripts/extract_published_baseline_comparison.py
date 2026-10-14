@@ -62,9 +62,17 @@ STRATEGIES = [
 ]
 
 
-def extract_comparison(records_path: Path, results_root: Path, scorer) -> dict:
+PAIRED_ITEMS_PATH = _PROJECT_ROOT / "data" / "processed" / "evaluation_paired_items.jsonl"
+PAIRED_OUT_PATH = _PROJECT_ROOT / "data" / "processed" / "published_baseline_comparison_paired.json"
+
+
+def extract_comparison(records_path: Path, results_root: Path, scorer, record_ids=None) -> dict:
     verified = load_verified_records(records_path)
-    heldout = sample_test_set(verified, n=3, min_length=300, seed=43)
+    if record_ids is None:
+        heldout = sample_test_set(verified, n=3, min_length=300, seed=43)
+    else:
+        by_id = {r.record_id: r for r in verified}
+        heldout = [by_id[i] for i in record_ids]
 
     per_strategy = {}
     for strategy_name, exp_dir, sub in STRATEGIES:
@@ -107,8 +115,15 @@ def extract_comparison(records_path: Path, results_root: Path, scorer) -> dict:
 
 
 if __name__ == "__main__":
+    # `--paired` compares on the held-out items of scripts/run_evaluation_paired.py
+    # instead of the seed-43 scaled-run sample.
+    paired = "--paired" in sys.argv
+    ids = None
+    if paired:
+        ids = [json.loads(l)["record_id"] for l in PAIRED_ITEMS_PATH.read_text(encoding="utf-8").splitlines() if l.strip()]
+        OUT_PATH = PAIRED_OUT_PATH
     scorer = load_bertscorer()
-    comparison = extract_comparison(RECORDS_PATH, RESULTS_ROOT, scorer)
+    comparison = extract_comparison(RECORDS_PATH, RESULTS_ROOT, scorer, ids)
     OUT_PATH.write_text(json.dumps(comparison, indent=2) + "\n", encoding="utf-8")
     print(f"Wrote {OUT_PATH}")
 
