@@ -39,6 +39,7 @@ def ladder(budgets):
     for b in budgets:
         steps.append(("multiagent_no_solver", f"cadence_no_critique@B={b}"))
         steps.append((f"cadence_no_critique@B={b}", f"cadence_full@B={b}"))
+        steps.append((f"cadence_no_critique@B={b}", f"cadence_full_consequences@B={b}"))
     steps.append(("zero_shot", f"cadence_full@B={budgets[0]}"))
     return steps
 

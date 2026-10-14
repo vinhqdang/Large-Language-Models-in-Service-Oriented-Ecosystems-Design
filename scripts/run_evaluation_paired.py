@@ -144,6 +144,19 @@ def generate(n, seed):
 SYSTEMS = ("zero_shot", "retrieval_only", "multiagent_no_solver", "cadence_no_critique", "cadence_full")
 
 
+def with_consequences(entry):
+    """Stage 4 does not rewrite the decision: cadence_full carries the same
+    text as cadence_no_critique plus utility scores and residual weaknesses.
+    This supplementary variant renders those weaknesses as an ADR
+    Consequences section, so the text metrics can see what Stage 4 adds."""
+    if not entry["cadence_full"]:
+        return None
+    weaknesses = [u["weakness"] for u in entry["utility_scores"] if u.get("weakness")]
+    if not weaknesses:
+        return entry["cadence_full"]
+    return entry["cadence_full"] + "\n\nConsequences:\n" + "\n".join(f"- {w}" for w in weaknesses)
+
+
 def score(n, seed, earlier):
     rows = [json.loads(l) for l in ITEMS_PATH.read_text(encoding="utf-8").splitlines() if l.strip()]
     ok = [r for r in rows if "error" not in r]
@@ -159,6 +172,11 @@ def score(n, seed, earlier):
                 [r["budgets"][budget][system] for r in usable], [r["reference"] for r in usable], scorer
             )
             per_item[f"{system}@B={budget}"] = {r["record_id"]: asdict(s) for r, s in zip(usable, scores)}
+        usable = [r for r in ok if with_consequences(r["budgets"][budget])]
+        scores = compute_corpus_metrics(
+            [with_consequences(r["budgets"][budget]) for r in usable], [r["reference"] for r in usable], scorer
+        )
+        per_item[f"cadence_full_consequences@B={budget}"] = {r["record_id"]: asdict(s) for r, s in zip(usable, scores)}
     result = {
         "config": {"n_requested": n, "seed": seed, "k": K_PRECEDENTS, "max_rounds": MAX_ROUNDS,
                    "max_repair_iterations": MAX_REPAIR_ITERATIONS, "tactic_budgets": list(TACTIC_BUDGETS),
@@ -177,6 +195,10 @@ def score(n, seed, earlier):
         } | {
             f"{s}@B={b}": [len(r["budgets"][str(b)][s].split()) for r in ok if r["budgets"][str(b)][s]]
             for b in TACTIC_BUDGETS for s in ("cadence_no_critique", "cadence_full")
+        } | {
+            f"cadence_full_consequences@B={b}": [len(with_consequences(r["budgets"][str(b)]).split()) for r in ok
+                                                 if with_consequences(r["budgets"][str(b)])]
+            for b in TACTIC_BUDGETS
         } | {"reference": [len(r["reference"].split()) for r in ok]},
     }
     RESULTS_PATH.write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
