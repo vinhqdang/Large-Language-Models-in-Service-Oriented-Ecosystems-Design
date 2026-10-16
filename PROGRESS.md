@@ -867,3 +867,13 @@ following cuts were made, with no change to the evaluation content:
 The result is 43 pages and 14 floats. The PDF text went from 14,944 to
 12,764 words, an estimated 14,100 by IST's counting method. Appendices A
 (catalog) and B (prompts) are kept, so the paper stays self-contained.
+
+## Status: RESUBMITTED to Information and Software Technology (2026-10-16)
+
+The shortened version (commit `342a300`) was resubmitted through Editorial
+Manager after the length send-back. It is 43 pages, with an estimated
+14,100 words by IST's counting method. The source zip now omits
+`impl_figure.tex` and `example_figure.tex`. Title, abstract (292 words) and
+keywords are unchanged.
+
+Done for now. Nothing is pending on the repository side until IST replies.
