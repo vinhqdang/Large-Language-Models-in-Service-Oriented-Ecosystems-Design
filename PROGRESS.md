@@ -848,3 +848,22 @@ rate a sample (for example 10 items) of the paired-run decisions in
 `data/processed/evaluation_paired_items.jsonl`, judging whether each
 addresses the stated quality concerns. That is the main limitation the
 paper names.
+
+## Status: IST sent the manuscript back for length; shortened and ready to resubmit (2026-10-16)
+
+IST counted 16,464 words, against a limit of 15,000 for research papers. The
+count includes references, and each figure or table counts as 200 words. The
+following cuts were made, with no change to the evaluation content:
+- Removed the "Implementation Robustness" subsection and its deviations
+  table. One sentence on the synthesis retry remains in Stage 2.
+- Removed the worked example section, with its table and figure.
+- Removed the figure of the Python package structure (`impl_figure.tex`,
+  which stays in the repo).
+- Removed the tactic-summary table; Appendix A's full catalog replaces it.
+- Removed the "Engineering Lessons" subsection.
+- Condensed the method prose for Stages 1 to 4, the corpus paragraph, and
+  the RQ3 method paragraph; tightened the Introduction and Discussion.
+
+The result is 43 pages and 14 floats. The PDF text went from 14,944 to
+12,764 words, an estimated 14,100 by IST's counting method. Appendices A
+(catalog) and B (prompts) are kept, so the paper stays self-contained.
